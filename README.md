@@ -1,1 +1,1 @@
-# PP-StacjaNarciarska
+# StacjaNarciarska
