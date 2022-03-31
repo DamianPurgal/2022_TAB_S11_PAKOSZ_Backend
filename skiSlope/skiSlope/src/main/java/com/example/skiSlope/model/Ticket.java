@@ -3,6 +3,7 @@ package com.example.skiSlope.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.util.UUID;
 
 @Entity
@@ -13,19 +14,19 @@ public class Ticket implements Card{
     @Column(name = "id", nullable = false)
     private  UUID id;
 
-    @Column(name = "discount type")
+    @Column(name = "discount_type")
     private DiscountType discountType;
 
     @Column(name = "cost", nullable = false)
     private double cost;
 
-    @Column(name = "lift id")
+    @Column(name = "lift_id")
     private  UUID liftId;
 
-    @Column(name = "number of entries")
+    @Column(name = "number_of_entries", nullable = false)
     private int numberOfEntries;
 
-    @Column(name = "customer's id", nullable = false)
+    @Column(name = "customers_id", nullable = false)
     private UUID customerId;
 
 
