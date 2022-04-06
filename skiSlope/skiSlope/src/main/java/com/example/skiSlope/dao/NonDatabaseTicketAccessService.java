@@ -2,6 +2,7 @@ package com.example.skiSlope.dao;
 
 import com.example.skiSlope.model.Card;
 import com.example.skiSlope.model.Ticket;
+import com.example.skiSlope.model.Voucher;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,10 +11,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository("fakeDao")
-public class NonDatabaseTicketAccessService implements TicketDao, CardDao{
+public class NonDatabaseTicketAccessService implements TicketDao, CardDao, VoucherDao{
 
     private static List<Ticket> tickets = new ArrayList<>();
     private static List<Card> cards = new ArrayList<>();
+    private static List<Voucher> vouchers = new ArrayList<>();
 
     @Override
     public int insertTicket(UUID code, Ticket ticket) {
@@ -84,17 +86,51 @@ public class NonDatabaseTicketAccessService implements TicketDao, CardDao{
         return 1;
     }
 
-//    @Override
-//    public int updateCardByCode(UUID code, Card update) {
-//        return selectCardByCode(code)
-//                .map(card -> {
-//                    int indexOfCardToUpdate = tickets.indexOf(card);
-//                    if(indexOfCardToUpdate >= 0){
-//                        tickets.set(indexOfCardToUpdate, new Car(update.getId(), code, update.getDiscountType(), update.getCost(), update.getLiftId(), update.getNumberOfEntries(), update.getCustomerId()));
-//                        return 1;
-//                    }
-//                    return 0;
-//                })
-//                .orElse(0);
-//    }
+    @Override
+    public int insertVoucher(UUID code, Voucher voucher) {
+        Voucher newVoucher = new Voucher(voucher.getId(), code, voucher.getDiscountType(), voucher.getCost(), voucher.getStartDate(), voucher.getExpireDate(), voucher.getCustomerId());
+        vouchers.add(newVoucher);
+        cards.add(newVoucher);
+        return 1;
+    }
+
+    @Override
+    public List<Voucher> selectAllVouchers() {
+        return vouchers;
+    }
+
+    @Override
+    public Optional<Voucher> selectVoucherByCode(UUID code) {
+        return vouchers.stream()
+                .filter(voucher -> voucher.getId().equals(code))
+                .findFirst();
+    }
+
+    @Override
+    public int deleteVoucherByCode(UUID code) {
+        Optional<Voucher> voucherOptional = selectVoucherByCode(code);
+        if(voucherOptional.isEmpty()){
+            return 0;
+        }
+        vouchers.remove(voucherOptional.get());
+        deleteCardByCode(code);
+        return 1;
+    }
+
+    @Override
+    public int updateVoucherByCode(UUID code, Voucher update) {
+        return selectVoucherByCode(code)
+                .map(voucher -> {
+                    int indexOfVoucherToUpdate = vouchers.indexOf(voucher);
+                    int indexOfCardToUpdate = cards.indexOf(voucher);
+                    Voucher newVoucher = new Voucher(update.getId(), code, update.getDiscountType(), update.getCost(), update.getStartDate(), update.getExpireDate(), update.getCustomerId());
+                    if(indexOfVoucherToUpdate >= 0){
+                        vouchers.set(indexOfVoucherToUpdate, newVoucher);
+                        cards.set(indexOfCardToUpdate, newVoucher);
+                        return 1;
+                    }
+                    return 0;
+                })
+                .orElse(0);
+    }
 }

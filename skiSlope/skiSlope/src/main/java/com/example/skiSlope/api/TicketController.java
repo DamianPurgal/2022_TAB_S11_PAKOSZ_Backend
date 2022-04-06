@@ -10,7 +10,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
-//nowy komentarz
 @RequestMapping("api/v1/ticket")
 @RestController
 public class TicketController {
