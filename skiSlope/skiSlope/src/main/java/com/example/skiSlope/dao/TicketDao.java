@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+//zmiana
 public interface TicketDao {
 
     int insertTicket(UUID code, Ticket ticket);
