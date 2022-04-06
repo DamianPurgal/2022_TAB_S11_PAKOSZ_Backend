@@ -1,64 +1,47 @@
 package com.example.skiSlope.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
 import java.util.UUID;
 
+@Setter
+@Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "tickets")
-public class Ticket implements Card{
+public class Ticket extends Card {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "ticket_sequence", sequenceName = "ticket_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_sequence")
     @Column(name = "id", nullable = false)
-    private  UUID id;
-
-    @Column(name = "discount_type")
-    private DiscountType discountType;
-
-    @Column(name = "cost", nullable = false)
-    private double cost;
+    private Long id;
 
     @Column(name = "lift_id")
-    private  UUID liftId;
+    private  Long liftId;
 
     @Column(name = "number_of_entries", nullable = false)
     private int numberOfEntries;
 
-    @Column(name = "customers_id", nullable = false)
-    private UUID customerId;
 
-
-    public Ticket(@JsonProperty("code") UUID code,
+    public Ticket(@JsonProperty("id") Long id,
+                  @JsonProperty("code") UUID code,
                   @JsonProperty("discount type") DiscountType discountType,
                   @JsonProperty("cost") double cost,
-                  @JsonProperty("lift id") UUID liftId,
+                  @JsonProperty("lift id") Long liftId,
                   @JsonProperty("number of entries") int numberOfEntries,
-                  @JsonProperty("customer's id") UUID customerId) {
-        this.id = code;
+                  @JsonProperty("customer's id") Long customerId) {
+        this.id = id;
+        this.code = code;
         this.discountType = discountType;
         this.cost = cost;
         this.liftId = liftId;
         this.numberOfEntries = numberOfEntries;
         this.customerId = customerId;
+        this.cardType = CardType.Ticket;
     }
-
-    public Ticket() {
-
-    }
-
-    public UUID getId() {return id;}
-
-    @Override
-    public DiscountType getDiscountType() {return discountType;}
-
-    @Override
-    public double getCost() {return cost;}
-
-    public UUID getLiftId() {return liftId;}
-
-    public int getNumberOfEntries() {return numberOfEntries;}
-
-    public UUID getCustomerId() {return customerId;}
 }
