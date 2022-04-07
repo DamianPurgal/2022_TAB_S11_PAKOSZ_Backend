@@ -1,15 +1,16 @@
 package com.example.skiSlope.service;
 
 import com.example.skiSlope.model.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
-
-public interface UserService {
+public interface UserService extends UserDetailsService {
 
     User addUser(User user);
 
-    List<User> getAllUsers();
-
     User getUser(String username);
+
+    User getUser(Long userId);
+
+    boolean isExistingUser(String username);
 
 }

@@ -14,19 +14,18 @@ public class UserSecurityTestController {
     @PreAuthorize("hasAnyRole('ROLE_CUSTOMER')")
     @GetMapping("/customer")
     public String onlyForCustomers(){
-        return "customer";
+        return "you should see this if your role is: ROLE_CUSTOMER";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     @GetMapping("/manager")
     public String onlyForManagers(){
-        return "manager";
+        return "you should see this if your role is: ROLE_MANAGER";
     }
-
 
     @PreAuthorize("permitAll()")
     @GetMapping("/everyone")
     public String forEveryone(){
-        return "everyone";
+        return "you should see this message";
     }
 }

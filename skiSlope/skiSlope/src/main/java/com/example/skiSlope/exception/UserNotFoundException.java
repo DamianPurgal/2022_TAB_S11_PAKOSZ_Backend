@@ -1,14 +1,10 @@
 package com.example.skiSlope.exception;
 
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
-@NoArgsConstructor
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends RuntimeException{
+public class UserNotFoundException extends BusinessException{
 
-    public UserNotFoundException(String message){
-        super(message);
+    public UserNotFoundException(){
+        super(HttpStatus.NOT_FOUND.value(), "User not found");
     }
 }
