@@ -13,4 +13,6 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
     boolean existsUserByUsername(String username);
 
+    void deleteByUsername(String username);
+
 }

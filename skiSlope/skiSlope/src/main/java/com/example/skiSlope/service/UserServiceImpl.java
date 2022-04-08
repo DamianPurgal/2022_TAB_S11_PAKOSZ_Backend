@@ -1,14 +1,18 @@
 package com.example.skiSlope.service;
 
 import com.example.skiSlope.exception.UserNotFoundException;
+import com.example.skiSlope.exception.UserPasswordsDoesntMatchException;
 import com.example.skiSlope.exception.UserUsernameIsNotAvailableException;
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.request.UserEditInformationRequest;
 import com.example.skiSlope.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @AllArgsConstructor
 @Service
@@ -46,5 +50,35 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isExistingUser(String username) {
         return userRepository.existsUserByUsername(username);
+    }
+
+    @Override
+    public void updateUserData(String username, UserEditInformationRequest userEditInformationRequest) {
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(UserNotFoundException::new);
+
+        if(!passwordEncoder.matches(userEditInformationRequest.getOldPassword(), user.getPassword())){
+            throw new UserPasswordsDoesntMatchException();
+        }
+
+        user = userEditInformationRequest.updateUserInformation(user);
+        user.setPassword(
+                passwordEncoder.encode(user.getPassword())
+        );
+
+        userRepository.save(user);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(String username) {
+        userRepository.deleteByUsername(username);
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 }

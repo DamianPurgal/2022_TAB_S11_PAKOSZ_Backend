@@ -37,6 +37,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             if(isAuthorizationHeaderCorrect(authorizationHeader)){
                 try{
                     String token = authorizationHeader.substring("Bearer ".length());
+
                     UsernamePasswordAuthenticationToken authenticationToken = JwtResolver.verifyJWTAndReturnAuthenticationToken(token);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);

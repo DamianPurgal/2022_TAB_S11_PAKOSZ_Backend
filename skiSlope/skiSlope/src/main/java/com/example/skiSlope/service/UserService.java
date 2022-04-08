@@ -1,6 +1,7 @@
 package com.example.skiSlope.service;
 
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.request.UserEditInformationRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
@@ -12,5 +13,11 @@ public interface UserService extends UserDetailsService {
     User getUser(Long userId);
 
     boolean isExistingUser(String username);
+
+    void updateUserData(String username, UserEditInformationRequest userEditInformationRequest);
+
+    void deleteUser(String username);
+
+    void deleteUser(Long userId);
 
 }

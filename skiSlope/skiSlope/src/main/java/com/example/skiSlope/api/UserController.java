@@ -1,12 +1,16 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.request.UserEditInformationRequest;
 import com.example.skiSlope.model.response.UserDetailedInformationResponse;
 import com.example.skiSlope.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @AllArgsConstructor
 @RequestMapping("/api/user")
@@ -28,6 +32,20 @@ public class UserController {
                 .lastName(loggedUser.getLastName())
                 .email(loggedUser.getEmail())
                 .build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @PutMapping("/edit")
+    public void editUserInformation(@Valid @NonNull @RequestBody UserEditInformationRequest userEditInformationRequest){
+        String loggedUserUsername = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.updateUserData(loggedUserUsername, userEditInformationRequest);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @DeleteMapping("/delete")
+    public void deleteUser(){
+        String loggedUserUsername = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.deleteUser(loggedUserUsername);
     }
 
 }
