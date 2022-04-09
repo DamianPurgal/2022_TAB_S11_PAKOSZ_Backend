@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -32,6 +33,8 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CustomAuthorizationFilter customAuthorizationFilter;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,7 +45,7 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(LOGIN_URL).permitAll();
         http.authorizeRequests().antMatchers(REFRESH_URL).permitAll();
         http.addFilter(customAuthenticationFilter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

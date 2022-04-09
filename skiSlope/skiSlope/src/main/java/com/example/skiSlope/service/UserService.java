@@ -14,7 +14,7 @@ public interface UserService extends UserDetailsService {
 
     boolean isExistingUser(String username);
 
-    void updateUserData(String username, UserEditInformationRequest userEditInformationRequest);
+    void updateUserData(Long userId, UserEditInformationRequest userEditInformationRequest);
 
     void deleteUser(String username);
 

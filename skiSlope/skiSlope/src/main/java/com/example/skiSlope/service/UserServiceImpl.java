@@ -53,9 +53,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserData(String username, UserEditInformationRequest userEditInformationRequest) {
+    public void updateUserData(Long userId, UserEditInformationRequest userEditInformationRequest) {
 
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         if(!passwordEncoder.matches(userEditInformationRequest.getOldPassword(), user.getPassword())){

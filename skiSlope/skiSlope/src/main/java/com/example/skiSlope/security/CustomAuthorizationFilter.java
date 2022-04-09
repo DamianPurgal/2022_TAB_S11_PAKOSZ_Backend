@@ -2,14 +2,21 @@ package com.example.skiSlope.security;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.skiSlope.api.handlers.DTO.ErrorResponse;
+import com.example.skiSlope.model.User;
 import com.example.skiSlope.security.utility.JwtResolver;
+import com.example.skiSlope.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -23,9 +30,11 @@ import static com.example.skiSlope.security.ApplicationSecurityConfig.REFRESH_UR
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Slf4j
+@Service
 @RequiredArgsConstructor
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -38,7 +47,15 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 try{
                     String token = authorizationHeader.substring("Bearer ".length());
 
-                    UsernamePasswordAuthenticationToken authenticationToken = JwtResolver.verifyJWTAndReturnAuthenticationToken(token);
+                    DecodedJWT decodedJWT = JwtResolver.verifyJWTAndReturnDecodedJWT(token);
+                    String username = JwtResolver.getUsernameFromDecodedJWT(decodedJWT);
+
+                    User user = userService.getUser(username);
+
+                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                      user, null, user.getAuthorities()
+                    );
+
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                     filterChain.doFilter(request, response);
 

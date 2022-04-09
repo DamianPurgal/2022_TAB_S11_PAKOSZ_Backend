@@ -19,12 +19,10 @@ public class UserController {
 
     private UserService userService;
 
-
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     @GetMapping("/info")
     public UserDetailedInformationResponse getUserDetailedInformation(){
-        String loggedUserUsername = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User loggedUser = userService.getUser(loggedUserUsername);
+        User loggedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return UserDetailedInformationResponse.builder()
                 .username(loggedUser.getUsername())
@@ -37,15 +35,15 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     @PutMapping("/edit")
     public void editUserInformation(@Valid @NonNull @RequestBody UserEditInformationRequest userEditInformationRequest){
-        String loggedUserUsername = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.updateUserData(loggedUserUsername, userEditInformationRequest);
+        User loggedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.updateUserData(loggedUser.getId(), userEditInformationRequest);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     @DeleteMapping("/delete")
     public void deleteUser(){
-        String loggedUserUsername = (String)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userService.deleteUser(loggedUserUsername);
+        User loggedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userService.deleteUser(loggedUser.getId());
     }
 
 }
