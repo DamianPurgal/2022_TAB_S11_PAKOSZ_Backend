@@ -2,24 +2,19 @@ package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.service.VoucherService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
+@AllArgsConstructor
 @RequestMapping("api/v1/voucher")
 @RestController
 public class VoucherController {
 
-    private final VoucherService voucherService;
-
-    @Autowired
-    public VoucherController(VoucherService voucherService) {
-        this.voucherService = voucherService;
-    }
+    private VoucherService voucherService;
 
     @PostMapping
     public void addVoucher(@Valid @NonNull @RequestBody Voucher voucher){
@@ -27,23 +22,23 @@ public class VoucherController {
     }
 
     @GetMapping
-    public List<Voucher> getAllTickets() {
+    public List<Voucher> getAllVouchers() {
         return voucherService.getAllVouchers();
     }
 
-    @GetMapping(path="{code}")
-    public Voucher getTicketsById(@PathVariable("code") UUID code){
-        return voucherService.getVoucherById(code)
+    @GetMapping(path="{id}")
+    public Voucher getVoucherById(@PathVariable("id") Long id){
+        return voucherService.getVoucherById(id)
                 .orElse(null);
     }
 
-    @DeleteMapping(path="{code}")
-    public void deleteTicketByCode(@PathVariable("code") UUID code){
-        voucherService.deleteVoucher(code);
+    @DeleteMapping(path="{id}")
+    public void deleteVoucherByCode(@PathVariable("id") Long id){
+        voucherService.deleteVoucher(id);
     }
 
-    @PutMapping(path="{code}")
-    public void updateTicketByCode(@PathVariable("code") UUID code, @Valid @NonNull @RequestBody Voucher voucherToUpdate){
-        voucherService.updateVoucher(code, voucherToUpdate);
+    @PutMapping(path="{id}")
+    public void updateVoucherByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody Voucher voucherToUpdate){
+        voucherService.updateVouchersData(voucherToUpdate, id);
     }
 }

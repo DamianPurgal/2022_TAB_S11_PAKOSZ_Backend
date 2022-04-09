@@ -1,7 +1,9 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Ticket;
+import com.example.skiSlope.repository.TicketRepository;
 import com.example.skiSlope.service.TicketService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -10,14 +12,12 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
+@AllArgsConstructor
 @RequestMapping("api/v1/ticket")
 @RestController
 public class TicketController {
 
-    private final TicketService ticketService;
-
-    @Autowired
-    public TicketController(TicketService ticketService) {this.ticketService = ticketService;}
+    private TicketService ticketService;
 
     @PostMapping
     public void addTicket(@Valid @NonNull @RequestBody Ticket ticket){
@@ -29,21 +29,19 @@ public class TicketController {
         return ticketService.getAllTickets();
     }
 
-    @GetMapping(path="{code}")
-    public Ticket getTicketsById(@PathVariable("code") UUID code){
-        return ticketService.getTicketById(code)
+    @GetMapping(path="{id}")
+    public Ticket getTicketById(@PathVariable("id") Long id){
+        return ticketService.getTicketById(id)
                 .orElse(null);
     }
 
-    @DeleteMapping(path="{code}")
-    public void deleteTicketByCode(@PathVariable("code") UUID code){
-        ticketService.deleteTicket(code);
+    @DeleteMapping(path="{id}")
+    public void deleteTicketByCode(@PathVariable("id") Long id){
+        ticketService.deleteTicket(id);
     }
 
-    @PutMapping(path="{code}")
-    public void updateTicketByCode(@PathVariable("code") UUID code, @Valid @NonNull @RequestBody Ticket ticketToUpdate){
-        ticketService.updateTicket(code, ticketToUpdate);
+    @PutMapping(path="{id}")
+    public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody Ticket ticketToUpdate){
+        ticketService.updateTicketsData(ticketToUpdate, id);
     }
-
-
 }

@@ -13,10 +13,8 @@ public class SkiSlopeApplication implements CommandLineRunner {
 		SpringApplication.run(SkiSlopeApplication.class, args);
 	}
 
-	@Autowired
-	private TicketRepository ticketRepository;
 	@Override
 	public void run(String... args) throws Exception {
-//		Ticket ticket = new Ticket();
+
 	}
 }

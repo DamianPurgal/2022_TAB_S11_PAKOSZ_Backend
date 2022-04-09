@@ -1,33 +1,53 @@
 package com.example.skiSlope.service;
 
-import com.example.skiSlope.dao.TicketDao;
+import com.example.skiSlope.datasource.exception.TicketNotFoundException;
 import com.example.skiSlope.model.Ticket;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.example.skiSlope.repository.CardRepository;
+import com.example.skiSlope.repository.TicketRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
+@AllArgsConstructor
 @Service
-public class TicketService {
+public class TicketService implements TicketServiceDefinition {
 
-    private final TicketDao ticketDao;
+    private TicketRepository ticketRepository;
 
-    @Autowired
-    public TicketService(@Qualifier("fakeDao") TicketDao ticketDao) {this.ticketDao = ticketDao;}
+    @Override
+    public Ticket addTicket(Ticket ticket) {
+        return ticketRepository.save(ticket);
+    }
 
-    public int addTicket(Ticket ticket){return ticketDao.insertTicket(ticket);}
+    @Override
+    public Optional<Ticket> getTicketById(Long id) {
+        return ticketRepository.findById(id);
+    }
 
-    public List<Ticket> getAllTickets(){return ticketDao.selectAllTickets();}
+    @Override
+    public List<Ticket> getAllTicketsByUserId(Long userId) {
+        return ticketRepository.findAllById(Collections.singleton(userId));
+    }
 
-    public Optional<Ticket> getTicketById(UUID code){return  ticketDao.selectTicketByCode(code);}
+    @Override
+    public List<Ticket> getAllTickets() {
+        return ticketRepository.findAll();
+    }
 
-    public int deleteTicket(UUID code){return ticketDao.deleteTicketByCode(code);}
+    @Override
+    public void updateTicketsData(Ticket newTicket, Long id) {
+        Ticket ticket = ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
+        ticket = newTicket;
+        ticket.setId(id);
+        ticketRepository.save(ticket);
+    }
 
-    public int updateTicket(UUID code, Ticket newTicket){return ticketDao.updateTicketByCode(code, newTicket);}
-
-
+    @Override
+    public void deleteTicket(Long id) {
+        ticketRepository.deleteById(id);
+    }
 
 }

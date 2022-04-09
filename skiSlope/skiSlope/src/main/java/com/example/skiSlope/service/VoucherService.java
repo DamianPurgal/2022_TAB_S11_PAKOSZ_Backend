@@ -1,8 +1,12 @@
 package com.example.skiSlope.service;
 
 import com.example.skiSlope.dao.VoucherDao;
+import com.example.skiSlope.datasource.exception.TicketNotFoundException;
+import com.example.skiSlope.datasource.exception.VoucherNotFoundException;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.Voucher;
+import com.example.skiSlope.repository.VoucherRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,22 +14,42 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@AllArgsConstructor
 @Service
-public class VoucherService {
-    private final VoucherDao voucherDao;
+public class VoucherService implements  VoucherServiceDefinition {
 
-    @Autowired
-    public VoucherService(VoucherDao voucherDao) {
-        this.voucherDao = voucherDao;
+    private VoucherRepository voucherRepository;
+
+    @Override
+    public Voucher addVoucher(Voucher voucher) {
+        return voucherRepository.save(voucher);
     }
 
-    public int addVoucher(Voucher voucher){return voucherDao.insertVoucher(voucher);}
+    @Override
+    public Optional<Voucher> getVoucherById(Long id) {
+        return Optional.of(voucherRepository.getById(id));
+    }
 
-    public List<Voucher> getAllVouchers(){return voucherDao.selectAllVouchers();}
+    @Override
+    public List<Voucher> getAllVouchersByUserId(Long userId) {
+        return null;
+    }
 
-    public Optional<Voucher> getVoucherById(UUID code){return  voucherDao.selectVoucherByCode(code);}
+    @Override
+    public List<Voucher> getAllVouchers() {
+        return voucherRepository.findAll();
+    }
 
-    public int deleteVoucher(UUID code){return voucherDao.deleteVoucherByCode(code);}
+    @Override
+    public void updateVouchersData(Voucher newVoucher, Long id) {
+        Voucher voucher = voucherRepository.findById(id).orElseThrow(VoucherNotFoundException::new);
+        voucher = newVoucher;
+        voucher.setId(id);
+        voucherRepository.save(voucher);
+    }
 
-    public int updateVoucher(UUID code, Voucher newVoucher){return voucherDao.updateVoucherByCode(code, newVoucher);}
+    @Override
+    public void deleteVoucher(Long id) {
+        voucherRepository.deleteById(id);
+    }
 }
