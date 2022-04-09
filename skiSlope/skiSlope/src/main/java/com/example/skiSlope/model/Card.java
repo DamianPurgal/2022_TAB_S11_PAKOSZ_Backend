@@ -23,7 +23,8 @@ enum CardType{
 
 @Getter
 @Setter
-@NoArgsConstructor
+//@NoArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name="cards")
 public abstract class Card {
 
@@ -33,7 +34,7 @@ public abstract class Card {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name="code", nullable = false)
     protected UUID code;
 
@@ -49,13 +50,20 @@ public abstract class Card {
     @Column(name="type")
     protected CardType cardType;
 
-    Card(Long id, UUID code, DiscountType discountType, Long customerId, double cost, CardType cardType){
+    /*Card(Long id, UUID code, DiscountType discountType, Long customerId, double cost, CardType cardType){
         this.id = id;
         this.code = code;
         this.discountType = discountType;
         this.customerId = customerId;
         this.cost = cost;
         this.cardType = cardType;
-    }
+    }*/
+//    protected void modify(Card card){
+//        this.code = card.code;
+//        this.discountType = card.discountType;
+//        this.customerId = card.customerId;
+//        this.cost = card.cost;
+//        this.cardType = card.cardType;
+//    }
 
 }
