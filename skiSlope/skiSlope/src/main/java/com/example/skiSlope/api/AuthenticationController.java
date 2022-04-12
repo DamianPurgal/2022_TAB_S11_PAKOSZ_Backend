@@ -14,7 +14,9 @@ import com.example.skiSlope.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,5 +61,18 @@ public class AuthenticationController {
         userService.addUser(user);
     }
 
+    @GetMapping("/authorization/google")
+    public RedirectView authorizeByGoogleAccount(){
+
+        RedirectView redirectView = new RedirectView();
+        redirectView.setUrl("http://localhost:8080/api/auth/test/everyone");
+        return redirectView;
+    }
+
+    @GetMapping("/login/google")
+    public void loginUserGoogle(HttpServletRequest request, HttpServletResponse response){
+        int test = 2;
+
+    }
 }
 

@@ -46,6 +46,7 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(REFRESH_URL).permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.oauth2Login();
     }
 
     @Override
