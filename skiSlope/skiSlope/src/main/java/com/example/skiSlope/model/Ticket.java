@@ -15,12 +15,6 @@ import java.util.UUID;
 @Table(name = "tickets")
 public class Ticket extends Card {
 
-    @Id
-    @SequenceGenerator(name = "ticket_sequence", sequenceName = "ticket_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_sequence")
-    @Column(name = "id", nullable = false)
-    private Long id;
-
     @Column(name = "lift_id")
     private  Long liftId;
 
@@ -30,18 +24,37 @@ public class Ticket extends Card {
 
     public Ticket(@JsonProperty("id") Long id,
                   @JsonProperty("code") UUID code,
-                  @JsonProperty("discount type") DiscountType discountType,
-                  @JsonProperty("cost") double cost,
-                  @JsonProperty("lift id") Long liftId,
-                  @JsonProperty("number of entries") int numberOfEntries,
-                  @JsonProperty("customer's id") Long customerId) {
+                  @JsonProperty("customerId") Long customerId,
+                  @JsonProperty("paymentId") Long paymentId,
+                  @JsonProperty("priceId") Long priceId,
+                  @JsonProperty("discountType") DiscountType discountType,
+                  @JsonProperty("ownerName") String ownerName,
+                  @JsonProperty("liftId") Long liftId,
+                  @JsonProperty("numberOfEntries") int numberOfEntries)
+
+                   {
         this.id = id;
         this.code = code;
+        this.userId = customerId;
+        this.paymentId = paymentId;
+        this.priceId = priceId;
         this.discountType = discountType;
-        this.cost = cost;
+        this.cardType = CardType.Ticket;
+        this.active = true;
+        this.ownerName = ownerName;
         this.liftId = liftId;
         this.numberOfEntries = numberOfEntries;
-        this.customerId = customerId;
-        this.cardType = CardType.Ticket;
+
     }
+
+    /***
+     * Decreases the number of entries after each ticket scan
+     */
+    void decreaseEntries(){
+        if(numberOfEntries>0)
+            numberOfEntries--;
+        if(numberOfEntries<=0)
+            setActive(false);
+    }
+
 }

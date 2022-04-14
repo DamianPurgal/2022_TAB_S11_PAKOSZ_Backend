@@ -2,7 +2,6 @@ package com.example.skiSlope.service;
 
 import com.example.skiSlope.datasource.exception.TicketNotFoundException;
 import com.example.skiSlope.model.Ticket;
-import com.example.skiSlope.repository.CardRepository;
 import com.example.skiSlope.repository.TicketRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

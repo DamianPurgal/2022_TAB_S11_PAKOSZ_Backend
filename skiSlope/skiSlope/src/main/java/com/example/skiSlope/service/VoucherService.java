@@ -1,22 +1,17 @@
 package com.example.skiSlope.service;
 
-import com.example.skiSlope.dao.VoucherDao;
-import com.example.skiSlope.datasource.exception.TicketNotFoundException;
 import com.example.skiSlope.datasource.exception.VoucherNotFoundException;
-import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.repository.VoucherRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @AllArgsConstructor
 @Service
-public class VoucherService implements  VoucherServiceDefinition {
+public class VoucherService implements VoucherServiceDefinition {
 
     private VoucherRepository voucherRepository;
 

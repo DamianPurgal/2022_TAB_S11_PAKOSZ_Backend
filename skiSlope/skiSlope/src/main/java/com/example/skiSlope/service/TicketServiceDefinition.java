@@ -1,7 +1,6 @@
 package com.example.skiSlope.service;
 
 import com.example.skiSlope.model.Ticket;
-import com.example.skiSlope.model.Ticket;
 
 import java.util.List;
 import java.util.Optional;
