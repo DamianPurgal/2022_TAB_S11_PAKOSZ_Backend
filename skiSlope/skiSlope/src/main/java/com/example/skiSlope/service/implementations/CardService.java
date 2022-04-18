@@ -1,7 +1,8 @@
-package com.example.skiSlope.service;
+package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.model.Card;
 import com.example.skiSlope.repository.CardRepository;
+import com.example.skiSlope.service.definitions.CardServiceDefinition;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

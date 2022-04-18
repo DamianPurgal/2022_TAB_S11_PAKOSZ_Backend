@@ -1,8 +1,9 @@
-package com.example.skiSlope.service;
+package com.example.skiSlope.service.implementations;
 
-import com.example.skiSlope.datasource.exception.VoucherNotFoundException;
+import com.example.skiSlope.exception.VoucherNotFoundException;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.repository.VoucherRepository;
+import com.example.skiSlope.service.definitions.VoucherServiceDefinition;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

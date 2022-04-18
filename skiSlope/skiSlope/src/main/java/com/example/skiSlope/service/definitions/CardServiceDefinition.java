@@ -1,4 +1,4 @@
-package com.example.skiSlope.service;
+package com.example.skiSlope.service.definitions;
 
 import com.example.skiSlope.model.Card;
 

@@ -1,8 +1,9 @@
-package com.example.skiSlope.service;
+package com.example.skiSlope.service.implementations;
 
-import com.example.skiSlope.datasource.exception.TicketNotFoundException;
+import com.example.skiSlope.exception.TicketNotFoundException;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.repository.TicketRepository;
+import com.example.skiSlope.service.definitions.TicketServiceDefinition;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

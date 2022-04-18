@@ -1,7 +1,7 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Voucher;
-import com.example.skiSlope.service.VoucherService;
+import com.example.skiSlope.service.implementations.VoucherService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;

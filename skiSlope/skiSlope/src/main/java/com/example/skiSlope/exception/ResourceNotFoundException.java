@@ -1,4 +1,4 @@
-package com.example.skiSlope.datasource.exception;
+package com.example.skiSlope.exception;
 
 import lombok.Getter;
 

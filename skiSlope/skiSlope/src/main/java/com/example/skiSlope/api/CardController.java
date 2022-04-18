@@ -2,7 +2,7 @@ package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Card;
 import com.example.skiSlope.model.User;
-import com.example.skiSlope.service.CardService;
+import com.example.skiSlope.service.implementations.CardService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;

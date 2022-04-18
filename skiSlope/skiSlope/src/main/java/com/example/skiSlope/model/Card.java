@@ -36,12 +36,14 @@ public abstract class Card {
     protected UUID code;
 
     @Column(name="discountType")
+    @Enumerated(EnumType.STRING)
     protected DiscountType discountType;
 
     @Column(name = "customerId", nullable = false)
     protected Long userId;
 
     @Column(name="type")
+    @Enumerated(EnumType.STRING)
     protected CardType cardType;
 
     @Column(name="ownerName")

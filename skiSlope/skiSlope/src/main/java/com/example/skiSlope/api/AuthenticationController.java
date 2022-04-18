@@ -10,7 +10,7 @@ import com.example.skiSlope.model.User;
 import com.example.skiSlope.security.UserRole;
 import com.example.skiSlope.security.utility.JwtGenerator;
 import com.example.skiSlope.security.utility.JwtResolver;
-import com.example.skiSlope.service.UserService;
+import com.example.skiSlope.service.definitions.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -55,7 +55,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void registerUser(@Valid @NonNull @RequestBody UserRegistrationRequest userRegistrationRequest){
         User user = userRegistrationRequest.userRegistrationRequestToUser();
-        user.setUserRole(UserRole.CUSTOMER);
+        user.setUserRole(UserRole.MANAGER);
         userService.addUser(user);
     }
 
