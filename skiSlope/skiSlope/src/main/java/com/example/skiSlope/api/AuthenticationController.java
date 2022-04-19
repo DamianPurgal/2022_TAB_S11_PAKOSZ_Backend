@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import java.security.Principal;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @AllArgsConstructor
@@ -61,18 +63,5 @@ public class AuthenticationController {
         userService.addUser(user);
     }
 
-    @GetMapping("/authorization/google")
-    public RedirectView authorizeByGoogleAccount(){
-
-        RedirectView redirectView = new RedirectView();
-        redirectView.setUrl("http://localhost:8080/api/auth/test/everyone");
-        return redirectView;
-    }
-
-    @GetMapping("/login/google")
-    public void loginUserGoogle(HttpServletRequest request, HttpServletResponse response){
-        int test = 2;
-
-    }
 }
 
