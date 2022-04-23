@@ -22,6 +22,12 @@ public class PriceService implements PriceServiceDefinition {
     }
 
     @Override
+    public List<Price> getAllPrices() {
+        return priceRepository.findAll();
+    }
+
+
+    @Override
     public List<Price> getAllPricesByStartDate(Date startDate) {
         return priceRepository.findPricesByStartDate(startDate);
     }

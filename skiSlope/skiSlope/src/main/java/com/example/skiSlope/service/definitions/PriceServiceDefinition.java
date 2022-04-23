@@ -10,6 +10,8 @@ public interface PriceServiceDefinition {
 
     Optional<Price> getPriceById(Long id);
 
+    List<Price> getAllPrices();
+
     List<Price> getAllPricesByStartDate(Date startDate);
 
     List<Price> getAllPricesByExpireDate(Date expireDate);

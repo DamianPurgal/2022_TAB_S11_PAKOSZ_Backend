@@ -1,6 +1,8 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Ticket;
+import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.request.TicketRequest;
 import com.example.skiSlope.service.implementations.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -17,7 +19,8 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
-    public void addTicket(@Valid @NonNull @RequestBody Ticket ticket) {
+    public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) {
+        Ticket ticket = ticketRequest.ticketRequestToUser();
         ticketService.addTicket(ticket);
     }
 

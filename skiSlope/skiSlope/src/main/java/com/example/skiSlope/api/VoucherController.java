@@ -1,6 +1,7 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Voucher;
+import com.example.skiSlope.model.request.VoucherRequest;
 import com.example.skiSlope.service.implementations.VoucherService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -18,13 +19,15 @@ public class VoucherController {
     private VoucherService voucherService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public void addVoucher(@Valid @NonNull @RequestBody Voucher voucher) {
+//    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    public void addVoucher(@Valid @NonNull @RequestBody VoucherRequest voucherRequest) {
+        Voucher voucher = voucherRequest.voucherRequestToUser();
         voucherService.addVoucher(voucher);
     }
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+
+//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+@GetMapping
     public List<Voucher> getAllVouchers() {
         return voucherService.getAllVouchers();
     }
@@ -36,7 +39,7 @@ public class VoucherController {
     }
 
     @DeleteMapping(path = "{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void deleteVoucherByCode(@PathVariable("id") Long id) {
         voucherService.deleteVoucher(id);
     }
