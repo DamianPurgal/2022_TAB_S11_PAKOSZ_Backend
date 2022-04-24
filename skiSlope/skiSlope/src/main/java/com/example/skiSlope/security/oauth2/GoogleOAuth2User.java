@@ -8,23 +8,24 @@ import java.util.Collection;
 import java.util.Map;
 
 @AllArgsConstructor
-public class CustomOAuth2User implements OAuth2User {
+public class GoogleOAuth2User implements OAuth2User {
 
-    private OAuth2User oAuth2User;
-
+    private String name;
+    private Collection<? extends GrantedAuthority> authorities;
+    private Map<String, Object> attributes;
 
     @Override
     public Map<String, Object> getAttributes() {
-        return oAuth2User.getAttributes();
-    }
-
-    @Override
-    public String getName() {
-        return oAuth2User.getAttribute("name");
+        return attributes;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return oAuth2User.getAuthorities();
+        return authorities;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

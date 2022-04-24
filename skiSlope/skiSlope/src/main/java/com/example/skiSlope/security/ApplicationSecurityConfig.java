@@ -2,8 +2,10 @@ package com.example.skiSlope.security;
 
 import com.example.skiSlope.security.oauth2.CustomOAuth2UserService;
 import com.example.skiSlope.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.example.skiSlope.security.oauth2.OAuth2LoginSuccessHandler;
+import com.example.skiSlope.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.example.skiSlope.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -24,6 +25,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
+
+    public static final String GOOGLE_ACCOUNT_USERNAME_PREFIX = "GOOGLE@";
 
     public static final String JWT_SECRET_KEY = "superSecretServerOnlyKeyThatProbablyShouldntBeHere#335";
 
@@ -38,37 +41,57 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CustomAuthorizationFilter customAuthorizationFilter;
 
-    private final CustomOAuth2UserService customOAuth2UserService;
-    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
+    @Autowired
+    private CustomOAuth2UserService customOAuth2UserService;
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    @Autowired
+    private OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl(LOGIN_URL);
-        http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
         http.authorizeRequests().antMatchers(LOGIN_URL).permitAll();
         http.authorizeRequests().antMatchers(REFRESH_URL).permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.oauth2Login()
+
+        http
+                .cors()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(STATELESS)
+                .and()
+                .csrf()
+                .disable()
+                .formLogin()
+                .disable()
+                .httpBasic()
+                .disable()
+                .authorizeRequests()
+                .antMatchers("/auth/**", "/oauth2/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2Login()
                 .authorizationEndpoint()
                     .baseUri("/oauth2/authorize")
-                    .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
-                    .and()
+                    .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .and()
                 .redirectionEndpoint()
-                    .baseUri("/oauth2/callback/*") //ok
-                    .and()
+                .baseUri("/oauth2/callback/*")
+                .and()
                 .userInfoEndpoint()
-                    .userService(customOAuth2UserService)
-                    .and()
-                .successHandler(oAuth2LoginSuccessHandler);
-
+                .userService(customOAuth2UserService)
+                .and()
+                .successHandler(oAuth2AuthenticationSuccessHandler)
+                .failureHandler(oAuth2AuthenticationFailureHandler);
 
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -81,5 +104,10 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 }
