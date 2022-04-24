@@ -41,7 +41,7 @@ public class Voucher extends Card {
         this.discountType = discountType;
         if(discountType == null)
             this.discountType = DiscountType.None;
-        this.cardType = CardType.Ticket;
+        this.cardType = CardType.Voucher;
         this.active = true;
         this.ownerName = ownerName;
 

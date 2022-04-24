@@ -4,6 +4,8 @@ import com.example.skiSlope.model.CardType;
 import com.example.skiSlope.model.DiscountType;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.Voucher;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 
@@ -13,6 +15,8 @@ import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Date;
 
+@AllArgsConstructor
+@Getter
 public class VoucherRequest {
     //@NotBlank
     @Enumerated(EnumType.STRING)
