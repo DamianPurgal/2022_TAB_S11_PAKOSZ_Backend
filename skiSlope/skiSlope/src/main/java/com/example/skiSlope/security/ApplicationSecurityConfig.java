@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -21,6 +22,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
+@Order(1)
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -70,17 +72,17 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .disable()
                 .httpBasic()
-                .disable()
+                .disable();
+
+        http
                 .authorizeRequests()
                 .antMatchers("/auth/**", "/oauth2/**")
                 .permitAll()
-                .anyRequest()
-                .authenticated()
                 .and()
                 .oauth2Login()
                 .authorizationEndpoint()
-                    .baseUri("/oauth2/authorize")
-                    .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+                .baseUri("/oauth2/authorize")
+                .authorizationRequestRepository(cookieAuthorizationRequestRepository())
                 .and()
                 .redirectionEndpoint()
                 .baseUri("/oauth2/callback/*")
@@ -90,7 +92,6 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
                 .failureHandler(oAuth2AuthenticationFailureHandler);
-
     }
 
     @Override
@@ -110,4 +111,5 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
     public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
         return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
+
 }
