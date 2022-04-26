@@ -1,52 +1,60 @@
 package com.example.skiSlope.api;
 
+import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherRequest;
 import com.example.skiSlope.service.implementations.VoucherService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/voucher")
+@RequestMapping("api/v1/card")
 @RestController
 public class VoucherController {
 
     private VoucherService voucherService;
 
-    @PostMapping
-//    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @PostMapping("/voucher")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void addVoucher(@Valid @NonNull @RequestBody VoucherRequest voucherRequest) {
         Voucher voucher = voucherRequest.voucherRequestToUser();
         voucherService.addVoucher(voucher);
     }
 
-
-//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-@GetMapping
+    @GetMapping("/voucher")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<Voucher> getAllVouchers() {
         return voucherService.getAllVouchers();
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping("/voucher/{id}")
     public Voucher getVoucherById(@PathVariable("id") Long id) {
         return voucherService.getVoucherById(id)
                 .orElse(null);
     }
+    @GetMapping("/myVouchers")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    public List<Voucher> getAllVouchersByUserId() {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return voucherService.getAllVouchersByUserId(loggedUser.getId());
+    }
 
-    @DeleteMapping(path = "{id}")
-//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    @DeleteMapping("/voucher/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void deleteVoucherByCode(@PathVariable("id") Long id) {
         voucherService.deleteVoucher(id);
     }
 
-    @PutMapping(path = "{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void updateVoucherByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody Voucher voucherToUpdate) {
-        voucherService.updateVouchersData(voucherToUpdate, id);
+    @PutMapping("/voucher/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    public void updateVoucherByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody VoucherRequest voucherRequestToUpdate) {
+        voucherService.updateVouchersData(voucherRequestToUpdate, id);
     }
+
 }

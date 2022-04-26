@@ -1,6 +1,7 @@
 package com.example.skiSlope.service.definitions;
 
 import com.example.skiSlope.model.Ticket;
+import com.example.skiSlope.model.request.TicketRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +16,7 @@ public interface TicketServiceDefinition {
 
     List<Ticket> getAllTickets();
 
-    void updateTicketsData(Ticket Ticket, Long id);
+    void updateTicketsData(TicketRequest ticketRequest, Long id);
 
     void deleteTicket(Long id);
 }

@@ -17,7 +17,7 @@ public class CardService implements CardServiceDefinition {
 
     @Override
     public Optional<Card> getCardById(Long id) {
-        return Optional.of(cardRepository.getById(id));
+        return cardRepository.findById(id);
     }
 
     @Override

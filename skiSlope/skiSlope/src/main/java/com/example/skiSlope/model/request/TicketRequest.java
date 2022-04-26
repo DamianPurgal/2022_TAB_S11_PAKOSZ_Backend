@@ -4,61 +4,44 @@ import com.example.skiSlope.model.CardType;
 import com.example.skiSlope.model.DiscountType;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
-import com.example.skiSlope.security.UserRole;
-import com.google.errorprone.annotations.FormatString;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @AllArgsConstructor
 @Getter
 public class TicketRequest {
 
-    //@NotBlank
     @Enumerated(EnumType.STRING)
-    //@Size(message = "Discount type must be one of the following : Student, Child, Senior, Disabled, None")
     private DiscountType discountType;
-
-    //@NotBlank
-    @NumberFormat
-    //@Size(message = "User must exist! Must be a number")
-    private Long userId;
 
 
     @Size(message = "First name cannot be empty")
     private String ownerName;
 
-    //@NotBlank
     @NumberFormat
-    //@Size(message = "Payment id must be in number format")
     private Long paymentId;
 
-    //@NotBlank
     @NumberFormat
-    //@Size(message = "Price id must be in number format")
     private Long priceId;
 
-    //@NotBlank
     @NumberFormat
-    //@Size(message = "Lift id must be in number format")
     private Long liftId;
 
-    //@NotBlank
     @NumberFormat
-    //@Size(message = "Lift id must be in number format")
     private int numberOfEntries;
 
     public Ticket ticketRequestToUser(){
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return Ticket.builder()
                 .id(null)
                 .discountType(discountType)
-                .userId(userId)
+                .userId(loggedUser.getId())
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
                 .paymentId(paymentId)
@@ -68,5 +51,35 @@ public class TicketRequest {
                 .numberOfEntries(numberOfEntries)
                 .build();
 
+    }
+    public Ticket updateTicket(Ticket updateTicket){
+        System.out.println(ownerName);
+        return Ticket.builder()
+                .id(updateTicket.getId())
+                .discountType(updateTicket.getDiscountType())
+                .userId(updateTicket.getUserId())
+                .cardType(CardType.Ticket)
+                .ownerName(ownerName)
+                .paymentId(updateTicket.getPaymentId())
+                .priceId(updateTicket.getPriceId())
+                .active(true)
+                .liftId(updateTicket.getLiftId())
+                .numberOfEntries(updateTicket.getNumberOfEntries())
+                .build();
+
+    }
+    public Ticket setTicketToInactive(Ticket updateTicket){
+        return Ticket.builder()
+                .id(null)
+                .discountType(updateTicket.getDiscountType())
+                .userId(updateTicket.getUserId())
+                .cardType(CardType.Ticket)
+                .ownerName(updateTicket.getOwnerName())
+                .paymentId(updateTicket.getPaymentId())
+                .priceId(updateTicket.getPriceId())
+                .active(false)
+                .liftId(updateTicket.getLiftId())
+                .numberOfEntries(updateTicket.getNumberOfEntries())
+                .build();
     }
 }

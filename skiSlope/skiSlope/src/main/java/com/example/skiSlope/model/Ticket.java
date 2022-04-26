@@ -2,6 +2,7 @@ package com.example.skiSlope.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -14,10 +15,7 @@ import java.util.UUID;
 @Table(name = "tickets")
 public class Ticket extends Card {
 
-    @Column(name = "lift_id")
     private  Long liftId;
-
-    @Column(name = "number_of_entries", nullable = false)
     private int numberOfEntries;
 
     @Builder
@@ -43,6 +41,11 @@ public class Ticket extends Card {
         this.cardType = CardType.Ticket;
         this.active = true;
         this.ownerName = ownerName;
+        System.out.println(ownerName);
+        if (ownerName == null){
+            User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            this.ownerName = loggedUser.getFirstName()+" "+loggedUser.getLastName();
+        }
 
         this.liftId = liftId;
         this.numberOfEntries = numberOfEntries;

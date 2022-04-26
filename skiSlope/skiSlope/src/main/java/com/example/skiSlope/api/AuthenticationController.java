@@ -48,6 +48,8 @@ public class AuthenticationController {
                 throw new JwtValidationException();
             }
         }else{
+            if(authorizationHeader != null)
+                System.out.println("problem here");
             throw new JwtValidationException();
         }
     }

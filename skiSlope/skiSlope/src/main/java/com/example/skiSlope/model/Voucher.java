@@ -2,6 +2,7 @@ package com.example.skiSlope.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,10 +16,7 @@ import java.util.UUID;
 @Table(name = "vouchers")
 public class Voucher extends Card {
 
-    @Column(name = "begin_date")
     private Date startDate;
-
-    @Column(name = "end_date")
     private Date expireDate;
 
     @Builder
@@ -44,7 +42,10 @@ public class Voucher extends Card {
         this.cardType = CardType.Voucher;
         this.active = true;
         this.ownerName = ownerName;
-
+        if (ownerName == null){
+            User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            this.ownerName = loggedUser.getFirstName()+" "+loggedUser.getLastName();
+        }
         this.startDate = startDate;
         this.expireDate = expireDate;
     }

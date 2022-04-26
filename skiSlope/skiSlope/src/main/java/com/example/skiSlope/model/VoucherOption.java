@@ -10,18 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-enum TimePeriod{
-    oneHour,
-    fourHours,
-    day,
-    threeDays,
-    week,
-    twoWeeks,
-    month,
-    threeMonths,
-    year
-}
-
 @Setter
 @Getter
 @NoArgsConstructor

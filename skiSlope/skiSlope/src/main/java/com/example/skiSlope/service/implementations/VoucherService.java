@@ -2,6 +2,7 @@ package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.exception.VoucherNotFoundException;
 import com.example.skiSlope.model.Voucher;
+import com.example.skiSlope.model.request.VoucherRequest;
 import com.example.skiSlope.repository.VoucherRepository;
 import com.example.skiSlope.service.definitions.VoucherServiceDefinition;
 import lombok.AllArgsConstructor;
@@ -22,13 +23,11 @@ public class VoucherService implements VoucherServiceDefinition {
     }
 
     @Override
-    public Optional<Voucher> getVoucherById(Long id) {
-        return Optional.of(voucherRepository.getById(id));
-    }
+    public Optional<Voucher> getVoucherById(Long id) { return voucherRepository.findById(id); }
 
     @Override
     public List<Voucher> getAllVouchersByUserId(Long userId) {
-        return null;
+        return voucherRepository.findAllByUserId(userId);
     }
 
     @Override
@@ -37,11 +36,12 @@ public class VoucherService implements VoucherServiceDefinition {
     }
 
     @Override
-    public void updateVouchersData(Voucher newVoucher, Long id) {
-        Voucher voucher = voucherRepository.findById(id).orElseThrow(VoucherNotFoundException::new);
-        voucher = newVoucher;
-        voucher.setId(id);
+    public void updateVouchersData(VoucherRequest voucherRequest, Long id) {
+        Voucher voucher = voucherRepository.findById(id)
+                .orElseThrow(VoucherNotFoundException::new);
+        voucher = voucherRequest.updateVoucher(voucher);
         voucherRepository.save(voucher);
+        System.out.println("Voucher saved");
     }
 
     @Override
