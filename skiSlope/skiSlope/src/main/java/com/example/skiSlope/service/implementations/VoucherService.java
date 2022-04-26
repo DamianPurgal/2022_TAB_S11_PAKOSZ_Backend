@@ -41,7 +41,6 @@ public class VoucherService implements VoucherServiceDefinition {
                 .orElseThrow(VoucherNotFoundException::new);
         voucher = voucherRequest.updateVoucher(voucher);
         voucherRepository.save(voucher);
-        System.out.println("Voucher saved");
     }
 
     @Override
