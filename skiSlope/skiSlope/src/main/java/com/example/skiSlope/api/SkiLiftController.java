@@ -9,7 +9,6 @@ import com.example.skiSlope.service.implementations.SkiLiftService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

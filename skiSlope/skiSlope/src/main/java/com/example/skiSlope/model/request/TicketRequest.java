@@ -6,6 +6,7 @@ import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -20,19 +21,22 @@ public class TicketRequest {
     @Enumerated(EnumType.STRING)
     private DiscountType discountType;
 
-
     @Size(message = "First name cannot be empty")
     private String ownerName;
 
+    @NonNull
     @NumberFormat
     private Long paymentId;
 
+    @NonNull
     @NumberFormat
     private Long priceId;
 
+    @NonNull
     @NumberFormat
     private Long liftId;
 
+    @NonNull
     @NumberFormat
     private int numberOfEntries;
 
@@ -50,36 +54,6 @@ public class TicketRequest {
                 .liftId(liftId)
                 .numberOfEntries(numberOfEntries)
                 .build();
+    }
 
-    }
-    public Ticket updateTicket(Ticket updateTicket){
-        System.out.println(ownerName);
-        return Ticket.builder()
-                .id(updateTicket.getId())
-                .discountType(updateTicket.getDiscountType())
-                .userId(updateTicket.getUserId())
-                .cardType(CardType.Ticket)
-                .ownerName(ownerName)
-                .paymentId(updateTicket.getPaymentId())
-                .priceId(updateTicket.getPriceId())
-                .active(true)
-                .liftId(updateTicket.getLiftId())
-                .numberOfEntries(updateTicket.getNumberOfEntries())
-                .build();
-
-    }
-    public Ticket setTicketToInactive(Ticket updateTicket){
-        return Ticket.builder()
-                .id(null)
-                .discountType(updateTicket.getDiscountType())
-                .userId(updateTicket.getUserId())
-                .cardType(CardType.Ticket)
-                .ownerName(updateTicket.getOwnerName())
-                .paymentId(updateTicket.getPaymentId())
-                .priceId(updateTicket.getPriceId())
-                .active(false)
-                .liftId(updateTicket.getLiftId())
-                .numberOfEntries(updateTicket.getNumberOfEntries())
-                .build();
-    }
 }

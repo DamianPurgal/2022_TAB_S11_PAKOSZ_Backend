@@ -3,6 +3,7 @@ package com.example.skiSlope.service.implementations;
 import com.example.skiSlope.exception.VoucherNotFoundException;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherRequest;
+import com.example.skiSlope.model.request.VoucherUpdateRequest;
 import com.example.skiSlope.repository.VoucherRepository;
 import com.example.skiSlope.service.definitions.VoucherServiceDefinition;
 import lombok.AllArgsConstructor;
@@ -36,10 +37,10 @@ public class VoucherService implements VoucherServiceDefinition {
     }
 
     @Override
-    public void updateVouchersData(VoucherRequest voucherRequest, Long id) {
+    public void updateVouchersData(VoucherUpdateRequest voucherUpdateRequest, Long id) {
         Voucher voucher = voucherRepository.findById(id)
                 .orElseThrow(VoucherNotFoundException::new);
-        voucher = voucherRequest.updateVoucher(voucher);
+        voucher = voucherUpdateRequest.updateVoucher(voucher);
         voucherRepository.save(voucher);
     }
 

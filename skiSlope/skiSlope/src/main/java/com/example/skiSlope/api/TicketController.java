@@ -1,9 +1,9 @@
 package com.example.skiSlope.api;
 
-import com.example.skiSlope.model.Card;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.TicketRequest;
+import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.service.implementations.TicketService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -35,7 +35,7 @@ public class TicketController {
     }
 
     @GetMapping("/ticket/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public Ticket getTicketById(@PathVariable("id") Long id) {
         return ticketService.getTicketById(id)
                 .orElse(null);
@@ -48,15 +48,15 @@ public class TicketController {
     }
 
     @DeleteMapping("/ticket/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void deleteTicketByCode(@PathVariable("id") Long id) {
         ticketService.deleteTicket(id);
     }
 
     @PutMapping("/ticket/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketRequest ticketRequest) {
-        ticketService.updateTicketsData(ticketRequest, id);
+    public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketUpdateRequest ticketUpdateRequest) {
+        ticketService.updateTicketsData(ticketUpdateRequest, id);
     }
 
 }

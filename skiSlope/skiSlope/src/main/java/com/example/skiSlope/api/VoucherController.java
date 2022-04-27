@@ -3,6 +3,7 @@ package com.example.skiSlope.api;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherRequest;
+import com.example.skiSlope.model.request.VoucherUpdateRequest;
 import com.example.skiSlope.service.implementations.VoucherService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -34,6 +35,7 @@ public class VoucherController {
     }
 
     @GetMapping("/voucher/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public Voucher getVoucherById(@PathVariable("id") Long id) {
         return voucherService.getVoucherById(id)
                 .orElse(null);
@@ -53,8 +55,8 @@ public class VoucherController {
 
     @PutMapping("/voucher/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
-    public void updateVoucherByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody VoucherRequest voucherRequestToUpdate) {
-        voucherService.updateVouchersData(voucherRequestToUpdate, id);
+    public void updateVoucherByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody VoucherUpdateRequest voucherUpdateRequest) {
+        voucherService.updateVouchersData(voucherUpdateRequest, id);
     }
 
 }

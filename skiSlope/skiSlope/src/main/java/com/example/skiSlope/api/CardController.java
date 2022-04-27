@@ -27,13 +27,13 @@ public class CardController {
 
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<Card> getAllCards() {
         return cardService.getAllCards();
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public Card getCardById(@PathVariable("id") Long id) {
         return cardService.getCardById(id)
                 .orElse(null);

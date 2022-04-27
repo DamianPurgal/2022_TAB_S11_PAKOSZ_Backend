@@ -5,6 +5,7 @@ import com.example.skiSlope.exception.VoucherNotFoundException;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.TicketRequest;
+import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.repository.TicketRepository;
 import com.example.skiSlope.service.definitions.TicketServiceDefinition;
 import lombok.AllArgsConstructor;
@@ -42,10 +43,10 @@ public class TicketService implements TicketServiceDefinition {
     }
 
     @Override
-    public void updateTicketsData(TicketRequest ticketRequest, Long id) {
+    public void updateTicketsData(TicketUpdateRequest ticketUpdateRequest, Long id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(TicketNotFoundException::new);
-        ticket = ticketRequest.updateTicket(ticket);
+        ticket = ticketUpdateRequest.updateTicket(ticket);
         System.out.println(ticket.getOwnerName());
         ticketRepository.save(ticket);
 //        System.out.println("Voucher saved");

@@ -2,6 +2,7 @@ package com.example.skiSlope.service.definitions;
 
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherRequest;
+import com.example.skiSlope.model.request.VoucherUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +17,7 @@ public interface VoucherServiceDefinition {
 
     List<Voucher> getAllVouchers();
 
-    void updateVouchersData(VoucherRequest voucherRequest, Long id);
+    void updateVouchersData(VoucherUpdateRequest voucherUpdateRequest, Long id);
 
     void deleteVoucher(Long id);
 }
