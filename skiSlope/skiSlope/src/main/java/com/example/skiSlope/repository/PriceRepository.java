@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
+
 @Repository("prices")
 public interface PriceRepository  extends CrudRepository<Price, Long>,
         PagingAndSortingRepository<Price, Long>,

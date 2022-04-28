@@ -9,6 +9,7 @@ import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.repository.TicketRepository;
 import com.example.skiSlope.service.definitions.TicketServiceDefinition;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class TicketService implements TicketServiceDefinition {

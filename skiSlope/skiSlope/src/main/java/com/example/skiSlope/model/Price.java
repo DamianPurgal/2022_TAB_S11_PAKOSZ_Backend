@@ -10,11 +10,11 @@ import java.util.Date;
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity(name="prices")
+@Table(name="prices")
 public abstract class Price {
 
     @Id
-    @SequenceGenerator(name = "price_sequence", sequenceName = "price_sequence", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "price_sequence")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     protected Long id;
 
@@ -31,7 +31,7 @@ public abstract class Price {
     @Enumerated(EnumType.STRING)
     protected DiscountType discountType;
 
-    @Column(name="full_price")
+    @Column(name="discount_parameter")
     protected double fullPrice;
 
 

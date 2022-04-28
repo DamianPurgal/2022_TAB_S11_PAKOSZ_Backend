@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository("vouchers")
 public interface VoucherRepository extends CrudRepository<Voucher, Long>,
         JpaRepository<Voucher, Long>,

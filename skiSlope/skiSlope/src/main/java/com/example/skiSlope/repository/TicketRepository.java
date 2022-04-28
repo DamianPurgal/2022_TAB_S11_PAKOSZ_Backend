@@ -11,7 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-//attempt to connect to MySQL
+
+
 @Repository("tickets")
 public interface TicketRepository extends CrudRepository<Ticket, Long>,
         PagingAndSortingRepository<Ticket, Long>,

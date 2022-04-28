@@ -5,6 +5,7 @@ import com.example.skiSlope.model.VoucherOption;
 import com.example.skiSlope.repository.VoucherOptionRepository;
 import com.example.skiSlope.service.definitions.VoucherOptionServiceDefinition;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @AllArgsConstructor
 @Service
 public class VoucherOptionService implements VoucherOptionServiceDefinition {

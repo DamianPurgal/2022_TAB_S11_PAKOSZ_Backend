@@ -4,6 +4,7 @@ import com.example.skiSlope.model.SkiLift;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.SkiLiftRequest;
+import com.example.skiSlope.model.request.SkiLiftUpdateRequest;
 import com.example.skiSlope.model.request.VoucherRequest;
 import com.example.skiSlope.service.implementations.SkiLiftService;
 import lombok.AllArgsConstructor;
@@ -47,14 +48,14 @@ public class SkiLiftController {
         skiLiftService.deleteSkiLift(id);
     }
 
-    @PutMapping("/edit/{id}")
+    @PutMapping("/{id}/edit")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void updateSkiLiftByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody SkiLiftRequest skiLiftRequest) {
-        skiLiftService.updateSkiLiftsData(skiLiftRequest, id);
+    public void updateSkiLiftByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody SkiLiftUpdateRequest skiLiftUpdateRequest) {
+        skiLiftService.updateSkiLiftsData(skiLiftUpdateRequest, id);
     }
-    @PutMapping("/setActiveness/{id}")
+    @PutMapping("/{id}/turnOnOff")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void setSkiLiftByCodeActive(@PathVariable("id") Long id, @Valid @NonNull @RequestBody SkiLiftRequest skiLiftRequest) {
-        skiLiftService.setSkiLiftsActive(skiLiftRequest, id);
+    public void setSkiLiftByCodeActive(@PathVariable("id") Long id, @Valid @NonNull @RequestBody SkiLiftUpdateRequest skiLiftUpdateRequest) {
+        skiLiftService.setSkiLiftsActive(skiLiftUpdateRequest, id);
     }
 }

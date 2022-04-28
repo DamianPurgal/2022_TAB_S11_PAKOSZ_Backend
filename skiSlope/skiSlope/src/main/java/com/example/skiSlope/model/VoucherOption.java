@@ -5,19 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="voucher_options")
+@Entity(name="voucherOptions")
+@Table(name="voucheroptions")
 public class VoucherOption extends Price{
 
-    @Column(name="time_period")
+    @Column(name="time_peroid")
     @Enumerated(EnumType.STRING)
     TimePeriod timePeriod;
 

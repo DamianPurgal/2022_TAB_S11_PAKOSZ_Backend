@@ -4,13 +4,15 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name="ticket_options")
+@Entity
+@Table(name="ticketoptions")
 public class TicketOption extends Price {
 
     @Column(name="entries")

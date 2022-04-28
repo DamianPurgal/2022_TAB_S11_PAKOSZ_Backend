@@ -10,19 +10,26 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="skilifts")
 public class SkiLift {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ski_lift_sequence")
-    @SequenceGenerator(name = "ski_lift_sequence", sequenceName = "ski_lift_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "max_height")
     private Double maxHeight;
 
+    @Column(name = "ski_run_length")
+    private Double skiRunLength;
+
+    @Column(name = "description")
     private String description;
 
+    @Column(name = "active")
     private Boolean active;
 
 }

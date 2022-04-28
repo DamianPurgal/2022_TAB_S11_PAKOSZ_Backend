@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository("cards")
 public interface CardRepository extends CrudRepository<Card, Long>,
         PagingAndSortingRepository<Card, Long>,

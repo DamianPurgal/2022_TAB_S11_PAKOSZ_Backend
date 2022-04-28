@@ -6,6 +6,7 @@ import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.TicketRequest;
 import com.example.skiSlope.model.request.VoucherRequest;
+import com.example.skiSlope.service.definitions.UserService;
 import com.example.skiSlope.service.implementations.CardService;
 import com.example.skiSlope.service.implementations.TicketService;
 import com.example.skiSlope.service.implementations.VoucherService;
@@ -24,6 +25,7 @@ import java.util.List;
 public class CardController {
 
     private CardService cardService;
+    private UserService userService;
 
 
     @GetMapping
@@ -43,7 +45,8 @@ public class CardController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
     public List<Card> getAllCardsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return cardService.getAllCardsByUserId(loggedUser.getId());
+        User user2 = userService.getUser(loggedUser.getUsername());
+        return null;
     }
 
 
