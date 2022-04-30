@@ -1,4 +1,4 @@
-package com.example.skiSlope.service;
+package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.exception.UserNotFoundException;
 import com.example.skiSlope.exception.UserPasswordsDoesntMatchException;
@@ -6,6 +6,7 @@ import com.example.skiSlope.exception.UserUsernameIsNotAvailableException;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.UserEditInformationRequest;
 import com.example.skiSlope.repository.UserRepository;
+import com.example.skiSlope.service.definitions.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

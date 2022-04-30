@@ -1,7 +1,7 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.Ticket;
-import com.example.skiSlope.service.TicketService;
+import com.example.skiSlope.service.implementations.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
