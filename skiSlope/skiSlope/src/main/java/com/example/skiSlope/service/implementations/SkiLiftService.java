@@ -1,8 +1,7 @@
 package com.example.skiSlope.service.implementations;
 
-import com.example.skiSlope.exception.VoucherNotFoundException;
+import com.example.skiSlope.exception.UserNotFoundException;
 import com.example.skiSlope.model.SkiLift;
-import com.example.skiSlope.model.request.SkiLiftRequest;
 import com.example.skiSlope.model.request.SkiLiftUpdateRequest;
 import com.example.skiSlope.repository.SkiLiftRepository;
 import com.example.skiSlope.service.definitions.SkiLiftServiceDefinition;
@@ -38,7 +37,7 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     @Override
     public void updateSkiLiftsData(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id) {
         SkiLift skiLift = skiLiftRepository.findById(id)
-                .orElseThrow(VoucherNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
         skiLift = skiLiftUpdateRequest.skiListUpdateInfoRequest(skiLift);
         skiLiftRepository.save(skiLift);
     }
@@ -46,7 +45,7 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     @Override
     public void setSkiLiftsActive(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id) {
         SkiLift skiLift = skiLiftRepository.findById(id)
-                .orElseThrow(VoucherNotFoundException::new);
+                .orElseThrow(UserNotFoundException::new);
         skiLift = skiLiftUpdateRequest.skiListSetActiveInfoRequest(skiLift);
         skiLiftRepository.save(skiLift);
     }
