@@ -1,4 +1,4 @@
-package com.example.skiSlope.service;
+package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.dao.TicketDao;
 import com.example.skiSlope.model.Ticket;

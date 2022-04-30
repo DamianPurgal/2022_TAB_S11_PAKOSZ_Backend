@@ -3,7 +3,7 @@ package com.example.skiSlope.api;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.UserEditInformationRequest;
 import com.example.skiSlope.model.response.UserDetailedInformationResponse;
-import com.example.skiSlope.service.UserService;
+import com.example.skiSlope.service.definitions.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;

@@ -24,7 +24,7 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     public static final String JWT_SECRET_KEY = "superSecretServerOnlyKeyThatProbablyShouldntBeHere#335";
 
-    public static final long JWT_ACCESS_TOKEN_VALIDITY = 10 * 60 * 1000;
+    public static final long JWT_ACCESS_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
 
     public static final long JWT_REFRESH_TOKEN_VALIDITY = 30 * 60 * 1000;
 
