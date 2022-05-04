@@ -11,6 +11,9 @@ import lombok.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,20 +37,29 @@ public class TicketOptionController {
         return ticketOptionList.stream().map(
                 ticketOptionRes->TicketOptionResponse
                         .builder()
-                        .price(ticketOptionRes.getPrice())
+                        .price(BigDecimal.valueOf(ticketOptionRes.getPrice()).setScale(2, RoundingMode.HALF_UP))
                         .startDate(ticketOptionRes.getStartDate())
                         .expireDate(ticketOptionRes.getExpireDate())
                         .entries(ticketOptionRes.getEntries())
-                        .fullPrice(ticketOptionRes.getFullPrice())
+                        .fullPrice(BigDecimal.valueOf(ticketOptionRes.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
                         .build()
         ).collect(Collectors.toList());
     }
 
 
     @GetMapping("/{id}")
-    public TicketOption getVoucherOptionById(@PathVariable("id") Long id) {
-        return ticketOptionService.getTicketOptionById(id)
+    public TicketOptionResponse getVoucherOptionById(@PathVariable("id") Long id) {
+        TicketOption ticketOption = ticketOptionService.getTicketOptionById(id)
                 .orElse(null);
+
+        return TicketOptionResponse
+                .builder()
+                .price(BigDecimal.valueOf(ticketOption.getPrice()).setScale(2, RoundingMode.HALF_UP))
+                .startDate(ticketOption.getStartDate())
+                .expireDate(ticketOption.getExpireDate())
+                .entries(ticketOption.getEntries())
+                .fullPrice(BigDecimal.valueOf(ticketOption.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
+                .build();
     }
 
     @DeleteMapping("/{id}")

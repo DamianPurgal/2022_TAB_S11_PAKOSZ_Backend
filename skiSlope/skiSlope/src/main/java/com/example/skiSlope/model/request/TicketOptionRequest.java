@@ -1,5 +1,6 @@
 package com.example.skiSlope.model.request;
 
+import com.example.skiSlope.exception.NoAvailableEntryOptionException;
 import com.example.skiSlope.exception.PriceGreaterThanFullPriceException;
 import com.example.skiSlope.model.*;
 import com.example.skiSlope.model.enums.DiscountType;
@@ -17,6 +18,8 @@ import javax.persistence.Enumerated;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static com.example.skiSlope.model.enums.EntriesEnum.transformIntToValue;
 
 @AllArgsConstructor
 @Getter
@@ -40,8 +43,11 @@ public class TicketOptionRequest {
     protected Double fullPrice;
 
     @NonNull
-    @Enumerated(EnumType.STRING)
-    private EntriesEnum entriesEnum;
+    private Integer entries;
+
+//    @NonNull
+//    @Enumerated(EnumType.STRING)
+//    private EntriesEnum entriesEnum;
 
     private void setNullValues() throws ParseException {
         if(discountType==null) {
@@ -71,8 +77,12 @@ public class TicketOptionRequest {
         }
         return true;
     }
+    private EntriesEnum intToEnum() throws NoAvailableEntryOptionException {
+        EntriesEnum entriesEnum = transformIntToValue(entries);
+        return entriesEnum;
+    }
 
-    public TicketOption ticketOptionRequest() throws ParseException, ExpireDateEarlierThanStartDateException, PriceGreaterThanFullPriceException {
+    public TicketOption ticketOptionRequest() throws ParseException, ExpireDateEarlierThanStartDateException, PriceGreaterThanFullPriceException, NoAvailableEntryOptionException {
         setNullValues();
         checkExpireDateCorrectness();
         checkPriceCorrectness();
@@ -83,7 +93,7 @@ public class TicketOptionRequest {
                 .expireDate(expireDate)
                 .discountType(discountType)
                 .fullPrice(fullPrice)
-                .entriesEnum(entriesEnum)
+                .entriesEnum(intToEnum())
                 .build();
     }
 }

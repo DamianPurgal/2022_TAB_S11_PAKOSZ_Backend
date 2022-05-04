@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 @Data
@@ -15,7 +17,7 @@ import java.util.Date;
 public class TicketOptionResponse {
 
     @JsonProperty("price")
-    double price;
+    BigDecimal price;
 
     @JsonProperty("startDate")
     Date startDate;
@@ -24,8 +26,8 @@ public class TicketOptionResponse {
     Date expireDate;
 
     @JsonProperty("entries")
-    double entries;
+    int entries;
 
     @JsonProperty("priceWithoutDiscount")
-    double fullPrice;
+    BigDecimal fullPrice;
 }

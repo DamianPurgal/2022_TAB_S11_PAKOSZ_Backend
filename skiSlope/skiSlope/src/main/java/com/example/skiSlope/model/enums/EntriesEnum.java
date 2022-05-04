@@ -1,5 +1,8 @@
 package com.example.skiSlope.model.enums;
 
+import com.example.skiSlope.exception.NoAvailableEntryOptionException;
+import com.example.skiSlope.exception.PriceNotFoundException;
+
 public enum EntriesEnum {
     one(1),
     five(5),
@@ -8,6 +11,7 @@ public enum EntriesEnum {
     twenty(20),
     fifty(50);
     private final int value;
+    private static int[] values = new int[]{1, 5, 10, 15, 20, 50};
 
     EntriesEnum(int value) {
         this.value = value;
@@ -15,7 +19,7 @@ public enum EntriesEnum {
     public int getValue() {
         return value;
     }
-    public static EntriesEnum transformIntToValue(int entriesAmount){
+    public static EntriesEnum transformIntToValue(int entriesAmount) throws NoAvailableEntryOptionException {
         switch (entriesAmount) {
             case 1:
                 return one;
@@ -30,7 +34,11 @@ public enum EntriesEnum {
             case 50:
                 return fifty;
             default:
-                return null;
+                throw new NoAvailableEntryOptionException();
         }
     }
+    public static int[] allEntryEnumValues(){
+        return values;
+    }
+
 }

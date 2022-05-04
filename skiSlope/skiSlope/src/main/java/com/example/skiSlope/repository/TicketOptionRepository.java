@@ -15,6 +15,10 @@ public interface TicketOptionRepository  extends CrudRepository<TicketOption, Lo
         PagingAndSortingRepository<TicketOption, Long>,
         JpaRepository<TicketOption, Long> {
 
+//    List<TicketOption> findAllByExpireDate();
+//
+//    List<TicketOption> findAllByStartDateAfter
+
 //    List<TicketOption> findPresentTicketOptions();
 //
 //    List<TicketOption> findFutureTicketOptions();
