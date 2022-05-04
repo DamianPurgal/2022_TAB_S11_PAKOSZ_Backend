@@ -1,5 +1,7 @@
 package com.example.skiSlope.model;
 
+import com.example.skiSlope.model.enums.DiscountType;
+import com.example.skiSlope.model.enums.EntriesEnum;
 import lombok.*;
 
 import javax.persistence.Column;

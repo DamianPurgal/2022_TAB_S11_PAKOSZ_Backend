@@ -1,14 +1,16 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.TicketOption;
-import com.example.skiSlope.model.request.TicketUpdateRequest;
+import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 import com.example.skiSlope.repository.TicketOptionRepository;
 import com.example.skiSlope.service.definitions.TicketOptionServiceDefinition;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,8 +32,8 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     }
 
     @Override
-    public Optional<TicketOption> getTTicketOptionById(Long id) {
-        return Optional.empty();
+    public Optional<TicketOption> getTicketOptionById(Long id) {
+        return ticketOptionRepository.findById(id);
     }
 
     @Override
@@ -51,16 +53,19 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
 
     @Override
     public List<TicketOption> getAllTicketOptions() {
-        return null;
+        return ticketOptionRepository.findAll();
     }
 
     @Override
-    public void updateTicketOptionsData(TicketUpdateRequest ticketUpdateRequest, Long id) {
-
+    public void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ExpireDateEarlierThanStartDateException, ParseException {
+        TicketOption ticketOption = ticketOptionRepository.findById(id)
+                .orElseThrow(PriceNotFoundException::new);
+        ticketOption = ticketOptionUpdateRequest.updatePriceRequest(ticketOption);
+        ticketOptionRepository.save(ticketOption);
     }
 
     @Override
-    public void deleteTicket(Long id) {
-
+    public void deleteTicketOption(Long id) {
+        ticketOptionRepository.deleteById(id);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.skiSlope.repository;
 
 import com.example.skiSlope.model.TicketOption;
-import com.example.skiSlope.model.VoucherOption;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;

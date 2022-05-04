@@ -1,6 +1,10 @@
 package com.example.skiSlope.model.request;
 
+import com.example.skiSlope.exception.PriceGreaterThanFullPriceException;
 import com.example.skiSlope.model.*;
+import com.example.skiSlope.model.enums.DiscountType;
+import com.example.skiSlope.model.enums.EntriesEnum;
+import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
@@ -22,24 +26,56 @@ public class TicketOptionRequest {
     @NumberFormat
     protected double price;
 
-    @NonNull
+//    @NonNull
     @DateTimeFormat
     protected Date startDate;
 
-    @NonNull
+    @DateTimeFormat
+    protected Date expireDate;
+
     @Enumerated(EnumType.STRING)
     protected DiscountType discountType;
 
     @NumberFormat
-    protected double fullPrice;
+    protected Double fullPrice;
 
     @NonNull
     @Enumerated(EnumType.STRING)
     private EntriesEnum entriesEnum;
 
-    public TicketOption ticketOptionRequest() throws ParseException {
-        String expireDateString = "31/12/9999";
-        Date expireDate = new SimpleDateFormat("dd/MM/yyyy").parse(expireDateString);
+    private void setNullValues() throws ParseException {
+        if(discountType==null) {
+            discountType = DiscountType.None;}
+
+        if(fullPrice==null) {
+            fullPrice = price/(discountType.getValue());}
+
+        if(startDate==null) {
+            Long startDateLong = System.currentTimeMillis();
+            SimpleDateFormat myDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+            startDate = new Date(startDateLong);}
+
+        if(expireDate==null){
+            String expireDateString = "9999-12-31T22:59:59.000-0000";
+            expireDate = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse(expireDateString);}
+    }
+    private boolean checkExpireDateCorrectness() throws ExpireDateEarlierThanStartDateException {
+        if(expireDate.compareTo(startDate) < 0){
+            throw new ExpireDateEarlierThanStartDateException();
+        }
+        return true;
+    }
+    private boolean checkPriceCorrectness() throws PriceGreaterThanFullPriceException {
+        if(fullPrice!=null && price > fullPrice){
+           throw new PriceGreaterThanFullPriceException();
+        }
+        return true;
+    }
+
+    public TicketOption ticketOptionRequest() throws ParseException, ExpireDateEarlierThanStartDateException, PriceGreaterThanFullPriceException {
+        setNullValues();
+        checkExpireDateCorrectness();
+        checkPriceCorrectness();
         return TicketOption.builder()
                 .id(null)
                 .price(price)

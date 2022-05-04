@@ -1,10 +1,9 @@
 package com.example.skiSlope.service.definitions;
-
-import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.TicketOption;
-import com.example.skiSlope.model.request.TicketUpdateRequest;
+import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,7 @@ public interface TicketOptionServiceDefinition {
 
     List<TicketOption> addTicketOptions(List<TicketOption> ticketOptionList);
 
-    Optional<TicketOption> getTTicketOptionById(Long id);
+    Optional<TicketOption> getTicketOptionById(Long id);
 
     List<TicketOption> getAllCurrentTicketOptions();
 
@@ -24,7 +23,7 @@ public interface TicketOptionServiceDefinition {
 
     List<TicketOption> getAllTicketOptions();
 
-    void updateTicketOptionsData(TicketUpdateRequest ticketUpdateRequest, Long id);
+    void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ExpireDateEarlierThanStartDateException, ParseException;
 
-    void deleteTicket(Long id);
+    void deleteTicketOption(Long id);
 }
