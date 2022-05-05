@@ -48,6 +48,8 @@ public class AuthenticationController {
                 throw new JwtValidationException();
             }
         }else{
+            if(authorizationHeader != null)
+                System.out.println("problem here");
             throw new JwtValidationException();
         }
     }
@@ -55,7 +57,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void registerUser(@Valid @NonNull @RequestBody UserRegistrationRequest userRegistrationRequest){
         User user = userRegistrationRequest.userRegistrationRequestToUser();
-        user.setUserRole(UserRole.CUSTOMER);
+        user.setUserRole(UserRole.MANAGER);
         userService.addUser(user);
     }
 
