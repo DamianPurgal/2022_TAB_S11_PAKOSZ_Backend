@@ -2,7 +2,7 @@ package com.example.skiSlope.model.request;
 
 import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.CardType;
-import com.example.skiSlope.model.DiscountType;
+//import com.example.skiSlope.model.DiscountType;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.repository.PriceRepository;

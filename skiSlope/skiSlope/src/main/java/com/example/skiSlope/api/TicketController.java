@@ -1,6 +1,7 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.exception.PriceNotFoundException;
+import com.example.skiSlope.model.SkiLift;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.TicketRequest;
@@ -33,12 +34,14 @@ public class TicketController {
 
     @PostMapping("/ticket")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) {
+    public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) throws PriceNotFoundException, PriceNotFoundException {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user2 = userService.getUser(loggedUser.getUsername());
+
         Ticket ticket = ticketRequest.ticketRequestToUser();
-        ticket.setPrice(priceService.getPriceById(ticketRequest.getPriceId()).orElseThrow(PriceNotFoundException::new));
-        ticket.setSkiLift(skiLiftService.getSkyLiftById(ticketRequest.getLiftId()).orElseThrow(PriceNotFoundException::new));
+        SkiLift skiLift = skiLiftService.getSkyLiftById(ticketRequest.getLiftId());
+        ticket.setPrice(priceService.getPriceById(ticketRequest.getPriceId()));
+        ticket.setSkiLift(skiLift);
         ticket.setUser(user2);
         ticketService.addTicket(ticket);
     }
@@ -52,10 +55,10 @@ public class TicketController {
                         .builder()
                         .id(ticketRes.getId())
                         .code(ticketRes.getCode())
-                        .userId(ticketRes.getUser().getId())
                         .active(ticketRes.getActive())
                         .entryAmount(ticketRes.getNumberOfEntries())
                         .ownerName(ticketRes.getOwnerName())
+                        .skiLiftName(ticketRes.getSkiLift().getName())
                         .build()
         ).collect(Collectors.toList());
     }
@@ -70,16 +73,28 @@ public class TicketController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
     public List<TicketResponse> getAllTicketsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user2 = userService.getUser(loggedUser.getUsername());
-        return user2.getTicketSet().stream().map(
+//        User user2 = userService.getUser(loggedUser.getUsername());
+//        return user2.getTicketSet().stream().map(
+//                ticketRes->TicketResponse
+//                        .builder()
+//                        .id(ticketRes.getId())
+//                        .code(ticketRes.getCode())
+//                        .userId(ticketRes.getUser().getId())
+//                        .active(ticketRes.getActive())
+//                        .entryAmount(ticketRes.getNumberOfEntries())
+//                        .ownerName(ticketRes.getOwnerName())
+//                        .build()
+//        ).collect(Collectors.toList());
+        List<Ticket> ticketList = ticketService.getAllTicketsByUserId(loggedUser.getId());
+        return ticketList.stream().map(
                 ticketRes->TicketResponse
                         .builder()
                         .id(ticketRes.getId())
                         .code(ticketRes.getCode())
-                        .userId(ticketRes.getUser().getId())
                         .active(ticketRes.getActive())
                         .entryAmount(ticketRes.getNumberOfEntries())
                         .ownerName(ticketRes.getOwnerName())
+                        .skiLiftName(ticketRes.getSkiLift().getName())
                         .build()
         ).collect(Collectors.toList());
     }

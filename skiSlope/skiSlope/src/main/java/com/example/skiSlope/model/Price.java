@@ -1,5 +1,6 @@
 package com.example.skiSlope.model;
 
+import com.example.skiSlope.model.enums.DiscountType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ import java.util.Date;
 public abstract class Price {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     protected Long id;
 

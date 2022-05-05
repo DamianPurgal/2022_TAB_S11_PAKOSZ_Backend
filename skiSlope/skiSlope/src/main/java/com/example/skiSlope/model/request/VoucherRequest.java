@@ -1,6 +1,7 @@
 package com.example.skiSlope.model.request;
 
 import com.example.skiSlope.model.*;
+import com.example.skiSlope.model.enums.DiscountType;
 import jdk.jfr.BooleanFlag;
 import jdk.jfr.Name;
 import lombok.AllArgsConstructor;

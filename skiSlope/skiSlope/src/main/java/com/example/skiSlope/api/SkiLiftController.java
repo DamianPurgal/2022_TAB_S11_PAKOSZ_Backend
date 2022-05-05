@@ -47,7 +47,7 @@ public class SkiLiftController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
     public SkiLiftResponse getSkiLiftById(@PathVariable("id") Long id) {
-        SkiLift skiLift = skiLiftService.getSkyLiftById(id).orElse(null);
+        SkiLift skiLift = skiLiftService.getSkyLiftById(id);
         return SkiLiftResponse.builder()
                 .name(skiLift.getName())
                 .maxHeight(skiLift.getMaxHeight())

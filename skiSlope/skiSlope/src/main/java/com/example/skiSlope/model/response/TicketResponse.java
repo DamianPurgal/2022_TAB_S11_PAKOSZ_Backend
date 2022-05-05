@@ -14,9 +14,9 @@ import java.util.UUID;
 public class TicketResponse {
     Long id;
     UUID code;
-    Long userId;
     String ownerName;
     Boolean active;
     int entryAmount;
+    String skiLiftName;
 
 }

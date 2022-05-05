@@ -4,11 +4,10 @@ import com.example.skiSlope.model.Price;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface PriceServiceDefinition {
 
-    Optional<Price> getPriceById(Long id);
+    Price getPriceById(Long id);
 
     List<Price> getAllPrices();
 

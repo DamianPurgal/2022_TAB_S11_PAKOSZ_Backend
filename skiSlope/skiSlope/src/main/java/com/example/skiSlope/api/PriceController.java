@@ -29,8 +29,7 @@ public class PriceController {
     @GetMapping(path = "{id}")
     //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public Price getVoucherOptionById(@PathVariable("id") Long id) {
-        return priceService.getPriceById(id)
-                .orElse(null);
+        return priceService.getPriceById(id);
     }
 //    @GetMapping(path ="startDate({date})")
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")

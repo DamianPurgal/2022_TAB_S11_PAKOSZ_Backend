@@ -21,21 +21,10 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     List<Card> cardSet = new ArrayList<Card>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    List<Ticket> ticketSet = new ArrayList<Ticket>();
-//
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-//    List<Voucher> voucherSet = new ArrayList<Voucher>();
 
     @Id
-//    @SequenceGenerator(
-//            name="user_sequence",
-//            sequenceName = "user_sequence",
-//            allocationSize = 1
-//    )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY
-//            generator = "user_sequence"
     )
     @Column(name="id")
     private Long id;

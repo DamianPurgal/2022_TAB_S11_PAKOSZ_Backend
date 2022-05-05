@@ -1,7 +1,7 @@
 package com.example.skiSlope.model.request;
 
 import com.example.skiSlope.model.CardType;
-import com.example.skiSlope.model.DiscountType;
+//import com.example.skiSlope.model.DiscountType;
 import com.example.skiSlope.model.Ticket;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.SkiLiftNotFoundException;
 import com.example.skiSlope.exception.UserNotFoundException;
 import com.example.skiSlope.model.SkiLift;
 import com.example.skiSlope.model.request.SkiLiftUpdateRequest;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -25,8 +25,9 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     }
 
     @Override
-    public Optional<SkiLift> getSkyLiftById(Long id) {
-        return skiLiftRepository.findById(id);
+    public SkiLift getSkyLiftById(Long id) {
+
+        return skiLiftRepository.findById(id).orElseThrow(SkiLiftNotFoundException::new);
     }
 
     @Override

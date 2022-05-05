@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.Price;
 import com.example.skiSlope.repository.PriceRepository;
 import com.example.skiSlope.service.definitions.PriceServiceDefinition;
@@ -19,8 +20,9 @@ public class PriceService implements PriceServiceDefinition {
     PriceRepository priceRepository;
 
     @Override
-    public Optional<Price> getPriceById(Long id) {
-        return Optional.of(priceRepository.getById(id));
+    public Price getPriceById(Long id) {
+
+        return Optional.of(priceRepository.getById(id)).orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
