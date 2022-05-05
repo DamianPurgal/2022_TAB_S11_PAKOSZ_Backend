@@ -41,6 +41,7 @@ public class TicketOptionController {
                         .startDate(ticketOptionRes.getStartDate())
                         .expireDate(ticketOptionRes.getExpireDate())
                         .entries(ticketOptionRes.getEntries())
+                        .discountType(ticketOptionRes.getDiscountType())
                         .fullPrice(BigDecimal.valueOf(ticketOptionRes.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
                         .build()
         ).collect(Collectors.toList());
@@ -82,7 +83,7 @@ public class TicketOptionController {
         ticketOptionService.deleteTicketOption(id);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/latest")
     public void deleteLatestVoucherOptionById(@PathVariable("id") Long id) {
         ticketOptionService.deleteTicketOption(id);
     }
