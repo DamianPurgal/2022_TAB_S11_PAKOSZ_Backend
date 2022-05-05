@@ -51,6 +51,7 @@ public class SkiLiftUpdateRequest {
     }
     public SkiLift skiListSetActiveInfoRequest(SkiLift skiLift){
         setActiveIfNull(skiLift);
+
         return SkiLift.builder()
                 .id(skiLift.getId())
                 .name(skiLift.getName())

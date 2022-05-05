@@ -28,6 +28,7 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     public SkiLift getSkyLiftById(Long id) {
 
         return skiLiftRepository.findById(id).orElseThrow(SkiLiftNotFoundException::new);
+
     }
 
     @Override
