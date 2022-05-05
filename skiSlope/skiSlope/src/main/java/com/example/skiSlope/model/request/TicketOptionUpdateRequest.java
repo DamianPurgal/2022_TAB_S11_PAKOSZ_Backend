@@ -71,7 +71,7 @@ public class TicketOptionUpdateRequest {
         return true;
     }
 
-    public TicketOption updatePriceRequest(TicketOption ticketOption) throws ParseException, ExpireDateEarlierThanStartDateException {
+    public TicketOption updatePriceRequest(TicketOption ticketOption) throws ParseException {
         setNullValues(ticketOption);
         checkExpireDateCorrectness();
         checkPriceCorrectness();
@@ -85,7 +85,7 @@ public class TicketOptionUpdateRequest {
                 .entriesEnum(entriesEnum)
                 .build();
     }
-    public TicketOption ticketOptionUpdateExpireDateRequest(TicketOption ticketOption, Date autoExpireDate) throws ParseException, ExpireDateEarlierThanStartDateException {
+    public TicketOption ticketOptionUpdateExpireDateRequest(TicketOption ticketOption, Date autoExpireDate) throws ParseException{
         setNullValues(ticketOption);
         if(autoExpireDate!=null) {
             expireDate = autoExpireDate;}

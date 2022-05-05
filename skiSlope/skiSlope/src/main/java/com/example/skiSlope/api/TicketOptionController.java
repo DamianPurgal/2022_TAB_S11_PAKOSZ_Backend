@@ -46,6 +46,21 @@ public class TicketOptionController {
         ).collect(Collectors.toList());
     }
 
+    @GetMapping("/current")
+    public List<TicketOptionResponse> getAllCurrentTicketOptions() {
+        List<TicketOption> ticketOptionList = ticketOptionService.getAllCurrentTicketOptions();
+        return ticketOptionList.stream().map(
+                ticketOptionRes->TicketOptionResponse
+                        .builder()
+                        .price(BigDecimal.valueOf(ticketOptionRes.getPrice()).setScale(2, RoundingMode.HALF_UP))
+                        .startDate(ticketOptionRes.getStartDate())
+                        .expireDate(ticketOptionRes.getExpireDate())
+                        .entries(ticketOptionRes.getEntries())
+                        .fullPrice(BigDecimal.valueOf(ticketOptionRes.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
 
     @GetMapping("/{id}")
     public TicketOptionResponse getVoucherOptionById(@PathVariable("id") Long id) {
@@ -64,6 +79,11 @@ public class TicketOptionController {
 
     @DeleteMapping("/{id}")
     public void deleteVoucherOptionById(@PathVariable("id") Long id) {
+        ticketOptionService.deleteTicketOption(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteLatestVoucherOptionById(@PathVariable("id") Long id) {
         ticketOptionService.deleteTicketOption(id);
     }
 
