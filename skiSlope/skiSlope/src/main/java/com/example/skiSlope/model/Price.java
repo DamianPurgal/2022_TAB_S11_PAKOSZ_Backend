@@ -14,7 +14,7 @@ import java.util.Date;
 public abstract class Price {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     @Column(name = "id", nullable = false)
     protected Long id;
 
