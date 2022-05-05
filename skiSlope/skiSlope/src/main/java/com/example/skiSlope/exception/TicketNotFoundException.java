@@ -2,9 +2,9 @@ package com.example.skiSlope.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class TicketNotFoundException extends ResourceNotFoundException {
+public class TicketNotFoundException extends BusinessException {
 
     public TicketNotFoundException() {
-        super("Ticket doesn't exist", HttpStatus.NOT_FOUND.value());
+        super(HttpStatus.NOT_FOUND.value(), "Ticket doesn't exist");
     }
 }

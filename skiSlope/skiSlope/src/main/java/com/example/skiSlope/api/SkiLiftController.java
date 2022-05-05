@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/skiLift")
+@RequestMapping("api/skiLift")
 @RestController
 public class SkiLiftController {
 
@@ -29,12 +29,13 @@ public class SkiLiftController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PreAuthorize("permitAll()")
     public List<SkiLiftResponse> getAllSkiLifts() {
         List<SkiLift> skiLiftList = skiLiftService.getAllSkiLifts();
         return skiLiftList.stream().map(
                 skiListRes -> SkiLiftResponse
                         .builder()
+                        .id(skiListRes.getId())
                         .name(skiListRes.getName())
                         .maxHeight(skiListRes.getMaxHeight())
                         .skiRunLength(skiListRes.getSkiRunLength())
@@ -45,17 +46,17 @@ public class SkiLiftController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PreAuthorize("permitAll()")
     public SkiLiftResponse getSkiLiftById(@PathVariable("id") Long id) {
         SkiLift skiLift = skiLiftService.getSkyLiftById(id);
         return SkiLiftResponse.builder()
+                .id(skiLift.getId())
                 .name(skiLift.getName())
                 .maxHeight(skiLift.getMaxHeight())
                 .skiRunLength(skiLift.getSkiRunLength())
                 .description(skiLift.getDescription())
                 .active(skiLift.getActive())
                 .build();
-
     }
 
     @DeleteMapping("/{id}")

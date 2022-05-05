@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class SkiLiftNotFoundException extends BusinessException{
     public SkiLiftNotFoundException() {
-        super(HttpStatus.NOT_FOUND.value(), "Ski lift for given id not found!");
+        super(HttpStatus.NOT_FOUND.value(), "No such skiLift for given id!");
     }
 }

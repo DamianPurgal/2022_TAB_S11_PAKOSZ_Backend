@@ -21,7 +21,6 @@ public class PriceService implements PriceServiceDefinition {
 
     @Override
     public Price getPriceById(Long id) {
-
         return Optional.of(priceRepository.getById(id)).orElseThrow(PriceNotFoundException::new);
     }
 

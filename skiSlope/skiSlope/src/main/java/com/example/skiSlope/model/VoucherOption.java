@@ -1,5 +1,6 @@
 package com.example.skiSlope.model;
 
+import com.example.skiSlope.model.enums.TimePeriod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

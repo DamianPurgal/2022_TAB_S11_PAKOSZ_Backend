@@ -1,17 +1,12 @@
 package com.example.skiSlope.exception;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
-//@ResponseStatus(value = HttpStatus.NOT_FOUND)
 @Getter
-public class ResourceNotFoundException extends RuntimeException {
+public class ResourceNotFoundException extends BusinessException {
 
-    protected final int status;
-    protected final String message;
-
-    public ResourceNotFoundException(String message, int status){
-        super(message);
-        this.message = message;
-        this.status = status;
+    public ResourceNotFoundException(String message) {
+        super(HttpStatus.NO_CONTENT.value(), message);
     }
 }

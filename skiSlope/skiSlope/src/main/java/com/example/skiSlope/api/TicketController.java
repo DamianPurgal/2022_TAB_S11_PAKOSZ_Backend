@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/card")
+@RequestMapping("api/card/ticket")
 @RestController
 public class TicketController {
 
@@ -32,7 +32,7 @@ public class TicketController {
     private SkiLiftService skiLiftService;
 
 
-    @PostMapping("/ticket")
+    @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) throws PriceNotFoundException, PriceNotFoundException {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -46,7 +46,7 @@ public class TicketController {
         ticketService.addTicket(ticket);
     }
 
-    @GetMapping("/ticket")
+    @GetMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<TicketResponse> getAllTickets() {
         List<Ticket> ticketList = ticketService.getAllTickets();
@@ -63,7 +63,7 @@ public class TicketController {
         ).collect(Collectors.toList());
     }
 
-    @GetMapping("/ticket/{id}")
+    @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public Ticket getTicketById(@PathVariable("id") Long id) {
         return ticketService.getTicketById(id)
@@ -99,13 +99,13 @@ public class TicketController {
         ).collect(Collectors.toList());
     }
 
-    @DeleteMapping("/ticket/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void deleteTicketByCode(@PathVariable("id") Long id) {
         ticketService.deleteTicket(id);
     }
 
-    @PutMapping("/ticket/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketUpdateRequest ticketUpdateRequest) {
         ticketService.updateTicketsData(ticketUpdateRequest, id);

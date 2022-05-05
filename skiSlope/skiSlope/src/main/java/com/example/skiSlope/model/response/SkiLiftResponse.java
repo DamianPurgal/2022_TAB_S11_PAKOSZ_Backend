@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SkiLiftResponse {
+    Long id;
     String name;
     Double maxHeight;
     Double skiRunLength;

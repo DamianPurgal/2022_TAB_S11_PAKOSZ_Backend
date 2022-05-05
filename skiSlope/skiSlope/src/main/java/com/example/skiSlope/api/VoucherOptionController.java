@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/prices/vouchers")
+@RequestMapping("api/prices/vouchers")
 @RestController
 public class VoucherOptionController {
 

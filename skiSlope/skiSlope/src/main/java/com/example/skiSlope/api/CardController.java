@@ -20,7 +20,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/card")
+@RequestMapping("api/card")
 @RestController
 public class CardController {
 

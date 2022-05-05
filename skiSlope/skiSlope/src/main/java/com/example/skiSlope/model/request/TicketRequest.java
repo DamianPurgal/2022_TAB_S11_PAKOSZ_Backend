@@ -1,34 +1,24 @@
 package com.example.skiSlope.model.request;
 
-import com.example.skiSlope.exception.PriceNotFoundException;
-import com.example.skiSlope.model.CardType;
+import com.example.skiSlope.exception.NoAvailableEntryOptionException;
+import com.example.skiSlope.model.enums.CardType;
 //import com.example.skiSlope.model.DiscountType;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
-import com.example.skiSlope.repository.PriceRepository;
-import com.example.skiSlope.service.implementations.PriceService;
+import com.example.skiSlope.model.enums.EntriesEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.Size;
+
+import static com.example.skiSlope.model.enums.EntriesEnum.transformIntToValue;
 
 @AllArgsConstructor
 @Getter
 public class TicketRequest {
-
-//    PriceService priceService;
-
-//    @Enumerated(EnumType.STRING)
-//    private DiscountType discountType;
 
     @Size(message = "First name cannot be empty")
     private String ownerName;
@@ -49,20 +39,27 @@ public class TicketRequest {
     @NumberFormat
     private int numberOfEntries;
 
-    public Ticket ticketRequestToUser(){
+    private void setIfNull(){
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (ownerName == null){
+            this.ownerName = loggedUser.getFirstName()+" "+loggedUser.getLastName();}
+    }
+
+    private EntriesEnum intToEnum() {
+        EntriesEnum entriesEnum = transformIntToValue(numberOfEntries);
+        return entriesEnum;
+    }
+
+    public Ticket ticketRequestToUser(){
+        setIfNull();
         return Ticket.builder()
                 .id(null)
-//                .discountType(discountType)
-//                .userId(loggedUser.getId())
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
                 .price(null)
                 .paymentId(paymentId)
-//                .priceId(priceId)
                 .active(true)
-//                .liftId(liftId)
-                .numberOfEntries(numberOfEntries)
+                .numberOfEntries(intToEnum().getValue())
                 .skiLift(null)
                 .build();
     }

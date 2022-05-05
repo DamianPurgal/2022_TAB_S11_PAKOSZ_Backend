@@ -1,24 +1,16 @@
 package com.example.skiSlope.model.request;
 
 import com.example.skiSlope.model.*;
+import com.example.skiSlope.model.enums.CardType;
 import com.example.skiSlope.model.enums.DiscountType;
-import jdk.jfr.BooleanFlag;
-import jdk.jfr.Name;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.util.Date;
-
-import static com.example.skiSlope.model.TimePeriod.*;
 
 @AllArgsConstructor
 @Getter
@@ -47,7 +39,8 @@ public class VoucherRequest {
                 .cardType(CardType.Voucher)
                 .ownerName(ownerName)
                 .paymentId(paymentId)
-//                .priceId(priceId)
+                .user(null)
+                .price(null)
                 .active(true)
                 .startDate(null)
                 .expireDate(null)

@@ -2,7 +2,7 @@ package com.example.skiSlope.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class PriceNotFoundException extends ResourceNotFoundException{
+public class PriceNotFoundException extends BusinessException{
 
-    public PriceNotFoundException() {super("Given price option doesn't exist", HttpStatus.NOT_FOUND.value());}
+    public PriceNotFoundException() {super(HttpStatus.NOT_FOUND.value(), "Given price option doesn't exist");}
 }

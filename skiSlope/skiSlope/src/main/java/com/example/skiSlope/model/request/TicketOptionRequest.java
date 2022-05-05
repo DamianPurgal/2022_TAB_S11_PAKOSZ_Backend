@@ -65,13 +65,13 @@ public class TicketOptionRequest {
             String expireDateString = "9999-12-31T22:59:59.000-0000";
             expireDate = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse(expireDateString);}
     }
-    private boolean checkExpireDateCorrectness() throws ExpireDateEarlierThanStartDateException {
+    private boolean checkExpireDateCorrectness(){
         if(expireDate.compareTo(startDate) < 0){
             throw new ExpireDateEarlierThanStartDateException();
         }
         return true;
     }
-    private boolean checkPriceCorrectness() throws PriceGreaterThanFullPriceException {
+    private boolean checkPriceCorrectness() {
         if(fullPrice!=null && price > fullPrice){
            throw new PriceGreaterThanFullPriceException();
         }

@@ -1,6 +1,6 @@
 package com.example.skiSlope.model.request;
 
-import com.example.skiSlope.model.CardType;
+import com.example.skiSlope.model.enums.CardType;
 import com.example.skiSlope.model.Voucher;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

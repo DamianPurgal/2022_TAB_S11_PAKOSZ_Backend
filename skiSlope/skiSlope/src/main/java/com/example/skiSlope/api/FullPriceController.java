@@ -16,7 +16,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/prices/set")
+@RequestMapping("api/prices/set")
 @RestController
 public class FullPriceController {
 

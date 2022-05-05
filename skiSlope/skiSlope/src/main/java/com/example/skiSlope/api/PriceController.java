@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/prices")
+@RequestMapping("api/prices")
 @RestController
 public class PriceController {
     private PriceService priceService;

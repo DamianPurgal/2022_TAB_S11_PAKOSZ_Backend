@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-@RequestMapping("api/v1/prices/tickets")
+@RequestMapping("api/prices/tickets")
 @RestController
 public class TicketOptionController {
 

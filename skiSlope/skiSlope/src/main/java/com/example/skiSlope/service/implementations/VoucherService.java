@@ -1,8 +1,8 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.exception.VoucherNotFoundException;
 import com.example.skiSlope.model.Voucher;
-import com.example.skiSlope.model.request.VoucherRequest;
 import com.example.skiSlope.model.request.VoucherUpdateRequest;
 import com.example.skiSlope.repository.VoucherRepository;
 import com.example.skiSlope.service.definitions.VoucherServiceDefinition;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -26,7 +25,7 @@ public class VoucherService implements VoucherServiceDefinition {
     }
 
     @Override
-    public Optional<Voucher> getVoucherById(Long id) { return voucherRepository.findById(id); }
+    public Voucher getVoucherById(Long id) { return voucherRepository.findById(id).orElseThrow(PriceNotFoundException::new); }
 
     @Override
     public List<Voucher> getAllVouchersByUserId(Long userId) {

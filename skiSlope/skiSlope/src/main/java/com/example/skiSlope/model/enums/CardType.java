@@ -1,4 +1,4 @@
-package com.example.skiSlope.model;
+package com.example.skiSlope.model.enums;
 
 public enum CardType {
     Ticket,

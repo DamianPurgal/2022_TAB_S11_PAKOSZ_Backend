@@ -23,8 +23,7 @@ public class SkiLiftUpdateRequest {
     @BooleanFlag
     private Boolean active;
 
-    public SkiLift skiListUpdateInfoRequest(SkiLift skiLift){
-        System.out.println(maxHeight);
+    void setIfNull(SkiLift skiLift){
         if(name==null)
             name = skiLift.getName();
         if(description==null)
@@ -33,7 +32,14 @@ public class SkiLiftUpdateRequest {
             maxHeight = skiLift.getMaxHeight();
         if(skiRunLength==null)
             skiRunLength = skiLift.getSkiRunLength();
-        System.out.println(maxHeight);
+    }
+    void setActiveIfNull(SkiLift skiLift){
+        if(active == null)
+            active = skiLift.getActive();
+    }
+
+    public SkiLift skiListUpdateInfoRequest(SkiLift skiLift){
+        setIfNull(skiLift);
         return SkiLift.builder()
                 .id(skiLift.getId())
                 .name(name)
@@ -44,8 +50,7 @@ public class SkiLiftUpdateRequest {
                 .build();
     }
     public SkiLift skiListSetActiveInfoRequest(SkiLift skiLift){
-        if(active == null)
-            active = skiLift.getActive();
+        setActiveIfNull(skiLift);
         return SkiLift.builder()
                 .id(skiLift.getId())
                 .name(skiLift.getName())

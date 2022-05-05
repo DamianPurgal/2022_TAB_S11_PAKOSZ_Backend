@@ -2,8 +2,8 @@ package com.example.skiSlope.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class VoucherNotFoundException extends ResourceNotFoundException {
+public class VoucherNotFoundException extends BusinessException {
     public VoucherNotFoundException() {
-        super("Voucher doesn't exist!", HttpStatus.NOT_FOUND.value());
+        super(HttpStatus.NOT_FOUND.value(), "Voucher doesn't exist!");
     }
 }

@@ -1,6 +1,7 @@
 package com.example.skiSlope.model.request;
 
 
+import com.example.skiSlope.exception.ResourceNotFoundException;
 import com.example.skiSlope.model.SkiLift;
 
 import jdk.jfr.BooleanFlag;
@@ -17,22 +18,28 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class SkiLiftRequest {
 
-    @NonNull
-    @NotBlank
     private String name;
 
-    @NonNull
     @NumberFormat
     private Double maxHeight;
 
-    @NonNull
     @NumberFormat
     private Double skiRunLength;
 
     private String description;
 
 
+    private void throwIfNull(){
+        if(name == null)
+            throw new ResourceNotFoundException("Name cannot be empty!");
+        if(maxHeight == null)
+            throw new ResourceNotFoundException("MaxHeight cannot be empty!");
+        if(skiRunLength == null)
+            throw new ResourceNotFoundException("skiRunLength cannot be empty!");
+    }
+
     public SkiLift skiLiftRequest(){
+        throwIfNull();
         return SkiLift.builder()
                 .id(null)
                 .name(name)
