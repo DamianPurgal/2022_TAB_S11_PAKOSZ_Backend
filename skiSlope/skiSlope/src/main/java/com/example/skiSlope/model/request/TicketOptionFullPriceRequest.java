@@ -23,7 +23,7 @@ public class TicketOptionFullPriceRequest {
     public TicketOption createFullPricePriceRequest(DiscountType discountType, EntriesEnum entriesEnum, FullPrice fullPrice) throws ParseException {
         return TicketOption.builder()
                 .id(null)
-                .price(fullPrice.getFullPrice()*discountType.getValue())
+                .price(fullPrice.getFullPrice()*discountType.getValue()* entriesEnum.getValue())
                 .startDate(fullPrice.getStartDate())
                 .expireDate(setEternalExpireDate())
                 .discountType(discountType)

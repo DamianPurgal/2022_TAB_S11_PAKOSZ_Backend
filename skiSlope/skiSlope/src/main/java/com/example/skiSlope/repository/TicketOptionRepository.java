@@ -17,11 +17,13 @@ public interface TicketOptionRepository  extends CrudRepository<TicketOption, Lo
 
     List<TicketOption> findAllByExpireDateEquals(Date expireDate);
 
-    TicketOption findTicketOptionByExpireDate(Date expireDate);
+//    TicketOption findTicketOptionByExpireDate(Date expireDate);
 
     List<TicketOption> findAllByExpireDateLessThanEqualAndStartDateGreaterThanEqual(Date timeNow, Date timeNow2);
 
-    List<TicketOption> deleteTicketOptionByExpireDate(Date expireDate);
+//    List<TicketOption> deleteTicketOptionByExpireDate(Date expireDate);
+
+    void deleteAllByExpireDate(Date expireDate);
 
 //    List<TicketOption> findAllByExpireDate();
 //

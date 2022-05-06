@@ -29,12 +29,15 @@ public class FullPriceController {
 
     @PostMapping("/ticket")
     public void addNewTicketOption(@Valid @NonNull @RequestBody FullPrice fullPrice) throws ParseException {
+
+        ticketOptionService.updateLatestTicketOptionData(fullPrice.getStartDate());
         for(EntriesEnum entriesEnum : EntriesEnum.values() ){
             for(DiscountType discountType : DiscountType.values()){
                 TicketOption ticketOption = new TicketOptionFullPriceRequest().createFullPricePriceRequest(discountType, entriesEnum, fullPrice);
                 ticketOptionService.addTicketOption(ticketOption);
             }
         }
+
 
     }
 }

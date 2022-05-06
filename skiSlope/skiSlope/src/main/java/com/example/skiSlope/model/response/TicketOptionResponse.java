@@ -19,6 +19,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class TicketOptionResponse {
 
+    @JsonProperty("id")
+    Long id;
+
     @JsonProperty("price")
     BigDecimal price;
 

@@ -67,28 +67,20 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     }
 
     @Override
-    public void updateLatestTicketOptionData(Date newExpireDate) {
-        List<TicketOption> ticketOptionList = ticketOptionRepository.findAllByExpireDateEquals(newExpireDate);
-        ticketOptionList.stream().map(
-                ticketOption -> {
-                    try {
-                        return TicketOption
-                                .builder()
-                                .id(ticketOption.getId())
-                                .price(ticketOption.getPrice())
-                                .startDate(ticketOption.getStartDate())
-                                .expireDate(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"))
-                                .discountType(ticketOption.getDiscountType())
-                                .fullPrice(ticketOption.getFullPrice())
-                                .entriesEnum(transformIntToValue(ticketOption.getEntries()))
-                                .build();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    return ticketOption;
-                }
-        ).collect(Collectors.toList());
-        ticketOptionRepository.saveAll(ticketOptionList);
+    public void updateLatestTicketOptionData(Date newExpireDate) throws ParseException {
+        List<TicketOption> ticketOptionList = ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        for(TicketOption t : ticketOptionList){
+            t.setExpireDate(newExpireDate);
+            ticketOptionRepository.save(t);
+        }
+    }
+
+    public void updateBeforeLatestTicketOptionData(Date date) throws ParseException {
+        List<TicketOption> ticketOptionList = ticketOptionRepository.findAllByExpireDateEquals(date);
+        for(TicketOption t : ticketOptionList){
+            t.setExpireDate(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+            ticketOptionRepository.save(t);
+        }
     }
 
     @Override
@@ -97,10 +89,13 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     }
 
     @Override
-    public void deleteTicketOptionByLatestExpireDate(Date expireDate) {
-        TicketOption ticketOption = ticketOptionRepository.findTicketOptionByExpireDate(expireDate);
-        ticketOptionRepository.deleteTicketOptionByExpireDate(expireDate);
-        updateLatestTicketOptionData(ticketOption.getStartDate());
+    public void deleteTicketOptionByLatestExpireDate() throws ParseException {
+        List<TicketOption> ticketOptions = ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        Date foundStartDate = ticketOptions.get(0).getStartDate();
+        for(TicketOption t : ticketOptions){
+            ticketOptionRepository.delete(t);
+        }
+        updateBeforeLatestTicketOptionData(foundStartDate);
 
     }
 }

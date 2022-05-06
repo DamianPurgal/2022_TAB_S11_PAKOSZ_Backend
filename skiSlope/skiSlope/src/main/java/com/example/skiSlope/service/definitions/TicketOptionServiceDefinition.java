@@ -30,5 +30,5 @@ public interface TicketOptionServiceDefinition {
 
     void deleteTicketOption(Long id);
 
-    void deleteTicketOptionByLatestExpireDate(Date expireDate);
+    void deleteTicketOptionByLatestExpireDate() throws ParseException;
 }

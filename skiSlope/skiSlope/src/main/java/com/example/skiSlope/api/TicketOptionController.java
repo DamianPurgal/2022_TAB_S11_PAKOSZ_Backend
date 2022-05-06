@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ public class TicketOptionController {
         return ticketOptionList.stream().map(
                 ticketOptionRes->TicketOptionResponse
                         .builder()
+                        .id(ticketOptionRes.getId())
                         .price(BigDecimal.valueOf(ticketOptionRes.getPrice()).setScale(2, RoundingMode.HALF_UP))
                         .startDate(ticketOptionRes.getStartDate())
                         .expireDate(ticketOptionRes.getExpireDate())
@@ -53,6 +55,7 @@ public class TicketOptionController {
         return ticketOptionList.stream().map(
                 ticketOptionRes->TicketOptionResponse
                         .builder()
+                        .id(ticketOptionRes.getId())
                         .price(BigDecimal.valueOf(ticketOptionRes.getPrice()).setScale(2, RoundingMode.HALF_UP))
                         .startDate(ticketOptionRes.getStartDate())
                         .expireDate(ticketOptionRes.getExpireDate())
@@ -70,6 +73,7 @@ public class TicketOptionController {
 
         return TicketOptionResponse
                 .builder()
+                .id(ticketOption.getId())
                 .price(BigDecimal.valueOf(ticketOption.getPrice()).setScale(2, RoundingMode.HALF_UP))
                 .startDate(ticketOption.getStartDate())
                 .expireDate(ticketOption.getExpireDate())
@@ -84,8 +88,8 @@ public class TicketOptionController {
     }
 
     @DeleteMapping("/latest")
-    public void deleteLatestVoucherOptionById(@PathVariable("id") Long id) {
-        ticketOptionService.deleteTicketOption(id);
+    public void deleteLatestVoucherOptionById() throws ParseException {
+        ticketOptionService.deleteTicketOptionByLatestExpireDate();
     }
 
     @PutMapping("/{id}")
