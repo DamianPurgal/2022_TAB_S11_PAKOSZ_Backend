@@ -1,6 +1,7 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.exception.NewStartDateBeforeStartDateException;
 import com.example.skiSlope.model.FullPrice;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.enums.DiscountType;
@@ -30,6 +31,11 @@ public class FullPriceController {
     @PostMapping("/ticket")
     public void addNewTicketOption(@Valid @NonNull @RequestBody FullPrice fullPrice) throws ParseException {
 
+        for(TicketOption t: ticketOptionService.getAllTicketOptions()){
+            if(fullPrice.getStartDate().compareTo(t.getStartDate()) < 0){
+                throw new NewStartDateBeforeStartDateException();
+            }
+        }
         ticketOptionService.updateLatestTicketOptionData(fullPrice.getStartDate());
         for(EntriesEnum entriesEnum : EntriesEnum.values() ){
             for(DiscountType discountType : DiscountType.values()){
