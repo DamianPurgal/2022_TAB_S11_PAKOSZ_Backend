@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.*;
 
 @Getter
 @Setter
@@ -15,29 +15,47 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name="users")
 public class User implements UserDetails {
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    List<Card> cardSet = new ArrayList<Card>();
+
+
     @Id
-    @SequenceGenerator(
-            name="user_sequence",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_sequence"
+            strategy = GenerationType.IDENTITY
     )
+    @Column(name="id")
     private Long id;
+
+    @Column(name="username")
     private String username;
+
+    @Column(name="password")
     private String password;
+
+    @Column(name="email")
     private String email;
+
+    @Column(name="first_name")
     private String firstName;
+
+    @Column(name="last_name")
     private String lastName;
+
+    @Column(name="user_role")
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
+
+    @Column(name="locked")
     private Boolean locked = false;
+
+    @Column(name="enabled")
     private Boolean enabled = true;
 
     public User(String username, String password, String email, String firstName, String lastName, UserRole userRole) {
+
         this.username = username;
         this.password = password;
         this.email = email;
