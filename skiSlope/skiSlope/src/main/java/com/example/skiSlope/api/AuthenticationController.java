@@ -5,25 +5,21 @@ import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.skiSlope.exception.JwtExpiredException;
 import com.example.skiSlope.exception.JwtValidationException;
 import com.example.skiSlope.exception.UserUsernameIsNotAvailableException;
+import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.UserRegistrationRequest;
 import com.example.skiSlope.model.response.JwtTokensResponse;
-import com.example.skiSlope.model.User;
 import com.example.skiSlope.security.UserRole;
 import com.example.skiSlope.security.utility.JwtGenerator;
 import com.example.skiSlope.security.utility.JwtResolver;
-import com.example.skiSlope.service.UserService;
+import com.example.skiSlope.service.definitions.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-
-import java.security.Principal;
 
 import static com.example.skiSlope.security.ApplicationSecurityConfig.GOOGLE_ACCOUNT_USERNAME_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;

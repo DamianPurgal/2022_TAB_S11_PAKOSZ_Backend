@@ -80,8 +80,6 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/auth/**", "/oauth2/**")
-                //.antMatchers("/**")
-                //
                 .permitAll()
                 .and()
                 .oauth2Login()

@@ -4,7 +4,7 @@ package com.example.skiSlope.security.oauth2;
 import com.example.skiSlope.exception.UserNotFoundException;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.security.UserRole;
-import com.example.skiSlope.service.UserService;
+import com.example.skiSlope.service.definitions.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
