@@ -25,12 +25,6 @@ public class TicketOptionUpdateRequest {
     @NumberFormat
     protected Double price;
 
-    @DateTimeFormat
-    protected Date startDate;
-
-    @DateTimeFormat
-    protected Date expireDate;
-
     @Enumerated(EnumType.STRING)
     protected DiscountType discountType;
 
@@ -49,20 +43,6 @@ public class TicketOptionUpdateRequest {
             fullPrice = ticketOption.getFullPrice();}
         if(entriesEnum==null) {
             entriesEnum = transformIntToValue(ticketOption.getEntries());}
-        if(startDate==null){
-            startDate = ticketOption.getStartDate();}
-        if(expireDate==null){
-            if(ticketOption.getExpireDate()==null){
-                expireDate = new SimpleDateFormat("dd/MM/yyyy").parse("31/12/9999");}
-            else {
-                expireDate = ticketOption.getExpireDate();}
-        }
-    }
-    private boolean checkExpireDateCorrectness() throws ExpireDateEarlierThanStartDateException {
-        if(expireDate.compareTo(startDate) < 0){
-            throw new ExpireDateEarlierThanStartDateException();
-        }
-        return true;
     }
     boolean checkPriceCorrectness(){
         if(price > fullPrice){
@@ -73,31 +53,30 @@ public class TicketOptionUpdateRequest {
 
     public TicketOption updatePriceRequest(TicketOption ticketOption) throws ParseException {
         setNullValues(ticketOption);
-        checkExpireDateCorrectness();
         checkPriceCorrectness();
         return TicketOption.builder()
                 .id(ticketOption.getId())
                 .price(price)
-                .startDate(startDate)
-                .expireDate(expireDate)
+                .startDate(ticketOption.getStartDate())
+                .expireDate(ticketOption.getExpireDate())
                 .discountType(discountType)
                 .fullPrice(fullPrice)
                 .entriesEnum(entriesEnum)
                 .build();
     }
-    public TicketOption ticketOptionUpdateExpireDateRequest(TicketOption ticketOption, Date autoExpireDate) throws ParseException{
-        setNullValues(ticketOption);
-        if(autoExpireDate!=null) {
-            expireDate = autoExpireDate;}
-        checkExpireDateCorrectness();
-        return TicketOption.builder()
-                .id(ticketOption.getId())
-                .price(ticketOption.getPrice())
-                .startDate(ticketOption.getStartDate())
-                .expireDate(expireDate)
-                .discountType(ticketOption.getDiscountType())
-                .fullPrice(ticketOption.getFullPrice())
-                .entriesEnum(transformIntToValue(ticketOption.getEntries()))
-                .build();
-    }
+//    public TicketOption ticketOptionUpdateExpireDateRequest(TicketOption ticketOption, Date autoExpireDate) throws ParseException{
+//        setNullValues(ticketOption);
+//        if(autoExpireDate!=null) {
+//            expireDate = autoExpireDate;}
+//        checkExpireDateCorrectness();
+//        return TicketOption.builder()
+//                .id(ticketOption.getId())
+//                .price(ticketOption.getPrice())
+//                .startDate(ticketOption.getStartDate())
+//                .expireDate(expireDate)
+//                .discountType(ticketOption.getDiscountType())
+//                .fullPrice(ticketOption.getFullPrice())
+//                .entriesEnum(transformIntToValue(ticketOption.getEntries()))
+//                .build();
+//    }
 }

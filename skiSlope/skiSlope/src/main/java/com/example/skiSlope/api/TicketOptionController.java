@@ -8,6 +8,7 @@ import com.example.skiSlope.model.response.TicketOptionResponse;
 import com.example.skiSlope.service.implementations.TicketOptionService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,15 +27,27 @@ public class TicketOptionController {
 
     private TicketOptionService ticketOptionService;
 
-    @PostMapping
-    public void addNewTicketOption(@Valid @NonNull @RequestBody TicketOptionRequest ticketOptionRequest) throws ExpireDateEarlierThanStartDateException, ParseException {
-        TicketOption ticketOption = ticketOptionRequest.ticketOptionRequest();
-        ticketOptionService.addTicketOption(ticketOption);
-    }
+//    @PostMapping
+//    public void addNewTicketOption(@Valid @NonNull @RequestBody TicketOptionRequest ticketOptionRequest) throws ExpireDateEarlierThanStartDateException, ParseException {
+//        TicketOption ticketOption = ticketOptionRequest.ticketOptionRequest();
+//        ticketOptionService.addTicketOption(ticketOption);
+//    }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<TicketOptionResponse> getAllTicketOptions() {
         List<TicketOption> ticketOptionList = ticketOptionService.getAllTicketOptions();
+        return getTicketOptionResponses(ticketOptionList);
+    }
+
+    @GetMapping("/current")
+    @PreAuthorize("permitAll()")
+    public List<TicketOptionResponse> getAllCurrentTicketOptions() {
+        List<TicketOption> ticketOptionList = ticketOptionService.getAllCurrentTicketOptions();
+        return getTicketOptionResponses(ticketOptionList);
+    }
+
+    private List<TicketOptionResponse> getTicketOptionResponses(List<TicketOption> ticketOptionList) {
         return ticketOptionList.stream().map(
                 ticketOptionRes->TicketOptionResponse
                         .builder()
@@ -49,24 +62,9 @@ public class TicketOptionController {
         ).collect(Collectors.toList());
     }
 
-    @GetMapping("/current")
-    public List<TicketOptionResponse> getAllCurrentTicketOptions() {
-        List<TicketOption> ticketOptionList = ticketOptionService.getAllCurrentTicketOptions();
-        return ticketOptionList.stream().map(
-                ticketOptionRes->TicketOptionResponse
-                        .builder()
-                        .id(ticketOptionRes.getId())
-                        .price(BigDecimal.valueOf(ticketOptionRes.getPrice()).setScale(2, RoundingMode.HALF_UP))
-                        .startDate(ticketOptionRes.getStartDate())
-                        .expireDate(ticketOptionRes.getExpireDate())
-                        .entries(ticketOptionRes.getEntries())
-                        .fullPrice(BigDecimal.valueOf(ticketOptionRes.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
-                        .build()
-        ).collect(Collectors.toList());
-    }
-
 
     @GetMapping("/{id}")
+    @PreAuthorize("permitAll()")
     public TicketOptionResponse getVoucherOptionById(@PathVariable("id") Long id) {
         TicketOption ticketOption = ticketOptionService.getTicketOptionById(id)
                 .orElse(null);
@@ -78,21 +76,24 @@ public class TicketOptionController {
                 .startDate(ticketOption.getStartDate())
                 .expireDate(ticketOption.getExpireDate())
                 .entries(ticketOption.getEntries())
+                .discountType(ticketOption.getDiscountType())
                 .fullPrice(BigDecimal.valueOf(ticketOption.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
                 .build();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteVoucherOptionById(@PathVariable("id") Long id) {
-        ticketOptionService.deleteTicketOption(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteVoucherOptionById(@PathVariable("id") Long id) {
+//        ticketOptionService.deleteTicketOption(id);
+//    }
 
     @DeleteMapping("/latest")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void deleteLatestVoucherOptionById() throws ParseException {
         ticketOptionService.deleteTicketOptionByLatestExpireDate();
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void updateVoucherOptionById(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketOptionUpdateRequest ticketOptionUpdateRequest) throws ExpireDateEarlierThanStartDateException, ParseException {
         ticketOptionService.updateTicketOptionsData(ticketOptionUpdateRequest, id);
     }

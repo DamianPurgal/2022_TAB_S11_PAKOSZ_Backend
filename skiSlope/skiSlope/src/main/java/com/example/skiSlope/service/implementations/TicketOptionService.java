@@ -44,7 +44,7 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
 
     @Override
     public List<TicketOption> getAllCurrentTicketOptions() {
-        return ticketOptionRepository.findAllByExpireDateLessThanEqualAndStartDateGreaterThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
+        return ticketOptionRepository.findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
     @Override
