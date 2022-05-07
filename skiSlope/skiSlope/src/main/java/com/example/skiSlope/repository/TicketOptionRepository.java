@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository("ticket_options")
@@ -17,21 +18,9 @@ public interface TicketOptionRepository  extends CrudRepository<TicketOption, Lo
 
     List<TicketOption> findAllByExpireDateEquals(Date expireDate);
 
-//    TicketOption findTicketOptionByExpireDate(Date expireDate);
-
     List<TicketOption> findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(Date timeNow, Date timeNow2);
 
-//    List<TicketOption> deleteTicketOptionByExpireDate(Date expireDate);
+    Optional<TicketOption> findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(Date timeNow, Date timeNow2, Long id);
 
-    void deleteAllByExpireDate(Date expireDate);
 
-//    List<TicketOption> findAllByExpireDate();
-//
-//    List<TicketOption> findAllByStartDateAfter
-
-//    List<TicketOption> findPresentTicketOptions();
-//
-//    List<TicketOption> findFutureTicketOptions();
-//
-//    List<TicketOption> findPastTicketOptions();
 }

@@ -54,6 +54,7 @@ public class TicketRequest {
         setIfNull();
         return Ticket.builder()
                 .id(null)
+                .code(null)
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
                 .price(null)
@@ -61,6 +62,7 @@ public class TicketRequest {
                 .active(true)
                 .numberOfEntries(intToEnum().getValue())
                 .skiLift(null)
+                .user(null)
                 .build();
     }
 

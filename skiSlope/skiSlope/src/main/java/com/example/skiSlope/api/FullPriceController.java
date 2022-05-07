@@ -32,7 +32,7 @@ public class FullPriceController {
     public void addNewTicketOption(@Valid @NonNull @RequestBody FullPrice fullPrice) throws ParseException {
 
         for(TicketOption t: ticketOptionService.getAllTicketOptions()){
-            if(fullPrice.getStartDate().compareTo(t.getStartDate()) < 0){
+            if(fullPrice.getStartDate().compareTo(t.getStartDate()) <= 0){
                 throw new NewStartDateBeforeStartDateException();
             }
         }

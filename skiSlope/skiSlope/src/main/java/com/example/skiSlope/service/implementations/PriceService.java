@@ -1,6 +1,7 @@
 package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.exception.PriceNotFoundException;
+import com.example.skiSlope.exception.SkiLiftNotFoundException;
 import com.example.skiSlope.model.Price;
 import com.example.skiSlope.repository.PriceRepository;
 import com.example.skiSlope.service.definitions.PriceServiceDefinition;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class PriceService implements PriceServiceDefinition {
 
     @Override
     public Price getPriceById(Long id) {
-        return Optional.of(priceRepository.getById(id)).orElseThrow(PriceNotFoundException::new);
+        return priceRepository.findById(id).orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
@@ -29,14 +29,14 @@ public class PriceService implements PriceServiceDefinition {
         return priceRepository.findAll();
     }
 
-
     @Override
-    public List<Price> getAllPricesByStartDate(Date startDate) {
-        return priceRepository.findPricesByStartDate(startDate);
+    public Price getCurrentPriceById(Long id) {
+        return priceRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), id)
+                .orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
-    public List<Price> getAllPricesByExpireDate(Date expireDate) {
-        return priceRepository.findPricesByExpireDate(expireDate);
+    public List<Price> getAllCurrentPrices() {
+        return priceRepository.findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 }

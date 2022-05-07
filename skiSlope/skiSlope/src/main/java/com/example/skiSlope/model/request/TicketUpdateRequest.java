@@ -12,8 +12,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @Getter
 public class TicketUpdateRequest {
-//    @Enumerated(EnumType.STRING)
-//    protected DiscountType discountType;
 
     @Size(message = "First name cannot be empty")
     private String ownerName;
@@ -30,33 +28,39 @@ public class TicketUpdateRequest {
     @NumberFormat
     private int numberOfEntries;
 
+    private void setIfNull(Ticket updateTicket){
+        if(ownerName==null)
+            ownerName = updateTicket.getOwnerName();
+    }
+
     public Ticket updateTicket(Ticket updateTicket){
+        setIfNull(updateTicket);
         return Ticket.builder()
                 .id(updateTicket.getId())
-//                .discountType(updateTicket.getDiscountType())
-//                .userId(updateTicket.getUserId())
+                .code(updateTicket.getCode())
+                .skiLift(updateTicket.getSkiLift())
+                .user(updateTicket.getUser())
+                .price(updateTicket.getPrice())
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
                 .paymentId(updateTicket.getPaymentId())
-//                .priceId(updateTicket.getPriceId())
                 .active(true)
-//                .liftId(updateTicket.getLiftId())
                 .numberOfEntries(updateTicket.getNumberOfEntries())
                 .build();
 
     }
-    public Ticket setTicketToInactive(Ticket updateTicket){
-        return Ticket.builder()
-                .id(null)
-//                .discountType(updateTicket.getDiscountType())
-//                .userId(1234L)
-                .cardType(CardType.Ticket)
-                .ownerName(updateTicket.getOwnerName())
-                .paymentId(updateTicket.getPaymentId())
-//                .priceId(updateTicket.getPriceId())
-                .active(false)
-//                .liftId(updateTicket.getLiftId())
-                .numberOfEntries(updateTicket.getNumberOfEntries())
-                .build();
-    }
+//    public Ticket setTicketToInactive(Ticket updateTicket){
+//        return Ticket.builder()
+//                .id(updateTicket.getId())
+//                .code(updateTicket.getCode())
+//                .skiLift(updateTicket.getSkiLift())
+//                .user(updateTicket.getUser())
+//                .price(updateTicket.getPrice())
+//                .cardType(CardType.Ticket)
+//                .ownerName(updateTicket.getOwnerName())
+//                .paymentId(updateTicket.getPaymentId())
+//                .active(active)
+//                .numberOfEntries(updateTicket.getNumberOfEntries())
+//                .build();
+//    }
 }

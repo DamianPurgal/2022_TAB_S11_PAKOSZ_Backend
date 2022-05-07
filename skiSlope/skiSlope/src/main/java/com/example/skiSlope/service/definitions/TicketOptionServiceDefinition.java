@@ -6,7 +6,6 @@ import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface TicketOptionServiceDefinition {
 
@@ -14,7 +13,9 @@ public interface TicketOptionServiceDefinition {
 
     List<TicketOption> addTicketOptions(List<TicketOption> ticketOptionList);
 
-    Optional<TicketOption> getTicketOptionById(Long id);
+    TicketOption getTicketOptionById(Long id);
+
+    TicketOption getCurrentTicketOptionById(Long id);
 
     List<TicketOption> getAllCurrentTicketOptions();
 

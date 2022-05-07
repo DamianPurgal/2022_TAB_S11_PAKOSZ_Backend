@@ -1,6 +1,9 @@
 package com.example.skiSlope.api;
 
+import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.exception.PriceNotFoundException;
+import com.example.skiSlope.exception.TicketNotFoundException;
+import com.example.skiSlope.model.Price;
 import com.example.skiSlope.model.SkiLift;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
@@ -12,6 +15,7 @@ import com.example.skiSlope.service.implementations.PriceService;
 import com.example.skiSlope.service.implementations.SkiLiftService;
 import com.example.skiSlope.service.implementations.TicketService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,13 +38,15 @@ public class TicketController {
 
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) throws PriceNotFoundException, PriceNotFoundException {
+    public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) {
+        System.out.println("Hello");
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user2 = userService.getUser(loggedUser.getUsername());
 
         Ticket ticket = ticketRequest.ticketRequestToUser();
+        Price price = priceService.getPriceById(ticketRequest.getPriceId());
         SkiLift skiLift = skiLiftService.getSkyLiftById(ticketRequest.getLiftId());
-        ticket.setPrice(priceService.getPriceById(ticketRequest.getPriceId()));
+        ticket.setPrice(price);
         ticket.setSkiLift(skiLift);
         ticket.setUser(user2);
         ticketService.addTicket(ticket);
@@ -65,26 +71,21 @@ public class TicketController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public Ticket getTicketById(@PathVariable("id") Long id) {
-        return ticketService.getTicketById(id)
-                .orElse(null);
+    public TicketResponse getTicketById(@PathVariable("id") Long id) {
+        Ticket ticket = ticketService.getTicketById(id);
+        return TicketResponse.builder()
+                .id(ticket.getId())
+                .code(ticket.getCode())
+                .ownerName(ticket.getOwnerName())
+                .entryAmount(ticket.getNumberOfEntries())
+                .skiLiftName(ticket.getSkiLift().getName())
+                .active(ticket.getActive())
+                .build();
     }
     @GetMapping("/myTickets")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<TicketResponse> getAllTicketsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User user2 = userService.getUser(loggedUser.getUsername());
-//        return user2.getTicketSet().stream().map(
-//                ticketRes->TicketResponse
-//                        .builder()
-//                        .id(ticketRes.getId())
-//                        .code(ticketRes.getCode())
-//                        .userId(ticketRes.getUser().getId())
-//                        .active(ticketRes.getActive())
-//                        .entryAmount(ticketRes.getNumberOfEntries())
-//                        .ownerName(ticketRes.getOwnerName())
-//                        .build()
-//        ).collect(Collectors.toList());
         List<Ticket> ticketList = ticketService.getAllTicketsByUserId(loggedUser.getId());
         return ticketList.stream().map(
                 ticketRes->TicketResponse
@@ -97,6 +98,25 @@ public class TicketController {
                         .skiLiftName(ticketRes.getSkiLift().getName())
                         .build()
         ).collect(Collectors.toList());
+    }
+
+    @GetMapping("/myTickets/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    public TicketResponse getUserTicketById(@PathVariable("id") Long id) {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Ticket ticket = ticketService.getTicketById(id);
+        if(loggedUser.getId().equals(ticket.getUser().getId()))
+            return TicketResponse.builder()
+                    .id(ticket.getId())
+                    .code(ticket.getCode())
+                    .ownerName(ticket.getOwnerName())
+                    .entryAmount(ticket.getNumberOfEntries())
+                    .skiLiftName(ticket.getSkiLift().getName())
+                    .active(ticket.getActive())
+                    .build();
+        else {
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to that ticket resource!");
+        }
     }
 
     @DeleteMapping("/{id}")

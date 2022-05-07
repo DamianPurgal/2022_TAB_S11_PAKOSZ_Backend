@@ -27,12 +27,6 @@ public class TicketOptionController {
 
     private TicketOptionService ticketOptionService;
 
-//    @PostMapping
-//    public void addNewTicketOption(@Valid @NonNull @RequestBody TicketOptionRequest ticketOptionRequest) throws ExpireDateEarlierThanStartDateException, ParseException {
-//        TicketOption ticketOption = ticketOptionRequest.ticketOptionRequest();
-//        ticketOptionService.addTicketOption(ticketOption);
-//    }
-
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<TicketOptionResponse> getAllTicketOptions() {
@@ -64,11 +58,9 @@ public class TicketOptionController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public TicketOptionResponse getVoucherOptionById(@PathVariable("id") Long id) {
-        TicketOption ticketOption = ticketOptionService.getTicketOptionById(id)
-                .orElse(null);
-
+        TicketOption ticketOption = ticketOptionService.getTicketOptionById(id);
         return TicketOptionResponse
                 .builder()
                 .id(ticketOption.getId())
@@ -81,10 +73,21 @@ public class TicketOptionController {
                 .build();
     }
 
-//    @DeleteMapping("/{id}")
-//    public void deleteVoucherOptionById(@PathVariable("id") Long id) {
-//        ticketOptionService.deleteTicketOption(id);
-//    }
+    @GetMapping("/current/{id}")
+    @PreAuthorize("permitAll()")
+    public TicketOptionResponse getCurrentTicketOptionById(@PathVariable("id") Long id) {
+        TicketOption ticketOption = ticketOptionService.getCurrentTicketOptionById(id);
+        return TicketOptionResponse
+                .builder()
+                .id(ticketOption.getId())
+                .price(BigDecimal.valueOf(ticketOption.getPrice()).setScale(2, RoundingMode.HALF_UP))
+                .startDate(ticketOption.getStartDate())
+                .expireDate(ticketOption.getExpireDate())
+                .entries(ticketOption.getEntries())
+                .discountType(ticketOption.getDiscountType())
+                .fullPrice(BigDecimal.valueOf(ticketOption.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
+                .build();
+    }
 
     @DeleteMapping("/latest")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")

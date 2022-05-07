@@ -3,7 +3,6 @@ package com.example.skiSlope.service.implementations;
 import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
-import com.example.skiSlope.model.request.TicketOptionRequest;
 import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 import com.example.skiSlope.repository.TicketOptionRepository;
 import com.example.skiSlope.service.definitions.TicketOptionServiceDefinition;
@@ -13,12 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static com.example.skiSlope.model.enums.EntriesEnum.transformIntToValue;
 
 @Slf4j
 @AllArgsConstructor
@@ -38,8 +34,14 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     }
 
     @Override
-    public Optional<TicketOption> getTicketOptionById(Long id) {
-        return ticketOptionRepository.findById(id);
+    public TicketOption getTicketOptionById(Long id) {
+
+        return ticketOptionRepository.findById(id).orElseThrow(PriceNotFoundException::new);
+    }
+
+    @Override
+    public TicketOption getCurrentTicketOptionById(Long id) {
+        return ticketOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), id).orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
@@ -69,18 +71,22 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     @Override
     public void updateLatestTicketOptionData(Date newExpireDate) throws ParseException {
         List<TicketOption> ticketOptionList = ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        List<TicketOption> ticketOptionToUpdate = new ArrayList<>();
         for(TicketOption t : ticketOptionList){
             t.setExpireDate(newExpireDate);
-            ticketOptionRepository.save(t);
+            ticketOptionToUpdate.add(t);
         }
+        ticketOptionRepository.saveAll(ticketOptionToUpdate);
     }
 
     public void updateBeforeLatestTicketOptionData(Date date) throws ParseException {
         List<TicketOption> ticketOptionList = ticketOptionRepository.findAllByExpireDateEquals(date);
+        List<TicketOption> ticketOptionToUpdate = new ArrayList<>();
         for(TicketOption t : ticketOptionList){
             t.setExpireDate(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
-            ticketOptionRepository.save(t);
+            ticketOptionToUpdate.add(t);
         }
+        ticketOptionRepository.saveAll(ticketOptionToUpdate);
     }
 
     @Override
@@ -91,10 +97,12 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     @Override
     public void deleteTicketOptionByLatestExpireDate() throws ParseException {
         List<TicketOption> ticketOptions = ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        List<TicketOption> ticketOptionToDelete = new ArrayList<>();
         Date foundStartDate = ticketOptions.get(0).getStartDate();
         for(TicketOption t : ticketOptions){
-            ticketOptionRepository.delete(t);
+            ticketOptionToDelete.add(t);
         }
+        ticketOptionRepository.deleteAll(ticketOptionToDelete);
         updateBeforeLatestTicketOptionData(foundStartDate);
 
     }

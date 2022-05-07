@@ -25,25 +25,25 @@ public class VoucherOptionController {
     }
 
     @GetMapping
-    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<VoucherOption> getAllVoucherOptions() {
 
         return voucherOptionService.getAllVoucherOptions();
     }
-    @GetMapping(path ="startDate({date})")
-    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public List<VoucherOption> getVoucherOptionsByStartDate(@PathVariable("date") Date startDate){
-        return voucherOptionService.getAllVoucherOptionsByStartDate(startDate);
-    }
+//    @GetMapping(path ="startDate({date})")
+//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+//    public List<VoucherOption> getVoucherOptionsByStartDate(@PathVariable("date") Date startDate){
+//        return voucherOptionService.getAllVoucherOptionsByStartDate(startDate);
+//    }
 
-    @GetMapping(path ="expireDate({date})")
-    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public List<VoucherOption> getVoucherOptionsByExpireDate(@PathVariable("date") Date expireDate){
-        return voucherOptionService.getAllVoucherOptionsByExpireDate(expireDate);
-    }
+//    @GetMapping(path ="expireDate({date})")
+//    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+//    public List<VoucherOption> getVoucherOptionsByExpireDate(@PathVariable("date") Date expireDate){
+//        return voucherOptionService.getAllVoucherOptionsByExpireDate(expireDate);
+//    }
 
-    @GetMapping(path = "{id}")
-    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public VoucherOption getVoucherOptionById(@PathVariable("id") Long id) {
         return voucherOptionService.getVoucherOptionById(id)
                 .orElse(null);

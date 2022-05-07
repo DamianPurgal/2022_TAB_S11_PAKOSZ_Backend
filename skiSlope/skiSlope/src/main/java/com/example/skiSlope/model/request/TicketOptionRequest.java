@@ -29,7 +29,6 @@ public class TicketOptionRequest {
     @NumberFormat
     protected double price;
 
-//    @NonNull
     @DateTimeFormat
     protected Date startDate;
 
