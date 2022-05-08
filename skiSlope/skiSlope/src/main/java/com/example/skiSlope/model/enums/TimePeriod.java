@@ -24,6 +24,7 @@ public enum TimePeriod {
 
     TimePeriod(String name, double value) {
         this.name = name;
+        this.value = value;
     }
 
     public static TimePeriod transformStringToName(String name) {

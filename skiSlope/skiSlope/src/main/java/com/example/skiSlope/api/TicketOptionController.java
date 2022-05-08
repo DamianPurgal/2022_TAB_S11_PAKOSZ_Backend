@@ -24,20 +24,6 @@ public class TicketOptionController {
 
     private TicketOptionService ticketOptionService;
 
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public List<TicketOptionResponse> getAllTicketOptions() {
-        List<TicketOption> ticketOptionList = ticketOptionService.getAllTicketOptions();
-        return getTicketOptionResponses(ticketOptionList);
-    }
-
-    @GetMapping("/current")
-    @PreAuthorize("permitAll()")
-    public List<TicketOptionResponse> getAllCurrentTicketOptions() {
-        List<TicketOption> ticketOptionList = ticketOptionService.getAllCurrentTicketOptions();
-        return getTicketOptionResponses(ticketOptionList);
-    }
-
     private List<TicketOptionResponse> getTicketOptionResponses(List<TicketOption> ticketOptionList) {
         return ticketOptionList.stream().map(
                 ticketOptionRes->TicketOptionResponse
@@ -53,6 +39,19 @@ public class TicketOptionController {
         ).collect(Collectors.toList());
     }
 
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    public List<TicketOptionResponse> getAllTicketOptions() {
+        List<TicketOption> ticketOptionList = ticketOptionService.getAllTicketOptions();
+        return getTicketOptionResponses(ticketOptionList);
+    }
+
+    @GetMapping("/current")
+    @PreAuthorize("permitAll()")
+    public List<TicketOptionResponse> getAllCurrentTicketOptions() {
+        List<TicketOption> ticketOptionList = ticketOptionService.getAllCurrentTicketOptions();
+        return getTicketOptionResponses(ticketOptionList);
+    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
@@ -88,13 +87,13 @@ public class TicketOptionController {
 
     @DeleteMapping("/latest")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void deleteLatestVoucherOptionById() throws ParseException {
+    public void deleteLatestTicketOptionById() throws ParseException {
         ticketOptionService.deleteTicketOptionByLatestExpireDate();
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void updateVoucherOptionById(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketOptionUpdateRequest ticketOptionUpdateRequest) throws ExpireDateEarlierThanStartDateException, ParseException {
+    public void updateTicketOptionById(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketOptionUpdateRequest ticketOptionUpdateRequest) throws ExpireDateEarlierThanStartDateException, ParseException {
         ticketOptionService.updateTicketOptionsData(ticketOptionUpdateRequest, id);
     }
 }

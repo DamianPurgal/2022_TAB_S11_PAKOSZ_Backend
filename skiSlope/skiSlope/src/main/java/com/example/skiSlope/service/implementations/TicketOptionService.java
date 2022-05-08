@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
@@ -8,6 +9,7 @@ import com.example.skiSlope.repository.TicketOptionRepository;
 import com.example.skiSlope.service.definitions.TicketOptionServiceDefinition;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -63,9 +65,13 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     }
 
     @Override
-    public void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ExpireDateEarlierThanStartDateException, ParseException {
+    public void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ParseException {
         TicketOption ticketOption = ticketOptionRepository.findById(id)
                 .orElseThrow(PriceNotFoundException::new);
+        Date now = new Date(System.currentTimeMillis());
+        if(ticketOption.getStartDate().compareTo(now) <= 0){
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You cannot update this item becouse it's not a date in the future!");
+        }
         ticketOption = ticketOptionUpdateRequest.updatePriceRequest(ticketOption);
         ticketOptionRepository.save(ticketOption);
     }
@@ -102,6 +108,10 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
         List<TicketOption> ticketOptions = ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
         List<TicketOption> ticketOptionToDelete = new ArrayList<>();
         Date foundStartDate = ticketOptions.get(0).getStartDate();
+        Date now = new Date(System.currentTimeMillis());
+        if(foundStartDate.compareTo(now) <= 0){
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You cannot delete this item becouse it's not a date in the future!");
+        }
         for(TicketOption t : ticketOptions){
             ticketOptionToDelete.add(t);
         }

@@ -21,13 +21,15 @@ public class TicketOptionFullPriceRequest {
     }
 
     public TicketOption createFullPricePriceRequest(DiscountType discountType, EntriesEnum entriesEnum, FullPrice fullPrice) throws ParseException {
+        double countedPrice = fullPrice.getFullPrice()*(1-discountType.getValue())* entriesEnum.getValue();
+        double fullCountedPrice = fullPrice.getFullPrice()* entriesEnum.getValue();
         return TicketOption.builder()
                 .id(null)
-                .price(fullPrice.getFullPrice()*discountType.getValue()* entriesEnum.getValue())
+                .price(countedPrice)
                 .startDate(fullPrice.getStartDate())
                 .expireDate(setEternalExpireDate())
                 .discountType(discountType)
-                .fullPrice(fullPrice.getFullPrice())
+                .fullPrice(fullCountedPrice)
                 .entriesEnum(entriesEnum)
                 .build();
     }

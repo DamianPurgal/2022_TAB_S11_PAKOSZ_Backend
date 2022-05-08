@@ -22,13 +22,14 @@ public class VoucherOptionFullPriceRequest {
 
     public VoucherOption createFullPriceVoucherRequest(DiscountType discountType, TimePeriod timePeriod, FullPrice fullPrice) throws ParseException {
         double countedPrice = fullPrice.getFullPrice()*(1-discountType.getValue())* timePeriod.getValue();
+        double fullCountedPrice = fullPrice.getFullPrice()* timePeriod.getValue();
         return VoucherOption.builder()
                 .id(null)
                 .price(countedPrice)
                 .startDate(fullPrice.getStartDate())
                 .expireDate(setEternalExpireDate())
                 .discountType(discountType)
-                .fullPrice(fullPrice.getFullPrice())
+                .fullPrice(fullCountedPrice)
                 .timePeriod(timePeriod)
                 .build();
     }

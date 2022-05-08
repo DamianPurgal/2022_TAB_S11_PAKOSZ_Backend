@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum DiscountType {
-    None(1),
+    None(0),
     Child(0.51),
     Student(0.51),
     Senior(0.75),
