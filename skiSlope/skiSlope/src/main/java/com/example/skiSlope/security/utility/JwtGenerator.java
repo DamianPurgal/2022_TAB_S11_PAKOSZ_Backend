@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.skiSlope.model.User;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -31,6 +32,22 @@ public class JwtGenerator {
                 .sign(algorithm);
     }
 
+    public static String generateJWTAccessToken(String username, Collection<? extends GrantedAuthority> authorities, String issuer){
+        Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET_KEY.getBytes());
+        return JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWT_ACCESS_TOKEN_VALIDITY))
+                .withIssuer(issuer)
+                .withClaim("roles", authorities.stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()))
+                .sign(algorithm);
+    }
 
-
+    public static String generateJWTRefreshToken(String username, String issuer){
+        Algorithm algorithm = Algorithm.HMAC256(JWT_SECRET_KEY.getBytes());
+        return JWT.create()
+                .withSubject(username)
+                .withExpiresAt(new Date(System.currentTimeMillis() + JWT_REFRESH_TOKEN_VALIDITY))
+                .withIssuer(issuer)
+                .sign(algorithm);
+    }
 }
