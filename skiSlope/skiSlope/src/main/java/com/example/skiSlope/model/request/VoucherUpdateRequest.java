@@ -20,38 +20,42 @@ public class VoucherUpdateRequest {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE, fallbackPatterns = { "M/d/yy", "dd.MM.yyyy" })
     private Date expireDate;
 
-
-    public Voucher updateVoucher(Voucher voucher){
+    private void setIfNull(Voucher voucher){
         if(ownerName==null)
             ownerName = voucher.getOwnerName();
         if(startDate==null)
             startDate = voucher.getStartDate();
         if(expireDate==null)
             expireDate = voucher.getExpireDate();
-        System.out.println("Voucher request");
+    }
+
+    public Voucher updateVoucher(Voucher voucher){
+        setIfNull(voucher);
         return Voucher.builder()
                 .id(voucher.getId())
-//                .discountType(voucher.getDiscountType())
-//                .userId(1234L)
+                .price(voucher.getPrice())
+                .startDate(voucher.getStartDate())
+                .expireDate(voucher.getExpireDate())
+                .user(voucher.getUser())
                 .cardType(CardType.Voucher)
                 .ownerName(ownerName)
                 .paymentId(voucher.getPaymentId())
-//                .priceId(1234L)
+                .price(voucher.getPrice())
                 .active(true)
                 .startDate(null)
                 .expireDate(null)
                 .build();
     }
-    public Voucher setVoucherInactive(Voucher voucher){
-        return Voucher.builder()
-                .active(false)
-                .build();
-    }
-    public Voucher setDates(Voucher voucher){
-        //Implement time
-        return Voucher.builder()
-                .startDate(startDate)
-                .expireDate(expireDate)
-                .build();
-    }
+//    public Voucher setVoucherInactive(Voucher voucher){
+//        return Voucher.builder()
+//                .active(false)
+//                .build();
+//    }
+//    public Voucher setDates(Voucher voucher){
+//        //Implement time
+//        return Voucher.builder()
+//                .startDate(startDate)
+//                .expireDate(expireDate)
+//                .build();
+//    }
 }

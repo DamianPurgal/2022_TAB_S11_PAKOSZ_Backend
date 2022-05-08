@@ -39,13 +39,12 @@ public class TicketController {
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void addTicket(@Valid @NonNull @RequestBody TicketRequest ticketRequest) {
-        System.out.println("Hello");
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user2 = userService.getUser(loggedUser.getUsername());
-
-        Ticket ticket = ticketRequest.ticketRequestToUser();
         Price price = priceService.getPriceById(ticketRequest.getPriceId());
         SkiLift skiLift = skiLiftService.getSkyLiftById(ticketRequest.getLiftId());
+
+        Ticket ticket = ticketRequest.ticketRequestToUser();
         ticket.setPrice(price);
         ticket.setSkiLift(skiLift);
         ticket.setUser(user2);
@@ -119,16 +118,30 @@ public class TicketController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    @DeleteMapping("/myTickets/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
     public void deleteTicketByCode(@PathVariable("id") Long id) {
-        ticketService.deleteTicket(id);
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Ticket ticket = ticketService.getTicketById(id);
+        if(loggedUser.getId().equals(ticket.getUser().getId())) {
+            ticketService.deleteTicket(id);
+        }
+        else {
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to delete that ticket!");
+        }
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/myTickets/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketUpdateRequest ticketUpdateRequest) {
-        ticketService.updateTicketsData(ticketUpdateRequest, id);
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Ticket ticket = ticketService.getTicketById(id);
+        if(loggedUser.getId().equals(ticket.getUser().getId())) {
+            ticketService.updateTicketsData(ticketUpdateRequest, id);
+        }
+        else {
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to update that ticket!");
+        }
     }
 
 }

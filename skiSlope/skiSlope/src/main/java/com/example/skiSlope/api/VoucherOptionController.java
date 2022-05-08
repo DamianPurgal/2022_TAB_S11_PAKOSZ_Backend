@@ -1,6 +1,7 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.VoucherOption;
+import com.example.skiSlope.model.response.VoucherOptionResponse;
 import com.example.skiSlope.service.implementations.VoucherOptionService;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -18,29 +19,12 @@ public class VoucherOptionController {
 
     private VoucherOptionService voucherOptionService;
 
-    @PostMapping
-    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void addNewVoucherOption(@Valid @NonNull @RequestBody VoucherOption voucherOption) {
-        voucherOptionService.addNewVoucherOption(voucherOption);
-    }
-
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<VoucherOption> getAllVoucherOptions() {
-
+//        List<VoucherOption> voucherOptionList = voucherOptionService.getAllVoucherOptions();
         return voucherOptionService.getAllVoucherOptions();
     }
-//    @GetMapping(path ="startDate({date})")
-//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-//    public List<VoucherOption> getVoucherOptionsByStartDate(@PathVariable("date") Date startDate){
-//        return voucherOptionService.getAllVoucherOptionsByStartDate(startDate);
-//    }
-
-//    @GetMapping(path ="expireDate({date})")
-//    //@PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-//    public List<VoucherOption> getVoucherOptionsByExpireDate(@PathVariable("date") Date expireDate){
-//        return voucherOptionService.getAllVoucherOptionsByExpireDate(expireDate);
-//    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")

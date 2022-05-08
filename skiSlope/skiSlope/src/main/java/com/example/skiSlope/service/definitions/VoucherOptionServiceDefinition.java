@@ -1,8 +1,10 @@
 package com.example.skiSlope.service.definitions;
 
 import com.example.skiSlope.model.Price;
+import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.VoucherOption;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -11,16 +13,20 @@ public interface VoucherOptionServiceDefinition {
 
     VoucherOption addNewVoucherOption(VoucherOption voucherOption);
 
-    Optional<VoucherOption> getVoucherOptionById(Long id);
+    VoucherOption getVoucherOptionById(Long id);
+
+    VoucherOption getCurrentVoucherOptionById(Long id);
+
+    List<VoucherOption> getAllCurrentVoucherOptions();
 
     List<VoucherOption> getAllVoucherOptions();
 
-    List<VoucherOption> getAllVoucherOptionsByStartDate(Date startDate);
-
-    List<VoucherOption> getAllVoucherOptionsByExpireDate(Date expireDate);
-
     void updateVoucherOptionData(VoucherOption voucherOption, Long id);
 
-    void deleteVoucherOption(Long id);
+    void updateLatestVoucherOptionData(Date newExpireDate) throws ParseException;
+
+    void updateBeforeLatestVoucherOptionData(Date date) throws ParseException;
+
+    void deleteVoucherOptionByLatestExpireDate() throws ParseException;
 
 }

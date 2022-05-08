@@ -25,24 +25,15 @@ public class TicketOptionUpdateRequest {
     @NumberFormat
     protected Double price;
 
-    @Enumerated(EnumType.STRING)
-    protected DiscountType discountType;
-
     @NumberFormat
     protected Double fullPrice;
 
-    @Enumerated(EnumType.STRING)
-    protected EntriesEnum entriesEnum;
 
-    private void setNullValues(TicketOption ticketOption) throws ParseException {
+    private void setNullValues(TicketOption ticketOption) {
         if(price==null) {
             price = ticketOption.getPrice();}
-        if(discountType==null) {
-            discountType = ticketOption.getDiscountType();}
         if(fullPrice==null) {
             fullPrice = ticketOption.getFullPrice();}
-        if(entriesEnum==null) {
-            entriesEnum = transformIntToValue(ticketOption.getEntries());}
     }
     boolean checkPriceCorrectness(){
         if(price > fullPrice){
@@ -51,7 +42,7 @@ public class TicketOptionUpdateRequest {
         return true;
     }
 
-    public TicketOption updatePriceRequest(TicketOption ticketOption) throws ParseException {
+    public TicketOption updatePriceRequest(TicketOption ticketOption) {
         setNullValues(ticketOption);
         checkPriceCorrectness();
         return TicketOption.builder()
@@ -59,24 +50,9 @@ public class TicketOptionUpdateRequest {
                 .price(price)
                 .startDate(ticketOption.getStartDate())
                 .expireDate(ticketOption.getExpireDate())
-                .discountType(discountType)
+                .discountType(ticketOption.getDiscountType())
                 .fullPrice(fullPrice)
-                .entriesEnum(entriesEnum)
+                .entriesEnum(EntriesEnum.transformIntToValue(ticketOption.getEntries()))
                 .build();
     }
-//    public TicketOption ticketOptionUpdateExpireDateRequest(TicketOption ticketOption, Date autoExpireDate) throws ParseException{
-//        setNullValues(ticketOption);
-//        if(autoExpireDate!=null) {
-//            expireDate = autoExpireDate;}
-//        checkExpireDateCorrectness();
-//        return TicketOption.builder()
-//                .id(ticketOption.getId())
-//                .price(ticketOption.getPrice())
-//                .startDate(ticketOption.getStartDate())
-//                .expireDate(expireDate)
-//                .discountType(ticketOption.getDiscountType())
-//                .fullPrice(ticketOption.getFullPrice())
-//                .entriesEnum(transformIntToValue(ticketOption.getEntries()))
-//                .build();
-//    }
 }

@@ -1,6 +1,7 @@
 package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.exception.PriceNotFoundException;
+import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.VoucherOption;
 import com.example.skiSlope.repository.VoucherOptionRepository;
 import com.example.skiSlope.service.definitions.VoucherOptionServiceDefinition;
@@ -8,10 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @AllArgsConstructor
@@ -26,23 +26,24 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
     }
 
     @Override
-    public Optional<VoucherOption> getVoucherOptionById(Long id) {
-        return Optional.of(voucherOptionRepository.getById(id));
+    public VoucherOption getVoucherOptionById(Long id) {
+        return voucherOptionRepository.findById(id).orElseThrow(PriceNotFoundException::new);
+    }
+
+    @Override
+    public VoucherOption getCurrentVoucherOptionById(Long id) {
+        return voucherOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), id)
+                .orElseThrow(PriceNotFoundException::new);
+    }
+
+    @Override
+    public List<VoucherOption> getAllCurrentVoucherOptions() {
+        return voucherOptionRepository.findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
     @Override
     public List<VoucherOption> getAllVoucherOptions() {
         return voucherOptionRepository.findAll();
-    }
-
-    @Override
-    public List<VoucherOption> getAllVoucherOptionsByStartDate(Date startDate) {
-        return voucherOptionRepository.findVoucherOptionsByStartDate(startDate);
-    }
-
-    @Override
-    public List<VoucherOption> getAllVoucherOptionsByExpireDate(Date expireDate) {
-        return voucherOptionRepository.findVoucherOptionsByExpireDate(expireDate);
     }
 
     @Override
@@ -61,7 +62,38 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
     }
 
     @Override
-    public void deleteVoucherOption(Long id) {voucherOptionRepository.deleteById(id);}
+    public void updateLatestVoucherOptionData(Date newExpireDate) throws ParseException {
+        List<VoucherOption> voucherOptionList = voucherOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        List<VoucherOption> voucherOptionToUpdate = new ArrayList<>();
+        for(VoucherOption v : voucherOptionList){
+            v.setExpireDate(newExpireDate);
+            voucherOptionToUpdate.add(v);
+        }
+        voucherOptionRepository.saveAll(voucherOptionToUpdate);
+    }
+
+    @Override
+    public void updateBeforeLatestVoucherOptionData(Date date) throws ParseException {
+        List<VoucherOption> voucherOptionList = voucherOptionRepository.findAllByExpireDateEquals(date);
+        List<VoucherOption> voucherOptionToUpdate = new ArrayList<>();
+        for(VoucherOption v : voucherOptionList){
+            v.setExpireDate(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+            voucherOptionToUpdate.add(v);
+        }
+        voucherOptionRepository.saveAll(voucherOptionToUpdate);
+    }
+
+    @Override
+    public void deleteVoucherOptionByLatestExpireDate() throws ParseException {
+        List<VoucherOption> voucherOptions = voucherOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        List<VoucherOption> voucherOptionToDelete = new ArrayList<>();
+        Date foundStartDate = voucherOptions.get(0).getStartDate();
+        for(VoucherOption v : voucherOptions){
+            voucherOptionToDelete.add(v);
+        }
+        voucherOptionRepository.deleteAll(voucherOptionToDelete);
+        updateBeforeLatestVoucherOptionData(foundStartDate);
+    }
 
 
 }

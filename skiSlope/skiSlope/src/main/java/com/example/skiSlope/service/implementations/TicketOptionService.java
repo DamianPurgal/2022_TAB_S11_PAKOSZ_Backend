@@ -36,12 +36,14 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     @Override
     public TicketOption getTicketOptionById(Long id) {
 
-        return ticketOptionRepository.findById(id).orElseThrow(PriceNotFoundException::new);
+        return ticketOptionRepository.findById(id)
+                .orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
     public TicketOption getCurrentTicketOptionById(Long id) {
-        return ticketOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), id).orElseThrow(PriceNotFoundException::new);
+        return ticketOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), id)
+                .orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
@@ -49,10 +51,10 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
         return ticketOptionRepository.findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
-    @Override
-    public List<TicketOption> getAllLatestTicketOptions() throws ParseException {
-        return ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
-    }
+//    @Override
+//    public List<TicketOption> getAllLatestTicketOptions() throws ParseException {
+//        return ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+//    }
 
 
     @Override
@@ -79,6 +81,7 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
         ticketOptionRepository.saveAll(ticketOptionToUpdate);
     }
 
+    @Override
     public void updateBeforeLatestTicketOptionData(Date date) throws ParseException {
         List<TicketOption> ticketOptionList = ticketOptionRepository.findAllByExpireDateEquals(date);
         List<TicketOption> ticketOptionToUpdate = new ArrayList<>();
@@ -89,10 +92,10 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
         ticketOptionRepository.saveAll(ticketOptionToUpdate);
     }
 
-    @Override
-    public void deleteTicketOption(Long id) {
-        ticketOptionRepository.deleteById(id);
-    }
+//    @Override
+//    public void deleteTicketOption(Long id) {
+//        ticketOptionRepository.deleteById(id);
+//    }
 
     @Override
     public void deleteTicketOptionByLatestExpireDate() throws ParseException {

@@ -19,17 +19,13 @@ public interface TicketOptionServiceDefinition {
 
     List<TicketOption> getAllCurrentTicketOptions();
 
-    List<TicketOption> getAllLatestTicketOptions() throws ParseException;
-
-//    List<TicketOption> getAllPastTicketOptions();
-
     List<TicketOption> getAllTicketOptions();
 
     void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ExpireDateEarlierThanStartDateException, ParseException;
 
     void updateLatestTicketOptionData(Date newExpireDate) throws ParseException;
 
-    void deleteTicketOption(Long id);
+    void updateBeforeLatestTicketOptionData(Date date) throws ParseException;
 
     void deleteTicketOptionByLatestExpireDate() throws ParseException;
 }

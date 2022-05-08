@@ -2,7 +2,6 @@ package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
-import com.example.skiSlope.model.request.TicketOptionRequest;
 import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 import com.example.skiSlope.model.response.TicketOptionResponse;
 import com.example.skiSlope.service.implementations.TicketOptionService;
@@ -14,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 

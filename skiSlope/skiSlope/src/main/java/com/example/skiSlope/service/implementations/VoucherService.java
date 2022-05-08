@@ -25,7 +25,8 @@ public class VoucherService implements VoucherServiceDefinition {
     }
 
     @Override
-    public Voucher getVoucherById(Long id) { return voucherRepository.findById(id).orElseThrow(PriceNotFoundException::new); }
+    public Voucher getVoucherById(Long id) { return voucherRepository.findById(id)
+            .orElseThrow(VoucherNotFoundException::new); }
 
     @Override
     public List<Voucher> getAllVouchersByUserId(Long userId) {
@@ -47,6 +48,7 @@ public class VoucherService implements VoucherServiceDefinition {
 
     @Override
     public void deleteVoucher(Long id) {
+        voucherRepository.findById(id).orElseThrow(VoucherNotFoundException::new);
         voucherRepository.deleteById(id);
     }
 }

@@ -25,7 +25,8 @@ public class TicketService implements TicketServiceDefinition {
 
     @Override
     public Ticket getTicketById(Long id) {
-        return ticketRepository.findById(id).orElseThrow(TicketNotFoundException::new);
+        return ticketRepository.findById(id)
+                .orElseThrow(TicketNotFoundException::new);
     }
 
     @Override
@@ -42,7 +43,7 @@ public class TicketService implements TicketServiceDefinition {
     public void updateTicketsData(TicketUpdateRequest ticketUpdateRequest, Long id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(TicketNotFoundException::new);
-        ticket = ticketUpdateRequest.updateTicket(ticket);
+        ticket = ticketUpdateRequest.updateTicketOwnerName(ticket);
         System.out.println(ticket.getOwnerName());
         ticketRepository.save(ticket);
     }

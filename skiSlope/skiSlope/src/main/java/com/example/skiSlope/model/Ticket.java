@@ -1,7 +1,6 @@
 package com.example.skiSlope.model;
 
 import com.example.skiSlope.model.enums.CardType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 

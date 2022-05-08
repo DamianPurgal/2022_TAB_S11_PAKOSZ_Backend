@@ -1,8 +1,6 @@
 package com.example.skiSlope.model.request;
 
-import com.example.skiSlope.exception.NoAvailableEntryOptionException;
 import com.example.skiSlope.model.enums.CardType;
-//import com.example.skiSlope.model.DiscountType;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.enums.EntriesEnum;
@@ -12,7 +10,6 @@ import lombok.NonNull;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import javax.validation.constraints.Size;
 
 import static com.example.skiSlope.model.enums.EntriesEnum.transformIntToValue;
 
@@ -20,7 +17,6 @@ import static com.example.skiSlope.model.enums.EntriesEnum.transformIntToValue;
 @Getter
 public class TicketRequest {
 
-    @Size(message = "First name cannot be empty")
     private String ownerName;
 
     @NonNull
@@ -57,12 +53,12 @@ public class TicketRequest {
                 .code(null)
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
-                .price(null)
                 .paymentId(paymentId)
+                .user(null)
+                .price(null)
                 .active(true)
                 .numberOfEntries(intToEnum().getValue())
                 .skiLift(null)
-                .user(null)
                 .build();
     }
 

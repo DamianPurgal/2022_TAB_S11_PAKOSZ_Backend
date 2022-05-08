@@ -1,13 +1,11 @@
 package com.example.skiSlope.api;
 
-import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
 import com.example.skiSlope.exception.NewStartDateBeforeStartDateException;
 import com.example.skiSlope.model.FullPrice;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.enums.DiscountType;
 import com.example.skiSlope.model.enums.EntriesEnum;
 import com.example.skiSlope.model.request.TicketOptionFullPriceRequest;
-import com.example.skiSlope.model.request.TicketOptionRequest;
 import com.example.skiSlope.service.implementations.TicketOptionService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.List;
 
 @AllArgsConstructor
 @RequestMapping("api/prices/set")

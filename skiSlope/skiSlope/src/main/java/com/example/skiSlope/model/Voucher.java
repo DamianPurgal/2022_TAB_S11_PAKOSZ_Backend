@@ -1,7 +1,6 @@
 package com.example.skiSlope.model;
 
 import com.example.skiSlope.model.enums.CardType;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -25,25 +24,11 @@ public class Voucher extends Card {
     private Date expireDate;
 
     @Builder
-    public Voucher(Long id,
-                  @JsonProperty("code") UUID code,
-                  @JsonProperty("userId") User user,
-                  @JsonProperty("paymentId") Long paymentId,
-                  @JsonProperty("priceId") Price price,
-//                  @JsonProperty("discountType") DiscountType discountType,
-                  @JsonProperty("ownerName") String ownerName,
-                  CardType cardType,
-                  Boolean active,
-                   @JsonProperty("startDate") Date startDate,
-                   @JsonProperty("endDate") Date expireDate) {
+    public Voucher(Long id, UUID code, User user, Long paymentId, Price price, String ownerName, CardType cardType, Boolean active, Date startDate, Date expireDate) {
         this.id = id;
         this.code = UUID.randomUUID();
-       this.user = user;
+        this.user = user;
         this.paymentId = paymentId;
-//        this.priceId = priceId;
-//        this.discountType = discountType;
-//        if(discountType == null)
-//            this.discountType = DiscountType.None;
         this.price = price;
         this.cardType = CardType.Voucher;
         this.active = true;
