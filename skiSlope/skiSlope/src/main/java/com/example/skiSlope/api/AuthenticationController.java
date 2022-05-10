@@ -4,9 +4,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.example.skiSlope.exception.JwtExpiredException;
 import com.example.skiSlope.exception.JwtValidationException;
+import com.example.skiSlope.exception.UserUsernameIsNotAvailableException;
+import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.UserRegistrationRequest;
 import com.example.skiSlope.model.response.JwtTokensResponse;
-import com.example.skiSlope.model.User;
 import com.example.skiSlope.security.UserRole;
 import com.example.skiSlope.security.utility.JwtGenerator;
 import com.example.skiSlope.security.utility.JwtResolver;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import static com.example.skiSlope.security.ApplicationSecurityConfig.GOOGLE_ACCOUNT_USERNAME_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @AllArgsConstructor
@@ -48,8 +50,6 @@ public class AuthenticationController {
                 throw new JwtValidationException();
             }
         }else{
-            if(authorizationHeader != null)
-                System.out.println("problem here");
             throw new JwtValidationException();
         }
     }
@@ -57,7 +57,9 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void registerUser(@Valid @NonNull @RequestBody UserRegistrationRequest userRegistrationRequest){
         User user = userRegistrationRequest.userRegistrationRequestToUser();
-        user.setUserRole(UserRole.MANAGER);
+        user.setUserRole(UserRole.CUSTOMER);
+        if(user.getUsername().startsWith(GOOGLE_ACCOUNT_USERNAME_PREFIX))
+            throw new UserUsernameIsNotAvailableException();
         userService.addUser(user);
     }
 
