@@ -100,7 +100,7 @@ public class TicketController {
     }
 
     @GetMapping("/myTickets/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public TicketResponse getUserTicketById(@PathVariable("id") Long id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.getTicketById(id);
@@ -119,7 +119,7 @@ public class TicketController {
     }
 
     @DeleteMapping("/myTickets/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void deleteTicketByCode(@PathVariable("id") Long id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.getTicketById(id);

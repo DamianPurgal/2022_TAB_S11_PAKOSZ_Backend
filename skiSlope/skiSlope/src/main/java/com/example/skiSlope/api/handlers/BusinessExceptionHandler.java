@@ -29,56 +29,56 @@ public class BusinessExceptionHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-    public ErrorResponse UserUsernameIsNotAvailableException(UserUsernameIsNotAvailableException userUsernameIsNotAvailableException) {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse UserUsernameIsNotAvailableExceptionHandler(UserUsernameIsNotAvailableException userUsernameIsNotAvailableException) {
         return new ErrorResponse(userUsernameIsNotAvailableException);
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-    public ErrorResponse ExpireDateEarlierThanStartDateException(ExpireDateEarlierThanStartDateException expireDateEarlierThanStartDateException) {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse ExpireDateEarlierThanStartDateExceptionHandler(ExpireDateEarlierThanStartDateException expireDateEarlierThanStartDateException) {
         return new ErrorResponse(expireDateEarlierThanStartDateException);
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-    public ErrorResponse NewStartDateBeforeStartDateException(NewStartDateBeforeStartDateException newStartDateBeforeStartDateException) {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse NewStartDateBeforeStartDateExceptionHandler(NewStartDateBeforeStartDateException newStartDateBeforeStartDateException) {
         return new ErrorResponse(newStartDateBeforeStartDateException);
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-    public ErrorResponse NoAvailableEntryOptionException(NoAvailableEntryOptionException noAvailableEntryOptionException) {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse NoAvailableEntryOptionExceptionHandler(NoAvailableEntryOptionException noAvailableEntryOptionException) {
         return new ErrorResponse(noAvailableEntryOptionException);
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NOT_ACCEPTABLE)
-    public ErrorResponse PriceGreaterThanFullPriceException(PriceGreaterThanFullPriceException priceGreaterThanFullPriceException) {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse PriceGreaterThanFullPriceExceptionHandler(PriceGreaterThanFullPriceException priceGreaterThanFullPriceException) {
         return new ErrorResponse(priceGreaterThanFullPriceException);
     }
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ErrorResponse PriceNotFoundException(PriceNotFoundException priceNotFoundException) {
+    public ErrorResponse PriceNotFoundExceptionHandler(PriceNotFoundException priceNotFoundException) {
         return new ErrorResponse(priceNotFoundException);
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public ErrorResponse ResourceNotFoundException(ResourceNotFoundException resourceNotFoundException) {
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorResponse ResourceNotFoundExceptionHandler(ResourceNotFoundException resourceNotFoundException) {
         return new ErrorResponse(resourceNotFoundException);
     }
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ErrorResponse SkiLiftNotFoundException(SkiLiftNotFoundException skiLiftNotFoundException) {
+    public ErrorResponse SkiLiftNotFoundExceptionHandler(SkiLiftNotFoundException skiLiftNotFoundException) {
         return new ErrorResponse(skiLiftNotFoundException);
     }
 
     @ExceptionHandler
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public ErrorResponse TicketNotFoundException(TicketNotFoundException ticketNotFoundException) {
+    public ErrorResponse TicketNotFoundExceptionHandler(TicketNotFoundException ticketNotFoundException) {
         return new ErrorResponse(ticketNotFoundException);
     }
 
