@@ -22,7 +22,7 @@ public class SkiLiftController {
     private SkiLiftService skiLiftService;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void addSkiLift(@Valid @NonNull @RequestBody SkiLiftRequest skiLiftRequest) {
         SkiLift skiLift = skiLiftRequest.skiLiftRequest();
         skiLiftService.addSkiLift(skiLift);

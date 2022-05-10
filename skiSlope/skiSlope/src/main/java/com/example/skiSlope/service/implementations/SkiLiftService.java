@@ -39,7 +39,7 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     @Override
     public void updateSkiLiftsData(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id) {
         SkiLift skiLift = skiLiftRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(SkiLiftNotFoundException::new);
         skiLift = skiLiftUpdateRequest.skiListUpdateInfoRequest(skiLift);
         skiLiftRepository.save(skiLift);
     }
@@ -47,13 +47,14 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     @Override
     public void setSkiLiftsActive(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id) {
         SkiLift skiLift = skiLiftRepository.findById(id)
-                .orElseThrow(UserNotFoundException::new);
+                .orElseThrow(SkiLiftNotFoundException::new);
         skiLift = skiLiftUpdateRequest.skiListSetActiveInfoRequest(skiLift);
         skiLiftRepository.save(skiLift);
     }
 
     @Override
     public void deleteSkiLift(Long id) {
+        skiLiftRepository.findById(id).orElseThrow(SkiLiftNotFoundException::new);
         skiLiftRepository.deleteById(id);
     }
 }

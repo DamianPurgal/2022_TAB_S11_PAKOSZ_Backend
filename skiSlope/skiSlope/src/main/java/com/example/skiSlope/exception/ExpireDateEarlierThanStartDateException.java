@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class ExpireDateEarlierThanStartDateException extends BusinessException {
     public ExpireDateEarlierThanStartDateException(){
-        super(HttpStatus.NOT_ACCEPTABLE.value(), "ExpireDate occurs before startDate!");
+        super(HttpStatus.BAD_REQUEST.value(), "ExpireDate occurs before startDate!");
     }
 }

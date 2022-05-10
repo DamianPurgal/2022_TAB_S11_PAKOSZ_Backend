@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class PriceGreaterThanFullPriceException extends  BusinessException{
     public PriceGreaterThanFullPriceException() {
-        super(HttpStatus.NOT_ACCEPTABLE.value(), "Price cannot be greater than FullPrice without discount!");
+        super(HttpStatus.BAD_REQUEST.value(), "Price cannot be greater than FullPrice without discount!");
     }
 }

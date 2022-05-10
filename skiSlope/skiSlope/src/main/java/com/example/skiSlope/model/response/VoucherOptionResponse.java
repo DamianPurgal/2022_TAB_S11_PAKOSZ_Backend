@@ -10,14 +10,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TicketOptionResponse {
+public class VoucherOptionResponse {
 
     @JsonProperty("id")
     Long id;
@@ -35,8 +34,8 @@ public class TicketOptionResponse {
     @Enumerated(EnumType.STRING)
     DiscountType discountType;
 
-    @JsonProperty("entries")
-    int entries;
+    @JsonProperty("timePeriod")
+    String timePeriod;
 
     @JsonProperty("priceWithoutDiscount")
     BigDecimal fullPrice;

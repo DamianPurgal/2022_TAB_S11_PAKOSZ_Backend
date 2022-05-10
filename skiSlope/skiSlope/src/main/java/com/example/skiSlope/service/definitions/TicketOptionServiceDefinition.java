@@ -4,8 +4,8 @@ import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
 import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 public interface TicketOptionServiceDefinition {
 
@@ -13,17 +13,19 @@ public interface TicketOptionServiceDefinition {
 
     List<TicketOption> addTicketOptions(List<TicketOption> ticketOptionList);
 
-    Optional<TicketOption> getTicketOptionById(Long id);
+    TicketOption getTicketOptionById(Long id);
+
+    TicketOption getCurrentTicketOptionById(Long id);
 
     List<TicketOption> getAllCurrentTicketOptions();
-
-    List<TicketOption> getAllFutureTicketOptions();
-
-    List<TicketOption> getAllPastTicketOptions();
 
     List<TicketOption> getAllTicketOptions();
 
     void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ExpireDateEarlierThanStartDateException, ParseException;
 
-    void deleteTicketOption(Long id);
+    void updateLatestTicketOptionData(Date newExpireDate) throws ParseException;
+
+    void updateBeforeLatestTicketOptionData(Date date) throws ParseException;
+
+    void deleteTicketOptionByLatestExpireDate() throws ParseException;
 }

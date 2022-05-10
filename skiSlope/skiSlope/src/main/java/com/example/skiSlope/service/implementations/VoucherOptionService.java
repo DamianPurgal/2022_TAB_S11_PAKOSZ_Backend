@@ -1,17 +1,21 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.exception.PriceNotFoundException;
+import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.VoucherOption;
+import com.example.skiSlope.model.request.VoucherOptionUpdateRequest;
 import com.example.skiSlope.repository.VoucherOptionRepository;
 import com.example.skiSlope.service.definitions.VoucherOptionServiceDefinition;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.sql.BatchUpdateException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @AllArgsConstructor
@@ -26,8 +30,24 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
     }
 
     @Override
-    public Optional<VoucherOption> getVoucherOptionById(Long id) {
-        return Optional.of(voucherOptionRepository.getById(id));
+    public List<VoucherOption> addVoucherOptions(List<VoucherOption> voucherOptionList) {
+        return voucherOptionRepository.saveAll(voucherOptionList);
+    }
+
+    @Override
+    public VoucherOption getVoucherOptionById(Long id) {
+        return voucherOptionRepository.findById(id).orElseThrow(PriceNotFoundException::new);
+    }
+
+    @Override
+    public VoucherOption getCurrentVoucherOptionById(Long id) {
+        return voucherOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), id)
+                .orElseThrow(PriceNotFoundException::new);
+    }
+
+    @Override
+    public List<VoucherOption> getAllCurrentVoucherOptions() {
+        return voucherOptionRepository.findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
     @Override
@@ -36,32 +56,54 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
     }
 
     @Override
-    public List<VoucherOption> getAllVoucherOptionsByStartDate(Date startDate) {
-        return voucherOptionRepository.findVoucherOptionsByStartDate(startDate);
+    public void updateVoucherOptionData(VoucherOptionUpdateRequest voucherOptionUpdateRequest, Long id) throws ParseException {
+        VoucherOption voucherOption = voucherOptionRepository.findById(id)
+                .orElseThrow(PriceNotFoundException::new);
+        Date now = new Date(System.currentTimeMillis());
+        if(voucherOption.getStartDate().compareTo(now) <= 0){
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You cannot update this item becouse it's not a date in the future!");
+        }
+        voucherOption = voucherOptionUpdateRequest.updatePriceRequest(voucherOption);
+        voucherOptionRepository.save(voucherOption);
     }
 
     @Override
-    public List<VoucherOption> getAllVoucherOptionsByExpireDate(Date expireDate) {
-        return voucherOptionRepository.findVoucherOptionsByExpireDate(expireDate);
+    public void updateLatestVoucherOptionData(Date newExpireDate) throws ParseException {
+        List<VoucherOption> voucherOptionList = voucherOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        List<VoucherOption> voucherOptionToUpdate = new ArrayList<>();
+        for(VoucherOption v : voucherOptionList){
+            v.setExpireDate(newExpireDate);
+            voucherOptionToUpdate.add(v);
+        }
+        voucherOptionRepository.saveAll(voucherOptionToUpdate);
     }
 
     @Override
-    public void updateVoucherOptionData(VoucherOption newVoucherOption, Long id) {
-       VoucherOption voucherOption = voucherOptionRepository.findById(id).orElseThrow(PriceNotFoundException::new);
-
-       voucherOption.setPrice(Objects.nonNull(newVoucherOption.getPrice()) ? newVoucherOption.getPrice() : voucherOption.getPrice());
-       voucherOption.setStartDate(Objects.nonNull(newVoucherOption.getStartDate()) ? newVoucherOption.getStartDate() : voucherOption.getStartDate());
-       voucherOption.setExpireDate(Objects.nonNull(newVoucherOption.getExpireDate()) ? newVoucherOption.getExpireDate() : voucherOption.getExpireDate());
-       voucherOption.setDiscountType(Objects.nonNull(newVoucherOption.getDiscountType()) ? newVoucherOption.getDiscountType() : voucherOption.getDiscountType());
-       voucherOption.setFullPrice(Objects.nonNull(newVoucherOption.getFullPrice()) ? newVoucherOption.getFullPrice() : voucherOption.getFullPrice());
-       voucherOption.setTimePeriod(Objects.nonNull(newVoucherOption.getTimePeriod()) ? newVoucherOption.getTimePeriod() : voucherOption.getTimePeriod());
-
-       voucherOptionRepository.save(voucherOption);
-
+    public void updateBeforeLatestVoucherOptionData(Date date) throws ParseException {
+        List<VoucherOption> voucherOptionList = voucherOptionRepository.findAllByExpireDateEquals(date);
+        List<VoucherOption> voucherOptionToUpdate = new ArrayList<>();
+        for(VoucherOption v : voucherOptionList){
+            v.setExpireDate(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+            voucherOptionToUpdate.add(v);
+        }
+        voucherOptionRepository.saveAll(voucherOptionToUpdate);
     }
 
     @Override
-    public void deleteVoucherOption(Long id) {voucherOptionRepository.deleteById(id);}
+    public void deleteVoucherOptionByLatestExpireDate() throws ParseException {
+        List<VoucherOption> voucherOptions = voucherOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
+        List<VoucherOption> voucherOptionToDelete = new ArrayList<>();
+        Date foundStartDate = voucherOptions.get(0).getStartDate();
+        Date now = new Date(System.currentTimeMillis());
+        if(foundStartDate.compareTo(now) <= 0){
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You cannot delete this item becouse it's not a date in the future!");
+        }
+        for(VoucherOption v : voucherOptions){
+            voucherOptionToDelete.add(v);
+        }
+        voucherOptionRepository.deleteAll(voucherOptionToDelete);
+        updateBeforeLatestVoucherOptionData(foundStartDate);
+    }
 
 
 }

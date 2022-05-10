@@ -2,9 +2,11 @@ package com.example.skiSlope.model.request;
 
 import com.example.skiSlope.exception.PriceGreaterThanFullPriceException;
 import com.example.skiSlope.model.TicketOption;
+import com.example.skiSlope.model.VoucherOption;
 import com.example.skiSlope.model.enums.DiscountType;
 import com.example.skiSlope.model.enums.EntriesEnum;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.model.enums.TimePeriod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,7 +22,7 @@ import static com.example.skiSlope.model.enums.EntriesEnum.transformIntToValue;
 
 @AllArgsConstructor
 @Getter
-public class TicketOptionUpdateRequest {
+public class VoucherOptionUpdateRequest {
 
     @NumberFormat
     protected Double price;
@@ -29,11 +31,11 @@ public class TicketOptionUpdateRequest {
     protected Double fullPrice;
 
 
-    private void setNullValues(TicketOption ticketOption) {
+    private void setNullValues(VoucherOption voucherOption) throws ParseException {
         if(price==null) {
-            price = ticketOption.getPrice();}
+            price = voucherOption.getPrice();}
         if(fullPrice==null) {
-            fullPrice = ticketOption.getFullPrice();}
+            fullPrice = voucherOption.getFullPrice();}
     }
     boolean checkPriceCorrectness(){
         if(price > fullPrice){
@@ -42,17 +44,17 @@ public class TicketOptionUpdateRequest {
         return true;
     }
 
-    public TicketOption updatePriceRequest(TicketOption ticketOption) {
-        setNullValues(ticketOption);
+    public VoucherOption updatePriceRequest(VoucherOption voucherOption) throws ParseException {
+        setNullValues(voucherOption);
         checkPriceCorrectness();
-        return TicketOption.builder()
-                .id(ticketOption.getId())
+        return VoucherOption.builder()
+                .id(voucherOption.getId())
                 .price(price)
-                .startDate(ticketOption.getStartDate())
-                .expireDate(ticketOption.getExpireDate())
-                .discountType(ticketOption.getDiscountType())
+                .startDate(voucherOption.getStartDate())
+                .expireDate(voucherOption.getExpireDate())
+                .discountType(voucherOption.getDiscountType())
                 .fullPrice(fullPrice)
-                .entriesEnum(EntriesEnum.transformIntToValue(ticketOption.getEntries()))
+                .timePeriod(voucherOption.getTimePeriod())
                 .build();
     }
 }
