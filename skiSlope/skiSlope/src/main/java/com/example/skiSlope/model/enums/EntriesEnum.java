@@ -11,7 +11,7 @@ public enum EntriesEnum {
     twenty(20),
     fifty(50);
     private final int value;
-    private static int[] values = new int[]{1, 5, 10, 15, 20, 50};
+    private static final int[] values = new int[]{1, 5, 10, 15, 20, 50};
 
     EntriesEnum(int value) {
         this.value = value;

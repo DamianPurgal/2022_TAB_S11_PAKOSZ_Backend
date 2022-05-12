@@ -10,7 +10,7 @@ public enum UserRole {
     CUSTOMER(Sets.newHashSet()),
     MANAGER(Sets.newHashSet(UserPermission.GET_ALL_USERS));
 
-    private Set<UserPermission> permissions;
+    private final Set<UserPermission> permissions;
 
     UserRole(Set<UserPermission> permissions) {
         this.permissions = permissions;
