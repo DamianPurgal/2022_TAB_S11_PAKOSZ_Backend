@@ -13,6 +13,7 @@ import com.example.skiSlope.service.implementations.TicketOptionService;
 import com.example.skiSlope.service.implementations.VoucherOptionService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,7 @@ public class FullPriceController {
     VoucherOptionService voucherOptionService;
 
     @PostMapping("/ticket")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void addNewTicketOption(@Valid @NonNull @RequestBody FullPrice fullPrice) throws ParseException {
 
         for(TicketOption t: ticketOptionService.getAllTicketOptions()){
@@ -53,6 +55,7 @@ public class FullPriceController {
     }
 
     @PostMapping("/voucher")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void addNewVoucherOption(@Valid @NonNull @RequestBody FullPrice fullPrice) throws ParseException {
         for(VoucherOption v: voucherOptionService.getAllVoucherOptions()){
             if(fullPrice.getStartDate().compareTo(v.getStartDate()) <= 0){

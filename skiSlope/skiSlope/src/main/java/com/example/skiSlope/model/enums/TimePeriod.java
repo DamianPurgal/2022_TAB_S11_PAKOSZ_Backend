@@ -15,12 +15,12 @@ public enum TimePeriod {
     year("year", 120.0);
 
     @Getter
-    private String name;
+    private final String name;
 
     @Getter
-    private double value;
+    private final double value;
 
-    private static String[] names = new String[]{"2h", "4h", "1 day", "3 days", "week", "2 weeks", "month", "3 months", "year"};
+    private static final String[] names = new String[]{"2h", "4h", "1 day", "3 days", "week", "2 weeks", "month", "3 months", "year"};
 
     TimePeriod(String name, double value) {
         this.name = name;

@@ -4,7 +4,7 @@ public enum UserPermission {
     GET_ALL_USERS("user:getall"),
     PERMISSION_TWO("COSTAM:WRITE");
 
-    private String permission;
+    private final String permission;
 
     UserPermission(String permission) {
         this.permission = permission;
