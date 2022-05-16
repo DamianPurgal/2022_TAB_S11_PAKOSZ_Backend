@@ -2,17 +2,21 @@ package com.example.skiSlope.api;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.skiSlope.exception.JwtExpiredException;
 import com.example.skiSlope.exception.JwtValidationException;
 import com.example.skiSlope.exception.UserUsernameIsNotAvailableException;
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.request.JwtTokenValidationRequest;
 import com.example.skiSlope.model.request.UserRegistrationRequest;
 import com.example.skiSlope.model.response.JwtTokensResponse;
+import com.example.skiSlope.model.response.IsJwtTokenValidResponse;
 import com.example.skiSlope.security.UserRole;
 import com.example.skiSlope.security.utility.JwtGenerator;
 import com.example.skiSlope.security.utility.JwtResolver;
 import com.example.skiSlope.service.definitions.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +65,27 @@ public class AuthenticationController {
         if(user.getUsername().startsWith(GOOGLE_ACCOUNT_USERNAME_PREFIX))
             throw new UserUsernameIsNotAvailableException();
         userService.addUser(user);
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping("/verify")
+    public IsJwtTokenValidResponse isJWTValid(@Valid @NonNull @RequestBody JwtTokenValidationRequest token){
+
+        //String username = "";
+        try{
+            DecodedJWT decodedJWT = JwtResolver.verifyJWTAndReturnDecodedJWT(token.getToken());
+            //username = JwtResolver.getUsernameFromDecodedJWT(decodedJWT);
+        }catch(TokenExpiredException exception){
+            throw new JwtExpiredException();
+        } catch(Exception exception){
+            throw new JwtValidationException();
+        }
+
+        //if(!userService.isExistingUser(username)){
+        //    throw new JwtValidationException();
+        //}
+
+        return new IsJwtTokenValidResponse(HttpStatus.OK.value(), "JWT is valid");
     }
 
 }
