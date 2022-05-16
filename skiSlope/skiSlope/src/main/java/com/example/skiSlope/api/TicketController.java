@@ -22,6 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,7 +83,7 @@ public class TicketController {
                 .build();
     }
     @GetMapping("/myTickets")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public List<TicketResponse> getAllTicketsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Ticket> ticketList = ticketService.getAllTicketsByUserId(loggedUser.getId());
@@ -116,6 +117,49 @@ public class TicketController {
         else {
             throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to that ticket resource!");
         }
+    }
+
+    @GetMapping("/myTickets/skiLiftId/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    public List<TicketResponse> getAllUserTicketsBySkiLiftId(@PathVariable("id") Long id) {
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        SkiLift skiLift = skiLiftService.getSkyLiftById(id);
+        List<Ticket> ticketList = ticketService.getAllTicketsByUserId(loggedUser.getId());
+        List<Ticket> ticketListBySkiLift = new ArrayList<>();
+        for(Ticket t:ticketList){
+            if(t.getSkiLift().getId().equals(skiLift.getId())){
+                ticketListBySkiLift.add(t);
+            }
+        }
+        return ticketListBySkiLift.stream().map(
+                ticketRes->TicketResponse
+                        .builder()
+                        .id(ticketRes.getId())
+                        .code(ticketRes.getCode())
+                        .active(ticketRes.getActive())
+                        .entryAmount(ticketRes.getNumberOfEntries())
+                        .ownerName(ticketRes.getOwnerName())
+                        .skiLiftName(ticketRes.getSkiLift().getName())
+                        .build()
+        ).collect(Collectors.toList());
+    }
+
+    @GetMapping("/skiLiftId/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    public List<TicketResponse> getAllTicketsBySkiLiftId(@PathVariable("id") Long id) {
+        SkiLift skiLift = skiLiftService.getSkyLiftById(id);
+        List<Ticket> ticketList = ticketService.getAllTicketsBySkiLiftId(skiLift.getId());
+            return ticketList.stream().map(
+                    ticketRes->TicketResponse
+                            .builder()
+                            .id(ticketRes.getId())
+                            .code(ticketRes.getCode())
+                            .active(ticketRes.getActive())
+                            .entryAmount(ticketRes.getNumberOfEntries())
+                            .ownerName(ticketRes.getOwnerName())
+                            .skiLiftName(ticketRes.getSkiLift().getName())
+                            .build()
+            ).collect(Collectors.toList());
     }
 
     @DeleteMapping("/myTickets/{id}")

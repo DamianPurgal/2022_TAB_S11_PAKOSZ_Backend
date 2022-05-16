@@ -35,6 +35,11 @@ public class TicketService implements TicketServiceDefinition {
     }
 
     @Override
+    public List<Ticket> getAllTicketsBySkiLiftId(Long skiLiftId) {
+        return ticketRepository.findAllBySkiLiftId(skiLiftId);
+    }
+
+    @Override
     public List<Ticket> getAllTickets() {
         return ticketRepository.findAll();
     }

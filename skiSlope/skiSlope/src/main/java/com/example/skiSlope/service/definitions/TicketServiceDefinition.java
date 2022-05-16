@@ -13,6 +13,8 @@ public interface TicketServiceDefinition {
 
     List<Ticket> getAllTicketsByUserId(Long userId);
 
+    List<Ticket> getAllTicketsBySkiLiftId(Long skiLiftId);
+
     List<Ticket> getAllTickets();
 
     void updateTicketsData(TicketUpdateRequest ticketUpdateRequest, Long id);
