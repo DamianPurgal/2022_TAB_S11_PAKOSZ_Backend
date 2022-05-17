@@ -65,8 +65,6 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
-                .cors()
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(STATELESS)
                 .and()
