@@ -19,6 +19,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -65,6 +68,8 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(customAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
+                .cors()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(STATELESS)
                 .and()
@@ -118,6 +123,13 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationEntryPoint unauthorizedEntryPoint() {
         return (request, response, authException) -> response.sendError(HttpServletResponse.SC_FORBIDDEN);
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+        return source;
     }
 
 }
