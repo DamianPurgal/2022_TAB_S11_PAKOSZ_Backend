@@ -37,4 +37,5 @@ public class JwtResolver {
     public static String getUsernameFromDecodedJWT(DecodedJWT decodedJWT){
         return decodedJWT.getSubject();
     }
+
 }

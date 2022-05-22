@@ -11,9 +11,12 @@ public interface ScannerQRServiceDefinition {
 
     ScannerQR updateScanner(ScannerQR scannerQR);
 
-    ScannerQR findById(Long id);
+    ScannerQR getById(Long id);
 
     void deleteScanner(Long id);
 
     JwtTokensResponse loginAsScanner(ScannerQRLoginRequest loginRequest);
+
+    ScannerQR getByLogin(String login);
+
 }

@@ -7,6 +7,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 
 @Repository("vouchers")
@@ -15,4 +17,6 @@ public interface VoucherRepository extends CrudRepository<Voucher, Long>,
         PagingAndSortingRepository<Voucher, Long> {
 
     List<Voucher> findAllByUserId(Long userId);
+
+    Optional<Voucher> findByCode(UUID code);
 }

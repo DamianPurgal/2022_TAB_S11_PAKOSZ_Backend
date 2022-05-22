@@ -33,6 +33,9 @@ public class ScannerQR {
     @Column(name="title")
     private String title;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "scannerQR" , orphanRemoval = true)
-    List<ScannerQRSkiLiftConnection> skiLifts = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ski_lift_id", nullable = false)
+    private SkiLift skiLift;
+
+    
 }

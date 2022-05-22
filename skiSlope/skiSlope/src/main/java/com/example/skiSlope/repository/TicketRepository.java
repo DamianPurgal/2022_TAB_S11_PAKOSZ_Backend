@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
-
+import java.util.UUID;
 
 
 @Repository("tickets")
@@ -22,6 +22,6 @@ public interface TicketRepository extends CrudRepository<Ticket, Long>,
 
     List<Ticket> findAllBySkiLiftId(Long skiLiftId);
 
-
+    Optional<Ticket> findByCode(UUID code);
 
 }

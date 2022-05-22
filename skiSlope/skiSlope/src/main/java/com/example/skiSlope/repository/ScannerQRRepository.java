@@ -15,4 +15,5 @@ public interface ScannerQRRepository extends CrudRepository<ScannerQR, Long> {
     void deleteById(Long id);
 
     Optional<ScannerQR> findByLogin(String login);
+
 }

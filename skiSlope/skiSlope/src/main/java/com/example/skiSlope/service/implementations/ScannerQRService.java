@@ -41,11 +41,12 @@ public class ScannerQRService implements ScannerQRServiceDefinition {
 
     @Override
     public ScannerQR updateScanner(ScannerQR scannerQR){
+        scannerQR.setPassword(passwordEncoder.encode(scannerQR.getPassword()));
         return scannerQRRepository.save(scannerQR);
     }
 
     @Override
-    public ScannerQR findById(Long id){
+    public ScannerQR getById(Long id){
         return scannerQRRepository.findById(id).orElseThrow(ScannerQRNotFoundException::new);
     }
 
@@ -66,5 +67,10 @@ public class ScannerQRService implements ScannerQRServiceDefinition {
                 JwtGenerator.generateJWTAccessTokenForScanner(scanner, "scannerLogin"),
                 JwtGenerator.generateJWTRefreshTokenForScanner(scanner, "scannerLogin")
         );
+    }
+
+    @Override
+    public ScannerQR getByLogin(String login) {
+        return scannerQRRepository.findByLogin(login).orElseThrow(ScannerQRNotFoundException::new);
     }
 }

@@ -106,5 +106,27 @@ public class BusinessExceptionHandler {
         return new ErrorResponse(scannerQRFailedToLoginException);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse CardInactiveExceptionHandler(CardInactiveException cardInactiveException) {
+        return new ErrorResponse(cardInactiveException);
+    }
 
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse UnsupportedSkiLiftScannerExceptionHandler(UnsupportedSkiliftScannerException unsupportedSkiliftScannerException) {
+        return new ErrorResponse(unsupportedSkiliftScannerException);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse CardNotFoundExceptionHandler(CardNotFoundException cardNotFoundException) {
+        return new ErrorResponse(cardNotFoundException);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse CardUnpaidExceptionHandler(CardUnpaidException cardUnpaidException) {
+        return new ErrorResponse(cardUnpaidException);
+    }
 }

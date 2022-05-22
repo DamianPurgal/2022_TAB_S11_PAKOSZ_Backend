@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -31,6 +32,7 @@ public abstract class Card {
     protected Long id;
 
     @Column(name="code", nullable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     protected UUID code;
 
     @Column(name="type")
