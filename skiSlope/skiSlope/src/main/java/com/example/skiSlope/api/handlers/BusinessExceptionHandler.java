@@ -88,6 +88,23 @@ public class BusinessExceptionHandler {
         return new ErrorResponse(voucherNotFoundException);
     }
 
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorResponse ScannerQRLoginIsNotAvailableExceptionHandler(ScannerQRLoginNotAvailableException scannerQRLoginNotAvailableException) {
+        return new ErrorResponse(scannerQRLoginNotAvailableException);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorResponse ScannerQRNotFoundExceptionHandler(ScannerQRNotFoundException scannerNotFoundException) {
+        return new ErrorResponse(scannerNotFoundException);
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+    public ErrorResponse ScannerQRLoginFailureExceptionHandler(ScannerQRFailedToLoginException scannerQRFailedToLoginException) {
+        return new ErrorResponse(scannerQRFailedToLoginException);
+    }
 
 
 }

@@ -42,6 +42,10 @@ public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
 
     public static final long JWT_REFRESH_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
 
+    public static final long JWT_SCANNER_ACCESS_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
+
+    public static final long JWT_SCANNER_REFRESH_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
+
     public static final String LOGIN_URL = "/api/login";
     public static final String REFRESH_URL = "/api/auth/refreshToken";
 
