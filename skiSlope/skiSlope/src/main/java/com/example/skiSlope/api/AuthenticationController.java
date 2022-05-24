@@ -68,7 +68,7 @@ public class AuthenticationController {
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping("/verify")
+    @PostMapping("/verify")
     public IsJwtTokenValidResponse isJWTValid(@Valid @NonNull @RequestBody JwtTokenValidationRequest token){
 
         //String username = "";
