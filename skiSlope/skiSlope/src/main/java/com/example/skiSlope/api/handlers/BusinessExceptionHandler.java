@@ -129,4 +129,10 @@ public class BusinessExceptionHandler {
     public ErrorResponse CardUnpaidExceptionHandler(CardUnpaidException cardUnpaidException) {
         return new ErrorResponse(cardUnpaidException);
     }
+
+    @ExceptionHandler
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorResponse CardUnpaidExceptionHandler(ScanNotFoundException scanNotFoundException) {
+        return new ErrorResponse(scanNotFoundException);
+    }
 }

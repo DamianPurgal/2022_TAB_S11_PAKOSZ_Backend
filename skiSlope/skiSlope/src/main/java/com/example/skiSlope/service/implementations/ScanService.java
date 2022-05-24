@@ -10,9 +10,12 @@ import com.example.skiSlope.repository.ScanRepository;
 import com.example.skiSlope.service.definitions.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -96,5 +99,15 @@ public class ScanService implements ScanServiceDefinition {
             }
             return voucher;
         }
+    }
+
+    @Override
+    public List<Scan> getAll() {
+        return scanRepository.findAll();
+    }
+
+    @Override
+    public Page<Scan> getPage(int page) {
+        return scanRepository.findAll(PageRequest.of(page, SCANS_PER_PAGE));
     }
 }
