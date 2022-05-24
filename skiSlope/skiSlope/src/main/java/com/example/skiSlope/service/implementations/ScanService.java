@@ -6,9 +6,7 @@ import com.example.skiSlope.exception.CardUnpaidException;
 import com.example.skiSlope.exception.UnsupportedSkiliftScannerException;
 import com.example.skiSlope.model.*;
 import com.example.skiSlope.model.enums.TimePeriod;
-import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.repository.ScanRepository;
-import com.example.skiSlope.repository.ScannerQRRepository;
 import com.example.skiSlope.service.definitions.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,11 +62,12 @@ public class ScanService implements ScanServiceDefinition {
     }
 
     private Card scanTicket(Ticket ticket, ScannerQR scannerQR){
-        if(ticket.getNumberOfEntries() < 1){
-            throw new CardInactiveException();
-        }
         if(!ticket.getActive()){
             throw new CardUnpaidException();
+        }
+
+        if(ticket.getNumberOfEntries() < 1){
+            throw new CardInactiveException();
         }
 
         if(!ticket.getSkiLift().getId().equals(scannerQR.getSkiLift().getId())){
@@ -80,6 +79,10 @@ public class ScanService implements ScanServiceDefinition {
     }
 
     private Card scanVoucher(Voucher voucher){
+
+        if(!voucher.getActive()){
+            throw new CardUnpaidException();
+        }
         if(voucher.getStartDate() == null || voucher.getExpireDate() == null){
             voucher.setStartDate(new Date(System.currentTimeMillis()));
             VoucherOption voucherOption = voucherOptionService.getVoucherOptionById(voucher.getPrice().getId());
@@ -90,9 +93,6 @@ public class ScanService implements ScanServiceDefinition {
         }else{
             if(new Date(System.currentTimeMillis()).after(voucher.getExpireDate())){
                 throw new CardInactiveException();
-            }
-            if(!voucher.getActive()){
-                throw new CardUnpaidException();
             }
             return voucher;
         }

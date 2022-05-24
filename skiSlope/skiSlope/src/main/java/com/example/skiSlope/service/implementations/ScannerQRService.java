@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.naming.AuthenticationException;
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -72,5 +72,10 @@ public class ScannerQRService implements ScannerQRServiceDefinition {
     @Override
     public ScannerQR getByLogin(String login) {
         return scannerQRRepository.findByLogin(login).orElseThrow(ScannerQRNotFoundException::new);
+    }
+
+    @Override
+    public List<ScannerQR> getAll() {
+        return scannerQRRepository.findAll();
     }
 }

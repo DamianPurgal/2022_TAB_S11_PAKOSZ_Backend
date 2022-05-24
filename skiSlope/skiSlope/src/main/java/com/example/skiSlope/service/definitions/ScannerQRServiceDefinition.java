@@ -5,6 +5,8 @@ import com.example.skiSlope.model.ScannerQR;
 import com.example.skiSlope.model.request.ScannerQRLoginRequest;
 import com.example.skiSlope.model.response.JwtTokensResponse;
 
+import java.util.List;
+
 public interface ScannerQRServiceDefinition {
 
     ScannerQR addScanner(ScannerQR scannerQR);
@@ -18,5 +20,7 @@ public interface ScannerQRServiceDefinition {
     JwtTokensResponse loginAsScanner(ScannerQRLoginRequest loginRequest);
 
     ScannerQR getByLogin(String login);
+
+    List<ScannerQR> getAll();
 
 }

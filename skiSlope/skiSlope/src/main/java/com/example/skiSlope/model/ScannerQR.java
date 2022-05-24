@@ -1,12 +1,8 @@
 package com.example.skiSlope.model;
 
-import com.example.skiSlope.model.utils.LongListConverter;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter

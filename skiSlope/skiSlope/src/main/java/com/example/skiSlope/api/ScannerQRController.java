@@ -1,22 +1,24 @@
 package com.example.skiSlope.api;
 
 
-
 import com.example.skiSlope.model.ScannerQR;
 import com.example.skiSlope.model.request.ScannerQRAddRequest;
 import com.example.skiSlope.model.request.ScannerQREditRequest;
 import com.example.skiSlope.model.request.ScannerQRLoginRequest;
-import com.example.skiSlope.model.request.ScannerQRScanRequest;
 import com.example.skiSlope.model.response.JwtTokensResponse;
+import com.example.skiSlope.model.response.ScannerQRDetailedInformationResponse;
+import com.example.skiSlope.model.response.ScannerQRInformationResponse;
 import com.example.skiSlope.service.definitions.ScannerQRServiceDefinition;
 import com.example.skiSlope.service.implementations.SkiLiftService;
 import lombok.AllArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.lang.NonNull;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
@@ -33,8 +35,7 @@ public class ScannerQRController {
         return scannerQRService.loginAsScanner(scannerQRLoginRequest);
     }
 
-    //manager
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     @PostMapping
     public void addScanner(@Valid @NonNull @RequestBody ScannerQRAddRequest scannerQRAddRequest) {
         ScannerQR scannerQR = scannerQRAddRequest.ScannerAddRequestToScanner();
@@ -42,15 +43,13 @@ public class ScannerQRController {
         scannerQRService.addScanner(scannerQR);
     }
 
-    //manager
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     @DeleteMapping("/{id}")
     public void deleteScanner(@PathVariable("id") Long scannerId){
         scannerQRService.deleteScanner(scannerId);
     }
 
-    //manager
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     @PutMapping
     public void editScanner(@Valid @NonNull @RequestBody ScannerQREditRequest scannerQREditRequest) {
         ScannerQR scannerQR = scannerQRService.getById(scannerQREditRequest.getScannerId());
@@ -62,9 +61,31 @@ public class ScannerQRController {
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SCANNER')")
-    @GetMapping("/test")
-    public void test() {
-        ScannerQR scannerQR = (ScannerQR) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    @GetMapping
+    public ScannerQRInformationResponse getScannerInfo(){
+        ScannerQR scannerQR =  (ScannerQR) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        scannerQR = scannerQRService.getById(scannerQR.getId());
+
+        return new ScannerQRInformationResponse(
+                scannerQR.getSkiLift().getId(),
+                scannerQR.getTitle()
+        );
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    @GetMapping("/getAll")
+    public List<ScannerQRDetailedInformationResponse> getAllScanners(){
+        return scannerQRService.getAll()
+                .stream()
+                .map(
+                        scanner -> ScannerQRDetailedInformationResponse.builder()
+                                .id(scanner.getId())
+                                .login(scanner.getLogin())
+                                .title(scanner.getTitle())
+                                .skiLiftId(scanner.getSkiLift().getId())
+                                .build()
+                    )
+                .collect(Collectors.toList());
     }
 
 }
