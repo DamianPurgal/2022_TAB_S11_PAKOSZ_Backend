@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @AllArgsConstructor
@@ -50,5 +52,15 @@ public class VoucherService implements VoucherServiceDefinition {
     public void deleteVoucher(Long id) {
         voucherRepository.findById(id).orElseThrow(VoucherNotFoundException::new);
         voucherRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Voucher> getVoucherByCode(UUID code) {
+        return voucherRepository.findByCode(code);
+    }
+
+    @Override
+    public Voucher updateVoucher(Voucher voucher) {
+        return voucherRepository.save(voucher);
     }
 }

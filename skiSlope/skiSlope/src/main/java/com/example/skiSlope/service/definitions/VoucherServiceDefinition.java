@@ -4,6 +4,8 @@ import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherUpdateRequest;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface VoucherServiceDefinition {
 
@@ -18,4 +20,8 @@ public interface VoucherServiceDefinition {
     void updateVouchersData(VoucherUpdateRequest voucherUpdateRequest, Long id);
 
     void deleteVoucher(Long id);
+
+    Optional<Voucher> getVoucherByCode(UUID code);
+
+    Voucher updateVoucher(Voucher voucher);
 }

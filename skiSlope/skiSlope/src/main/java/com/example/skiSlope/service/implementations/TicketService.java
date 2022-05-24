@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @AllArgsConstructor
@@ -58,4 +60,13 @@ public class TicketService implements TicketServiceDefinition {
         ticketRepository.deleteById(id);
     }
 
+    @Override
+    public Optional<Ticket> getTicketByCode(UUID code) {
+        return ticketRepository.findByCode(code);
+    }
+
+    @Override
+    public Ticket updateTicket(Ticket ticket) {
+        return ticketRepository.save(ticket);
+    }
 }

@@ -4,6 +4,8 @@ import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.request.TicketUpdateRequest;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public interface TicketServiceDefinition {
 
@@ -20,4 +22,8 @@ public interface TicketServiceDefinition {
     void updateTicketsData(TicketUpdateRequest ticketUpdateRequest, Long id);
 
     void deleteTicket(Long id);
+
+    Optional<Ticket> getTicketByCode(UUID code);
+
+    Ticket updateTicket(Ticket ticket);
 }

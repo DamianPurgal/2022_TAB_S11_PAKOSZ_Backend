@@ -3,6 +3,8 @@ package com.example.skiSlope.model.enums;
 import com.example.skiSlope.exception.NoAvailableEntryOptionException;
 import lombok.Getter;
 
+import java.util.Date;
+
 public enum TimePeriod {
     twoHours("2h", 1.0),
     fourHours("4h", 1.5),
@@ -47,6 +49,30 @@ public enum TimePeriod {
                 return threeMonths;
             case "year":
                 return year;
+            default:
+                throw new NoAvailableEntryOptionException();
+        }
+    }
+    public static Date nameToTimeInMiliseconds(String name) {
+        switch (name) {
+            case "2h":
+                return new Date(1000 * 60 * 60 * 2);
+            case "4h":
+                return new Date(1000 * 60 * 60 * 4);
+            case "1 day":
+                return new Date(1000 * 60 * 60 * 24);
+            case "3 days":
+                return new Date(1000 * 60 * 60 * 24 * 3);
+            case "week":
+                return new Date(1000 * 60 * 60 * 24 * 7);
+            case "2 weeks":
+                return new Date(1000 * 60 * 60 * 24 * 7 * 2);
+            case "month":
+                return new Date(1000L * 60 * 60 * 24 * 31);
+            case "3 months":
+                return new Date(1000L * 60 * 60 * 24 * 31 * 3);
+            case "year":
+                return new Date(1000L * 60 * 60 * 24 * 31 * 365);
             default:
                 throw new NoAvailableEntryOptionException();
         }
