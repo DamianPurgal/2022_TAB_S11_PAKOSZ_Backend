@@ -24,11 +24,11 @@ public class Voucher extends Card {
     private Date expireDate;
 
     @Builder
-    public Voucher(Long id, UUID code, User user, Long paymentId, Price price, String ownerName, CardType cardType, Boolean active, Date startDate, Date expireDate) {
+    public Voucher(Long id, UUID code, User user, Payment payment, Price price, String ownerName, CardType cardType, Boolean active, Date startDate, Date expireDate) {
         this.id = id;
         this.code = UUID.randomUUID();
         this.user = user;
-        this.paymentId = paymentId;
+        this.payment = payment;
         this.price = price;
         this.cardType = CardType.Voucher;
         this.active = true;

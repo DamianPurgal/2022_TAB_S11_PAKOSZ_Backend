@@ -53,7 +53,7 @@ public class TicketRequest {
                 .code(null)
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
-                .paymentId(paymentId)
+                .payment(null)
                 .user(null)
                 .price(null)
                 .active(true)

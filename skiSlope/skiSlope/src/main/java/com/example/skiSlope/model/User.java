@@ -2,7 +2,6 @@ package com.example.skiSlope.model;
 
 import com.example.skiSlope.security.UserRole;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,7 +18,10 @@ import java.util.*;
 public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    List<Card> cardSet = new ArrayList<Card>();
+    List<Card> cards = new ArrayList<Card>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    List<Payment> payments = new ArrayList<Payment>();
 
 
     @Id
