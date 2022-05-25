@@ -40,4 +40,11 @@ public class Voucher extends Card {
         this.startDate = startDate;
         this.expireDate = expireDate;
     }
+
+    public boolean isVoucherExpired(){
+        if(startDate == null || expireDate == null){
+            return false;
+        }
+        return new Date(System.currentTimeMillis()).after(this.getExpireDate());
+    }
 }
