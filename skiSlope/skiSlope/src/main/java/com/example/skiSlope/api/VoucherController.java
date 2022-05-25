@@ -47,6 +47,9 @@ public class VoucherController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<VoucherResponse> getAllVouchers() {
         List<Voucher> voucherList = voucherService.getAllVouchers();
+
+        voucherList = voucherService.setVouchersInactiveIfExpired(voucherList);
+
         return voucherList.stream().map(
                 voucherRes->VoucherResponse
                         .builder()
@@ -64,6 +67,9 @@ public class VoucherController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public VoucherResponse getVoucherById(@PathVariable("id") Long id) {
         Voucher voucher = voucherService.getVoucherById(id);
+
+        voucher = voucherService.setVoucherInactiveIfExpired(voucher);
+
         return VoucherResponse.builder()
                 .id(voucher.getId())
                 .code(voucher.getCode())
@@ -82,6 +88,9 @@ public class VoucherController {
     public List<VoucherResponse> getAllVouchersByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Voucher> voucherList = voucherService.getAllVouchersByUserId(loggedUser.getId());
+
+        voucherList = voucherService.setVouchersInactiveIfExpired(voucherList);
+
         return voucherList.stream().map(
                 voucherRes->VoucherResponse
                         .builder()
@@ -99,6 +108,9 @@ public class VoucherController {
     public VoucherResponse getUserVoucherById(@PathVariable("id") Long id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Voucher voucher = voucherService.getVoucherById(id);
+
+        voucher = voucherService.setVoucherInactiveIfExpired(voucher);
+
         if (loggedUser.getId().equals(voucher.getUser().getId())){
             return VoucherResponse.builder()
                     .id(voucher.getId())

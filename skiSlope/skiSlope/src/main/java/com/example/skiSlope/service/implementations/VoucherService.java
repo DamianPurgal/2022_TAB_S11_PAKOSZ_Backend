@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -62,5 +63,27 @@ public class VoucherService implements VoucherServiceDefinition {
     @Override
     public Voucher updateVoucher(Voucher voucher) {
         return voucherRepository.save(voucher);
+    }
+
+    @Override
+    public List<Voucher> updateVouchers(List<Voucher> vouchers) {
+        return voucherRepository.saveAll(vouchers);
+    }
+
+    @Override
+    public List<Voucher> setVouchersInactiveIfExpired(List<Voucher> vouchers) {
+        List<Voucher> vouchersToUpdate = vouchers.stream().filter(Voucher::isVoucherExpired).toList();
+        vouchersToUpdate.forEach(voucher -> voucher.setActive(false));
+        updateVouchers(vouchersToUpdate);
+        return vouchers;
+    }
+
+    @Override
+    public Voucher setVoucherInactiveIfExpired(Voucher voucher) {
+        if(voucher.isVoucherExpired()){
+            voucher.setActive(false);
+            updateVoucher(voucher);
+        }
+        return voucher;
     }
 }

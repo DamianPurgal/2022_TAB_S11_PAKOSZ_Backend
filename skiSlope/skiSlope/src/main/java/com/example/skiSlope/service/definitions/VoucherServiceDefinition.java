@@ -24,4 +24,10 @@ public interface VoucherServiceDefinition {
     Optional<Voucher> getVoucherByCode(UUID code);
 
     Voucher updateVoucher(Voucher voucher);
+
+    List<Voucher> updateVouchers(List<Voucher> vouchers);
+
+    List<Voucher> setVouchersInactiveIfExpired(List<Voucher> vouchers);
+
+    Voucher setVoucherInactiveIfExpired(Voucher voucher);
 }

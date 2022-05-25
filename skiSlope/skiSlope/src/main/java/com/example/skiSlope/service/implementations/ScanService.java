@@ -78,6 +78,11 @@ public class ScanService implements ScanServiceDefinition {
         }
 
         ticket.setNumberOfEntries(ticket.getNumberOfEntries() - 1);
+
+        if(ticket.getNumberOfEntries() == 0){
+            ticket.setActive(false);
+        }
+
         return ticketService.updateTicket(ticket);
     }
 
@@ -86,7 +91,7 @@ public class ScanService implements ScanServiceDefinition {
         if(!voucher.getActive()){
             throw new CardUnpaidException();
         }
-        if(voucher.getStartDate() == null || voucher.getExpireDate() == null){
+        if(isVoucherScannedForTheFirstTime(voucher)){
             voucher.setStartDate(new Date(System.currentTimeMillis()));
             VoucherOption voucherOption = voucherOptionService.getVoucherOptionById(voucher.getPrice().getId());
             voucher.setExpireDate(
@@ -94,7 +99,7 @@ public class ScanService implements ScanServiceDefinition {
             );
             return voucherService.updateVoucher(voucher);
         }else{
-            if(new Date(System.currentTimeMillis()).after(voucher.getExpireDate())){
+            if(voucher.isVoucherExpired()){
                 throw new CardInactiveException();
             }
             return voucher;
@@ -110,4 +115,9 @@ public class ScanService implements ScanServiceDefinition {
     public Page<Scan> getPage(int page) {
         return scanRepository.findAll(PageRequest.of(page, SCANS_PER_PAGE));
     }
+
+    private boolean isVoucherScannedForTheFirstTime(Voucher voucher){
+        return voucher.getStartDate() == null || voucher.getExpireDate() == null;
+    }
+
 }
