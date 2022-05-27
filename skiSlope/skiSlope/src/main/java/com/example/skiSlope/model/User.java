@@ -1,8 +1,8 @@
 package com.example.skiSlope.model;
 
+import com.example.skiSlope.model.enums.AuthenticationProvider;
 import com.example.skiSlope.security.UserRole;
 import lombok.*;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -54,7 +54,11 @@ public class User implements UserDetails {
     @Column(name="enabled")
     private Boolean enabled = true;
 
-    public User(String username, String password, String email, String firstName, String lastName, UserRole userRole) {
+    @Column(name="provider")
+    @Enumerated(EnumType.STRING)
+    private AuthenticationProvider authenticationProvider;
+
+    public User(String username, String password, String email, String firstName, String lastName, UserRole userRole, AuthenticationProvider authenticationProvider) {
 
         this.username = username;
         this.password = password;
@@ -62,6 +66,7 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userRole = userRole;
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Override
