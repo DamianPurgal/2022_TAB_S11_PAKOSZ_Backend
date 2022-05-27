@@ -4,6 +4,7 @@ import com.example.skiSlope.exception.UserNotFoundException;
 import com.example.skiSlope.exception.UserPasswordsDoesntMatchException;
 import com.example.skiSlope.exception.UserUsernameIsNotAvailableException;
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.enums.AuthenticationProvider;
 import com.example.skiSlope.model.request.UserEditInformationRequest;
 import com.example.skiSlope.repository.UserRepository;
 import com.example.skiSlope.service.definitions.UserService;
@@ -29,7 +30,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
+        return userRepository.findByUsernameAndAuthenticationProvider(username, AuthenticationProvider.LOCAL)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found", username)));
     }
 
     @Override
