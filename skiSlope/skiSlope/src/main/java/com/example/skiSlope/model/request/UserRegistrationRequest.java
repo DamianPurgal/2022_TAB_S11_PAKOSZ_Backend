@@ -1,6 +1,7 @@
 package com.example.skiSlope.model.request;
 
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.enums.AuthenticationProvider;
 import com.example.skiSlope.security.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,7 @@ public class UserRegistrationRequest {
                 .userRole(UserRole.CUSTOMER)
                 .locked(false)
                 .enabled(true)
+                .authenticationProvider(AuthenticationProvider.LOCAL)
                 .build();
     }
 }

@@ -3,6 +3,7 @@ package com.example.skiSlope.security.oauth2;
 
 import com.example.skiSlope.exception.UserNotFoundException;
 import com.example.skiSlope.model.User;
+import com.example.skiSlope.model.enums.AuthenticationProvider;
 import com.example.skiSlope.security.UserRole;
 import com.example.skiSlope.service.definitions.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private String getGoogleUserUsername(GoogleOAuth2AccountInformation googleUser){
 
-        String username = (String)googleUser.getAttributes().get("email");
+        String username = ((String)googleUser.getAttributes().get("email"))
+                .toLowerCase()
+                .replace("@gmail.com", "");
         username = GOOGLE_ACCOUNT_USERNAME_PREFIX + username;
 
         return username;
@@ -73,6 +76,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .userRole(UserRole.CUSTOMER)
                 .locked(false)
                 .enabled(true)
+                .authenticationProvider(AuthenticationProvider.GOOGLE)
                 .build();
 
         return userService.addUser(user);

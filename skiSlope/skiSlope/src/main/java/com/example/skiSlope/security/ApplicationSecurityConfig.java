@@ -34,7 +34,7 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig  extends WebSecurityConfigurerAdapter {
 
-    public static final String GOOGLE_ACCOUNT_USERNAME_PREFIX = "GOOGLE@";
+    public static final String GOOGLE_ACCOUNT_USERNAME_PREFIX = "G@";
 
     public static final String JWT_SECRET_KEY = "superSecretServerOnlyKeyThatProbablyShouldntBeHere#335";
 
