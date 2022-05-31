@@ -29,7 +29,7 @@ public class BusinessExceptionHandler {
     }
 
     @ExceptionHandler
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
     public ErrorResponse UserUsernameIsNotAvailableExceptionHandler(UserUsernameIsNotAvailableException userUsernameIsNotAvailableException) {
         return new ErrorResponse(userUsernameIsNotAvailableException);
     }
