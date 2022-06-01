@@ -1,8 +1,6 @@
 package com.example.skiSlope.api;
 
 import com.example.skiSlope.exception.BusinessException;
-import com.example.skiSlope.exception.PriceNotFoundException;
-import com.example.skiSlope.exception.TicketNotFoundException;
 import com.example.skiSlope.model.Price;
 import com.example.skiSlope.model.SkiLift;
 import com.example.skiSlope.model.Ticket;

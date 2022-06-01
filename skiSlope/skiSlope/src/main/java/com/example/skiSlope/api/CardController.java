@@ -1,23 +1,20 @@
 package com.example.skiSlope.api;
 
+import com.example.skiSlope.exception.CardNotFoundException;
 import com.example.skiSlope.model.Card;
-import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.User;
-import com.example.skiSlope.model.Voucher;
-import com.example.skiSlope.model.request.TicketRequest;
-import com.example.skiSlope.model.request.VoucherRequest;
-import com.example.skiSlope.service.definitions.UserService;
+import com.example.skiSlope.model.response.CardResponse;
 import com.example.skiSlope.service.implementations.CardService;
-import com.example.skiSlope.service.implementations.TicketService;
-import com.example.skiSlope.service.implementations.VoucherService;
 import lombok.AllArgsConstructor;
-import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RequestMapping("api/card")
@@ -25,28 +22,51 @@ import java.util.List;
 public class CardController {
 
     private CardService cardService;
-    private UserService userService;
-
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public List<Card> getAllCards() {
-        return cardService.getAllCards();
+    public List<CardResponse> getAllCards() {
+        List<Card> cardList = cardService.getAllCards();
+        return cardList.stream().map(
+                cardRes -> CardResponse
+                        .builder()
+                        .id(cardRes.getId())
+                        .code(cardRes.getCode())
+                        .type(cardRes.getCardType().toString())
+                        .active(cardRes.getActive())
+                        .ownerName(cardRes.getOwnerName())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public Card getCardById(@PathVariable("id") Long id) {
-        return cardService.getCardById(id)
-                .orElse(null);
+    public CardResponse getCardById(@PathVariable("id") Long id) {
+        Card card = cardService.getCardById(id).orElseThrow(CardNotFoundException::new);
+        return CardResponse.builder()
+                .id(card.getId())
+                .code(card.getCode())
+                .ownerName(card.getOwnerName())
+                .type(card.getCardType().toString())
+                .active(card.getActive())
+                .build();
     }
 
     @GetMapping("/myCards")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
-    public List<Card> getAllCardsByUserId() {
+    public List<CardResponse> getAllCardsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user2 = userService.getUser(loggedUser.getUsername());
-        return null;
+        List<Card> cardList = cardService.getAllCardsByUserId(loggedUser.getId());
+        return cardList.stream().map(
+                cardRes -> CardResponse
+                        .builder()
+                        .id(cardRes.getId())
+                        .code(cardRes.getCode())
+                        .type(cardRes.getCardType().toString())
+                        .active(cardRes.getActive())
+                        .ownerName(cardRes.getOwnerName())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
 
