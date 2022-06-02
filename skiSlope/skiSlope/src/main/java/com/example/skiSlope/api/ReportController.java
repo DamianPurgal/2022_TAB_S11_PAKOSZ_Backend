@@ -75,6 +75,7 @@ public class ReportController {
 
 
     @GetMapping("/manager")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public ResponseEntity<byte[]> generateManagerReport(HttpServletResponse response) throws RuntimeException, JRException, IOException, FileNotFoundException {
 
 
