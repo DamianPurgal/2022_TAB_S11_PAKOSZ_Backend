@@ -1,7 +1,9 @@
 package com.example.skiSlope.api;
 
+import com.example.skiSlope.model.Card;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.service.definitions.UserService;
+import com.example.skiSlope.service.implementations.CardService;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -12,6 +14,8 @@ import net.sf.jasperreports.export.SimplePdfReportConfiguration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
@@ -29,16 +33,20 @@ public class ReportController {
 
     private UserService userService;
 
+    private CardService cardService;
+
+
     @GetMapping("/customer")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_CUSTOMER')")
     public ResponseEntity<byte[]> generateCustomerReport(HttpServletResponse response) throws RuntimeException, JRException, IOException, FileNotFoundException {
 
 
-        List<User> users= userService.getAllUsers();
-        File file = ResourceUtils.getFile("src/main/resources/customers.jrxml");
+        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
+        File file = ResourceUtils.getFile("src/main/resources/tickets.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-
-        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(users);
+        JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
         JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, dataSource);
@@ -49,6 +57,7 @@ public class ReportController {
         SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
         reportConfig.setSizePageToContent(true);
         reportConfig.setForceLineBreakPolicy(false);
+
         exporter.exportReport();
         byte [] res= pdfOutputStream.toByteArray();
         var headers = new HttpHeaders();

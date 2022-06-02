@@ -46,7 +46,7 @@ public class CardController {
     public List<Card> getAllCardsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user2 = userService.getUser(loggedUser.getUsername());
-        return null;
+        return cardService.getAllCardsByUserId(loggedUser.getId());
     }
 
 

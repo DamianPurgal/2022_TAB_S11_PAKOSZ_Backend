@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Leaf_Grey_1" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1f690a3-5977-4467-85f8-6b0bcd5b7210">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Leaf_Grey_3" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1f690a3-5977-4467-85f8-6b0bcd5b7210">
     <property name="ireport.zoom" value="1.0"/>
     <property name="ireport.x" value="0"/>
     <property name="ireport.y" value="0"/>
@@ -10,25 +10,19 @@
     <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
     <style name="Detail" fontName="Arial" fontSize="12"/>
 
-    <field name="id" class="java.lang.Long">
-        <property name="com.jaspersoft.studio.field.name" value="id"/>
-        <property name="com.jaspersoft.studio.field.label" value="id"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="users"/>
-    </field>
     <field name="username" class="java.lang.String">
         <property name="com.jaspersoft.studio.field.name" value="username"/>
         <property name="com.jaspersoft.studio.field.label" value="username"/>
         <property name="com.jaspersoft.studio.field.tree.path" value="users"/>
     </field>
-
     <field name="firstName" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="first_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="first_name"/>
+        <property name="com.jaspersoft.studio.field.name" value="firstName"/>
+        <property name="com.jaspersoft.studio.field.label" value="firstName"/>
         <property name="com.jaspersoft.studio.field.tree.path" value="users"/>
     </field>
     <field name="lastName" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.name" value="last_name"/>
-        <property name="com.jaspersoft.studio.field.label" value="last_name"/>
+        <property name="com.jaspersoft.studio.field.name" value="lastName"/>
+        <property name="com.jaspersoft.studio.field.label" value="lastName"/>
         <property name="com.jaspersoft.studio.field.tree.path" value="users"/>
     </field>
     <field name="email" class="java.lang.String">
@@ -40,14 +34,15 @@
         <band splitType="Stretch"/>
     </background>
     <title>
-        <band height="70" splitType="Stretch">
+        <band height="87" splitType="Stretch">
+            <rectangle>
+                <reportElement x="0" y="10" width="555" height="70" forecolor="#002E3F" backcolor="#002E3F" uuid="4cf8605a-2171-4873-9fd8-19dd801b4e48"/>
+            </rectangle>
             <staticText>
-                <reportElement style="Title" x="146" y="0" width="263" height="33" uuid="6f9c1004-6140-4588-9c4f-d75824835765"/>
-                <textElement textAlignment="Center" verticalAlignment="Middle"/>
-                <text><![CDATA[Srebrne Stoki]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="SubTitle" x="250" y="40" width="157" height="22" uuid="8e16dabd-2e54-471b-9652-83e1d55379ec"/>
+                <reportElement style="SubTitle" x="200" y="20" width="157" height="50" forecolor="#FFFFFF" uuid="8e16dabd-2e54-471b-9652-83e1d55379ec"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font fontName="Book Antiqua" size="26"/>
+                </textElement>
                 <text><![CDATA[Users]]></text>
             </staticText>
         </band>
@@ -64,40 +59,28 @@
                 </graphicElement>
             </line>
             <staticText>
-                <reportElement style="Column header" x="0" y="19" width="30" height="15" uuid="55ef2189-5db9-4632-98e0-4512190c28ad">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f1aedc5-0196-4d5e-b15b-c5ee08dc7fd9"/>
+                <reportElement style="Column header" x="0" y="19" width="138" height="15" uuid="1f541d73-8a51-45cb-b335-7e2292f29520">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e79719b9-3264-4d33-9429-59c7cf7c79fe"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
-                <text><![CDATA[id]]></text>
+                <text><![CDATA[Username]]></text>
             </staticText>
             <staticText>
-                <reportElement style="Column header" x="30" y="19" width="116" height="15" uuid="ef587e76-1799-44a4-be58-54ce964a9fb2">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34dc7f9e-ef84-4365-8a9c-7cdb6c611e12"/>
+                <reportElement style="Column header" x="138" y="19" width="138" height="15" uuid="aa40a326-15d4-44b2-bdca-b5f5453dddad">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c7b0ff3e-5cdf-4992-80a8-c3c1d7a5ae8e"/>
                 </reportElement>
-                <box padding="0"/>
-                <textElement textAlignment="Left" verticalAlignment="Middle"/>
-                <text><![CDATA[username]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="Column header" x="146" y="19" width="130" height="15" uuid="afd2ea54-2c0a-4027-9206-fb0b344d525b">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2a58b05-bdbc-4c99-b7a4-7a0e0e79a616"/>
-                </reportElement>
-                <textElement textAlignment="Left"/>
                 <text><![CDATA[Name]]></text>
             </staticText>
             <staticText>
-                <reportElement style="Column header" x="276" y="19" width="104" height="15" uuid="26f73934-cb93-4d5f-a98f-c48453ec77e9">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b1380a9f-9ecc-4e7d-8c4d-65c551085b3a"/>
+                <reportElement style="Column header" x="276" y="19" width="138" height="15" uuid="9208c3c8-3c86-4243-8c68-269b1c98bda2">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9c31fd38-ee92-4d6d-b5db-3a8b2c27eb2e"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
                 <text><![CDATA[Surname]]></text>
             </staticText>
             <staticText>
-                <reportElement style="Column header" x="380" y="19" width="172" height="15" uuid="378553ef-eac1-4772-abe4-5110ae93c60a">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb156e07-d271-43f3-a507-a4e052074a4d"/>
+                <reportElement style="Column header" x="414" y="19" width="138" height="15" uuid="6869dc54-77ad-4a85-b607-ae5f1974f54f">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a1bade35-28a1-4972-833c-def5ab0e30e2"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
-                <text><![CDATA[email]]></text>
+                <text><![CDATA[E-mail]]></text>
             </staticText>
         </band>
     </columnHeader>
@@ -110,76 +93,61 @@
                 </graphicElement>
             </line>
             <textField>
-                <reportElement style="Detail" x="0" y="0" width="30" height="15" uuid="d0e5fc17-1b17-4d1f-a110-f7e38fe31f8e">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f1aedc5-0196-4d5e-b15b-c5ee08dc7fd9"/>
+                <reportElement style="Detail" x="0" y="0" width="138" height="15" uuid="d9c403e8-1e69-467a-baff-7aa9135d030d">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e79719b9-3264-4d33-9429-59c7cf7c79fe"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
-                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
-            </textField>
-            <textField textAdjust="ScaleFont">
-                <reportElement style="Detail" x="30" y="0" width="116" height="15" uuid="49591192-c8b0-489b-aa90-430cba11c90f">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34dc7f9e-ef84-4365-8a9c-7cdb6c611e12"/>
-                </reportElement>
-                <box padding="0"/>
-                <textElement textAlignment="Left"/>
                 <textFieldExpression><![CDATA[$F{username}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement style="Detail" x="146" y="0" width="130" height="15" uuid="3718c43d-d0b5-4a1d-9f82-1dfeda8efae9">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2a58b05-bdbc-4c99-b7a4-7a0e0e79a616"/>
+                <reportElement style="Detail" x="138" y="0" width="138" height="15" uuid="d9ba998d-09c4-415d-bc2a-266459184849">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c7b0ff3e-5cdf-4992-80a8-c3c1d7a5ae8e"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
                 <textFieldExpression><![CDATA[$F{firstName}]]></textFieldExpression>
             </textField>
-            <textField textAdjust="ScaleFont">
-                <reportElement style="Detail" x="276" y="0" width="104" height="15" uuid="32055218-4b6e-4528-97a4-8aa5c0227491">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b1380a9f-9ecc-4e7d-8c4d-65c551085b3a"/>
+            <textField>
+                <reportElement style="Detail" x="276" y="0" width="138" height="15" uuid="4ee411b5-03c5-4ce2-95f0-830272923f36">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9c31fd38-ee92-4d6d-b5db-3a8b2c27eb2e"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
                 <textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
             </textField>
-            <textField textAdjust="ScaleFont">
-                <reportElement style="Detail" x="380" y="0" width="172" height="15" uuid="f90154c7-afa3-4e1d-9f19-f0239a65004d">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb156e07-d271-43f3-a507-a4e052074a4d"/>
+            <textField>
+                <reportElement style="Detail" x="414" y="0" width="138" height="15" uuid="f535df21-6c25-4642-bcf9-7b4b2d740546">
+                    <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a1bade35-28a1-4972-833c-def5ab0e30e2"/>
                 </reportElement>
-                <textElement textAlignment="Left"/>
                 <textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
             </textField>
         </band>
     </detail>
     <columnFooter>
-        <band height="45" splitType="Stretch">
-            <line>
-                <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="401e0e59-de38-4dd2-8257-418cb489177c"/>
-                <graphicElement>
-                    <pen lineWidth="0.5" lineColor="#999999"/>
-                </graphicElement>
-            </line>
-        </band>
+        <band height="55" splitType="Stretch"/>
     </columnFooter>
     <pageFooter>
-        <band height="20" splitType="Stretch">
+        <band height="60" splitType="Stretch">
             <textField>
-                <reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="deb23d85-47bb-4de6-978e-113ff117188c"/>
+                <reportElement style="Column header" x="435" y="40" width="80" height="20" uuid="deb23d85-47bb-4de6-978e-113ff117188c"/>
                 <textElement textAlignment="Right">
                     <font size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
             </textField>
             <textField evaluationTime="Report">
-                <reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="c6ce76ba-6e11-41e2-9415-72dc2eff001b"/>
+                <reportElement style="Column header" x="515" y="40" width="40" height="20" uuid="c6ce76ba-6e11-41e2-9415-72dc2eff001b"/>
                 <textElement>
                     <font size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
             </textField>
             <textField pattern="dd/MM/yyyy">
-                <reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="5a79d2a0-bcde-4ad5-adf0-c4eb2066f6dd"/>
+                <reportElement style="Column header" x="20" y="40" width="120" height="20" uuid="5a79d2a0-bcde-4ad5-adf0-c4eb2066f6dd"/>
                 <textElement>
                     <font size="10" isBold="false"/>
                 </textElement>
                 <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
             </textField>
+            <image hAlign="Center" vAlign="Middle">
+                <reportElement x="1" y="-40" width="555" height="80" uuid="e4eb385d-c890-443b-84d1-6736713ff59f"/>
+                <imageExpression><![CDATA["C:/Users/julia/OneDrive/Desktop/ProjektPP/PP_Backend/2022_TAB_S11_PAKOSZ_Backend/skiSlope/skiSlope/src/main/resources/logo.jpg"]]></imageExpression>
+            </image>
         </band>
     </pageFooter>
     <summary>

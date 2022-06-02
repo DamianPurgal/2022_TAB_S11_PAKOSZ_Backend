@@ -47,6 +47,6 @@ public abstract class Card {
 
     @Column(name="active")
     protected Boolean active;
-
+    
 
 }

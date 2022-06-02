@@ -2,6 +2,7 @@ package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.UserEditInformationRequest;
+import com.example.skiSlope.model.response.TicketResponse;
 import com.example.skiSlope.model.response.UserDetailedInformationResponse;
 import com.example.skiSlope.service.definitions.UserService;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RequestMapping("/api/user")
@@ -62,10 +64,5 @@ public class UserController {
         User loggedUser = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         userService.deleteUser(loggedUser.getId());
     }
-
-
-
-
-
 }
 
