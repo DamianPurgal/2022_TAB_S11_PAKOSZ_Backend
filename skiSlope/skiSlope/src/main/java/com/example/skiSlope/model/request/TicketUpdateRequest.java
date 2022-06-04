@@ -27,7 +27,7 @@ public class TicketUpdateRequest {
                 .price(updateTicket.getPrice())
                 .cardType(CardType.Ticket)
                 .ownerName(ownerName)
-                .paymentId(updateTicket.getPaymentId())
+                .payment(updateTicket.getPayment())
                 .active(true)
                 .numberOfEntries(updateTicket.getNumberOfEntries())
                 .build();

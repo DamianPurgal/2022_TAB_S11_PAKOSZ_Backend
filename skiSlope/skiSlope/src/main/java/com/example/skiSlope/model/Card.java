@@ -26,6 +26,10 @@ public abstract class Card {
     @JoinColumn(name = "price_id", nullable = false)
     protected Price price;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_id", nullable = false)
+    protected Payment payment;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -42,8 +46,8 @@ public abstract class Card {
     @Column(name="owner_name")
     protected String ownerName;
 
-    @Column(name="payment_id")
-    protected Long paymentId;
+//    @Column(name="payment_id")
+//    protected Long paymentId;
 
     @Column(name="active")
     protected Boolean active;

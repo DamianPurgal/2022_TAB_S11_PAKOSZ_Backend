@@ -35,7 +35,7 @@ public class VoucherRequest {
                 .code(null)
                 .cardType(CardType.Voucher)
                 .ownerName(ownerName)
-                .paymentId(paymentId)
+                .payment(null)
                 .user(null)
                 .price(null)
                 .active(true)

@@ -39,23 +39,11 @@ public class VoucherUpdateRequest {
                 .user(voucher.getUser())
                 .cardType(CardType.Voucher)
                 .ownerName(ownerName)
-                .paymentId(voucher.getPaymentId())
+                .payment(voucher.getPayment())
                 .price(voucher.getPrice())
                 .active(true)
                 .startDate(null)
                 .expireDate(null)
                 .build();
     }
-//    public Voucher setVoucherInactive(Voucher voucher){
-//        return Voucher.builder()
-//                .active(false)
-//                .build();
-//    }
-//    public Voucher setDates(Voucher voucher){
-//        //Implement time
-//        return Voucher.builder()
-//                .startDate(startDate)
-//                .expireDate(expireDate)
-//                .build();
-//    }
 }
