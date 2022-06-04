@@ -51,7 +51,6 @@ public class TicketService implements TicketServiceDefinition {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(TicketNotFoundException::new);
         ticket = ticketUpdateRequest.updateTicketOwnerName(ticket);
-        System.out.println(ticket.getOwnerName());
         ticketRepository.save(ticket);
     }
 
