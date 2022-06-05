@@ -11,14 +11,14 @@ import java.math.BigDecimal;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentResponse {
-    Long id;
-    String firstName;
-    String lastName;
-    String email;
-    BigDecimal totalPrice;
-    boolean paidOff;
-    CardItemsResponse items;
+public class VoucherPaymentResponse {
 
+    private String ownerName;
+
+    private String periodTime;
+
+    private String discountType;
+
+    private BigDecimal voucherPrice;
 
 }

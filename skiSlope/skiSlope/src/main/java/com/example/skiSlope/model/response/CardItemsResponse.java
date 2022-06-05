@@ -5,20 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PaymentResponse {
-    Long id;
-    String firstName;
-    String lastName;
-    String email;
-    BigDecimal totalPrice;
-    boolean paidOff;
-    CardItemsResponse items;
+public class CardItemsResponse {
 
+    List<TicketPaymentResponse> tickets;
 
+    List<VoucherPaymentResponse> vouchers;
 }

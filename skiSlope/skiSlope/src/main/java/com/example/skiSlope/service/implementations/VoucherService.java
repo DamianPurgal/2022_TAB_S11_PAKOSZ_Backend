@@ -2,6 +2,7 @@ package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.exception.VoucherNotFoundException;
+import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherUpdateRequest;
 import com.example.skiSlope.repository.VoucherRepository;
@@ -85,5 +86,10 @@ public class VoucherService implements VoucherServiceDefinition {
             updateVoucher(voucher);
         }
         return voucher;
+    }
+
+    @Override
+    public void deleteAllVouchersByPayment(Payment payment) {
+        voucherRepository.deleteAllByPayment(payment);
     }
 }

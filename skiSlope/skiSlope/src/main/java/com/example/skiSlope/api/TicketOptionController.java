@@ -2,6 +2,7 @@ package com.example.skiSlope.api;
 
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.model.request.TicketCreatePaymentRequest;
 import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 import com.example.skiSlope.model.response.TicketOptionResponse;
 import com.example.skiSlope.service.implementations.TicketOptionService;
@@ -73,6 +74,21 @@ public class TicketOptionController {
     @PreAuthorize("permitAll()")
     public TicketOptionResponse getCurrentTicketOptionById(@PathVariable("id") Long id) {
         TicketOption ticketOption = ticketOptionService.getCurrentTicketOptionById(id);
+        return TicketOptionResponse
+                .builder()
+                .id(ticketOption.getId())
+                .price(BigDecimal.valueOf(ticketOption.getPrice()).setScale(2, RoundingMode.HALF_UP))
+                .startDate(ticketOption.getStartDate())
+                .expireDate(ticketOption.getExpireDate())
+                .entries(ticketOption.getEntries())
+                .discountType(ticketOption.getDiscountType())
+                .fullPrice(BigDecimal.valueOf(ticketOption.getFullPrice()).setScale(2, RoundingMode.HALF_UP))
+                .build();
+    }
+    @PostMapping("/current/ticket")
+    @PreAuthorize("permitAll()")
+    public TicketOptionResponse getCurrentTicketOptionByTicket(@Valid @NonNull @RequestBody TicketCreatePaymentRequest ticketCreatePaymentRequest ) {
+        TicketOption ticketOption = ticketOptionService.getTicketOptionByCurrentDateAndDiscountTypeAndEntries(ticketCreatePaymentRequest.getDiscountType(), ticketCreatePaymentRequest.getNumberOfEntries());
         return TicketOptionResponse
                 .builder()
                 .id(ticketOption.getId())

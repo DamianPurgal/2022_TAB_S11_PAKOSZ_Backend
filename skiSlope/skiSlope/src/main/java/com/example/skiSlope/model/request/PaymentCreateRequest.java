@@ -14,22 +14,22 @@ import java.util.List;
 @Getter
 public class PaymentCreateRequest {
 
-    private List<TicketRequest> ticketRequests;
-    private List<VoucherRequest>voucherRequests;
+    private List<TicketCreatePaymentRequest> tickets;
+    private List<VoucherCreatePaymentRequest> vouchers;
 
     private List<Card> getCardSet(){
         List<Card> cards = new ArrayList<>();
         Ticket ticket = null;
         Voucher voucher = null;
-        if(ticketRequests!=null){
-            for(TicketRequest t: ticketRequests){
-                ticket = t.ticketRequestToUser();
+        if(tickets !=null){
+            for(TicketCreatePaymentRequest t: tickets){
+                ticket = t.ticketRequest();
                 cards.add(ticket);
             }
         }
-        if(voucherRequests!=null){
-            for(VoucherRequest v: voucherRequests){
-                voucher = v.voucherRequestToUser();
+        if(vouchers !=null){
+            for(VoucherCreatePaymentRequest v: vouchers){
+                voucher = v.voucherRequest();
                 cards.add(voucher);
             }
         }
@@ -47,10 +47,10 @@ public class PaymentCreateRequest {
     public Payment paymentRequest(){
         return Payment.builder()
                 .id(null)
-                .cardSet(getCardSet())
+                .cardSet(null)
                 .paymentDate(null)                  //TODO
                 .paidOff(false)
-                .totalCost(getTotalCost())
+                .totalCost(0.0)                    //CHANGE
                 .user(null)
                 .build();
     }

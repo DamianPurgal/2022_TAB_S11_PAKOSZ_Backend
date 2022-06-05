@@ -37,6 +37,12 @@ public class SkiLiftService implements SkiLiftServiceDefinition {
     }
 
     @Override
+    public SkiLift getSkiLiftByName(String name) {
+        return skiLiftRepository.findByNameEquals(name)
+                .orElseThrow(SkiLiftNotFoundException::new);
+    }
+
+    @Override
     public void updateSkiLiftsData(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id) {
         SkiLift skiLift = skiLiftRepository.findById(id)
                 .orElseThrow(SkiLiftNotFoundException::new);

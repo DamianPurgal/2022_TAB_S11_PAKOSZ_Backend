@@ -45,7 +45,8 @@ public class PaymentService implements PaymentServiceDefinition {
 
     @Override
     public void updatePaymentData(Payment payment, Long id) {
-            //TODO
+      payment.setId(id);
+      paymentRepository.save(payment);
     }
 
     @Override

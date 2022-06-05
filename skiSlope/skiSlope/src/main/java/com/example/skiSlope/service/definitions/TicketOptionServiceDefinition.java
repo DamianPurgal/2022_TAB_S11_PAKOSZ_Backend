@@ -1,6 +1,7 @@
 package com.example.skiSlope.service.definitions;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.model.enums.DiscountType;
 import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 
 import java.text.ParseException;
@@ -20,6 +21,8 @@ public interface TicketOptionServiceDefinition {
     List<TicketOption> getAllCurrentTicketOptions();
 
     List<TicketOption> getAllTicketOptions();
+
+    TicketOption getTicketOptionByCurrentDateAndDiscountTypeAndEntries(DiscountType discountType, int entries);
 
     void updateTicketOptionsData(TicketOptionUpdateRequest ticketOptionUpdateRequest, Long id) throws ExpireDateEarlierThanStartDateException, ParseException;
 

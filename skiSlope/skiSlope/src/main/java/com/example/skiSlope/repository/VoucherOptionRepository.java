@@ -3,6 +3,8 @@ package com.example.skiSlope.repository;
 import com.example.skiSlope.model.Price;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.VoucherOption;
+import com.example.skiSlope.model.enums.DiscountType;
+import com.example.skiSlope.model.enums.TimePeriod;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
@@ -24,4 +26,7 @@ public interface VoucherOptionRepository  extends CrudRepository<VoucherOption, 
     List<VoucherOption> findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(Date timeNow, Date timeNow2);
 
     Optional<VoucherOption> findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndId(Date timeNow, Date timeNow2, Long id);
+
+    Optional<VoucherOption> findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndDiscountTypeEqualsAndTimePeriodEquals(Date timeNow, Date timeNow2, DiscountType discountType, TimePeriod timePeriod);
+
 }

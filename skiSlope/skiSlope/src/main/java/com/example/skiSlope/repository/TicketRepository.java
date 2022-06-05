@@ -1,6 +1,7 @@
 package com.example.skiSlope.repository;
 
 import com.example.skiSlope.model.Card;
+import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Ticket;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,5 +24,7 @@ public interface TicketRepository extends CrudRepository<Ticket, Long>,
     List<Ticket> findAllBySkiLiftId(Long skiLiftId);
 
     Optional<Ticket> findByCode(UUID code);
+
+    void deleteAllByPayment(Payment payment);
 
 }

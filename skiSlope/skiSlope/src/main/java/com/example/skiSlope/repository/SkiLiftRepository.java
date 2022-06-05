@@ -6,9 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface SkiLiftRepository extends CrudRepository<SkiLift, Long>,
         PagingAndSortingRepository<SkiLift, Long>,
         JpaRepository<SkiLift, Long> {
+
+    Optional<SkiLift> findByNameEquals(String name);
 }

@@ -4,6 +4,8 @@ import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.model.VoucherOption;
+import com.example.skiSlope.model.enums.DiscountType;
+import com.example.skiSlope.model.enums.TimePeriod;
 import com.example.skiSlope.model.request.VoucherOptionUpdateRequest;
 import com.example.skiSlope.repository.VoucherOptionRepository;
 import com.example.skiSlope.service.definitions.VoucherOptionServiceDefinition;
@@ -53,6 +55,12 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
     @Override
     public List<VoucherOption> getAllVoucherOptions() {
         return voucherOptionRepository.findAll();
+    }
+
+    @Override
+    public VoucherOption getCurrentVoucherOptionByDiscountTypeAndTimePeriod(DiscountType discountType, TimePeriod timePeriod) {
+        return voucherOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndDiscountTypeEqualsAndTimePeriodEquals(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), discountType, timePeriod)
+                .orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
