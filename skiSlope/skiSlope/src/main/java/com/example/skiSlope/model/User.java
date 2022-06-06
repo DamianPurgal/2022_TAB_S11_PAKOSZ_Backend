@@ -19,7 +19,10 @@ import java.util.*;
 public class User implements UserDetails {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    List<Card> cardSet = new ArrayList<Card>();
+    List<Card> cards = new ArrayList<Card>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    List<Payment> payments = new ArrayList<Payment>();
 
 
     @Id

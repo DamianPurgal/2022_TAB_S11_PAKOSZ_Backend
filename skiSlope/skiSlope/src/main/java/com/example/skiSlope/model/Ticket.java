@@ -24,10 +24,10 @@ public class Ticket extends Card {
     private int numberOfEntries;
 
     @Builder
-    public Ticket(Long id, UUID code, User user, Long paymentId, Price price, String ownerName, CardType cardType, Boolean active, SkiLift skiLift, int numberOfEntries) {
+    public Ticket(Long id, UUID code, User user, Payment payment, Price price, String ownerName, CardType cardType, Boolean active, SkiLift skiLift, int numberOfEntries) {
         this.id = id;
         this.code = UUID.randomUUID();
-        this.paymentId = paymentId;
+        this.payment = payment;
         this.user = user;
         this.price = price;
         this.cardType = CardType.Ticket;

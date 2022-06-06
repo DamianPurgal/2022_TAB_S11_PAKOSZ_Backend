@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.definitions;
 
+import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.request.VoucherUpdateRequest;
 
@@ -30,4 +31,7 @@ public interface VoucherServiceDefinition {
     List<Voucher> setVouchersInactiveIfExpired(List<Voucher> vouchers);
 
     Voucher setVoucherInactiveIfExpired(Voucher voucher);
+
+    void deleteAllVouchersByPaymentId(Long paymentId);
+
 }

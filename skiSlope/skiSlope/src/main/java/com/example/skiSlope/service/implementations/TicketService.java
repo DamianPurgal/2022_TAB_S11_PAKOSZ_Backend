@@ -1,6 +1,8 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.CardNotFoundException;
 import com.example.skiSlope.exception.TicketNotFoundException;
+import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.repository.TicketRepository;
@@ -51,7 +53,6 @@ public class TicketService implements TicketServiceDefinition {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(TicketNotFoundException::new);
         ticket = ticketUpdateRequest.updateTicketOwnerName(ticket);
-        System.out.println(ticket.getOwnerName());
         ticketRepository.save(ticket);
     }
 
@@ -68,5 +69,11 @@ public class TicketService implements TicketServiceDefinition {
     @Override
     public Ticket updateTicket(Ticket ticket) {
         return ticketRepository.save(ticket);
+    }
+
+    @Override
+    public void deleteAllTicketsByPaymentId(Long paymentId) {
+        List<Ticket> tickets = ticketRepository.findAllByPaymentId(paymentId);
+        ticketRepository.deleteAll(tickets);
     }
 }

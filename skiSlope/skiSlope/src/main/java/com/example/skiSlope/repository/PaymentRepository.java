@@ -1,18 +1,17 @@
 package com.example.skiSlope.repository;
 
-import com.example.skiSlope.model.SkiLift;
+import com.example.skiSlope.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
-
+import java.util.List;
 
 @Repository
-public interface SkiLiftRepository extends CrudRepository<SkiLift, Long>,
-        PagingAndSortingRepository<SkiLift, Long>,
-        JpaRepository<SkiLift, Long> {
+public interface PaymentRepository extends CrudRepository<Payment, Long>,
+        PagingAndSortingRepository<Payment, Long>,
+        JpaRepository<Payment, Long> {
 
-    Optional<SkiLift> findByNameEquals(String name);
+    List<Payment> findAllByUserId(Long userId);
 }

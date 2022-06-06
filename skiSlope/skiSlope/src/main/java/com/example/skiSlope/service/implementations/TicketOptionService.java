@@ -4,6 +4,7 @@ import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.exception.PriceNotFoundException;
 import com.example.skiSlope.model.TicketOption;
 import com.example.skiSlope.exception.ExpireDateEarlierThanStartDateException;
+import com.example.skiSlope.model.enums.DiscountType;
 import com.example.skiSlope.model.request.TicketOptionUpdateRequest;
 import com.example.skiSlope.repository.TicketOptionRepository;
 import com.example.skiSlope.service.definitions.TicketOptionServiceDefinition;
@@ -62,6 +63,12 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
     @Override
     public List<TicketOption> getAllTicketOptions() {
         return ticketOptionRepository.findAll();
+    }
+
+    @Override
+    public TicketOption getTicketOptionByCurrentDateAndDiscountTypeAndEntries(DiscountType discountType, int entries) {
+        return ticketOptionRepository.findByExpireDateGreaterThanEqualAndStartDateLessThanEqualAndDiscountTypeEqualsAndEntriesEquals(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()), discountType, entries)
+                .orElseThrow(PriceNotFoundException::new);
     }
 
     @Override

@@ -1,35 +1,29 @@
 package com.example.skiSlope.model.request;
 
-import com.example.skiSlope.model.*;
+import com.example.skiSlope.model.Voucher;
 import com.example.skiSlope.model.enums.CardType;
+import com.example.skiSlope.model.enums.DiscountType;
+import com.example.skiSlope.model.enums.TimePeriod;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 @AllArgsConstructor
 @Getter
-public class VoucherRequest {
+public class VoucherCreatePaymentRequest {
 
     private String ownerName;
 
     @NonNull
     @NumberFormat
-    private Long paymentId;
+    private DiscountType discountType;
 
     @NonNull
     @NumberFormat
-    private Long priceId;
+    private TimePeriod timePeriod;
 
-    private void setIfNull(){
-        User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (ownerName == null){
-            this.ownerName = loggedUser.getFirstName()+" "+loggedUser.getLastName();}
-    }
-
-    public Voucher voucherRequestToUser(){
-        setIfNull();
+    public Voucher voucherRequest(){
         return Voucher.builder()
                 .id(null)
                 .code(null)

@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.definitions;
 
+import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Ticket;
 import com.example.skiSlope.model.request.TicketUpdateRequest;
 
@@ -26,4 +27,6 @@ public interface TicketServiceDefinition {
     Optional<Ticket> getTicketByCode(UUID code);
 
     Ticket updateTicket(Ticket ticket);
+
+    void deleteAllTicketsByPaymentId(Long paymentId);
 }

@@ -13,6 +13,8 @@ public interface SkiLiftServiceDefinition {
 
     List<SkiLift> getAllSkiLifts();
 
+    SkiLift getSkiLiftByName(String name);
+
     void updateSkiLiftsData(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id);
 
     void setSkiLiftsActive(SkiLiftUpdateRequest skiLiftUpdateRequest, Long id);
