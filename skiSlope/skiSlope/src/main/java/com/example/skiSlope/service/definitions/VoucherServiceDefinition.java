@@ -32,5 +32,6 @@ public interface VoucherServiceDefinition {
 
     Voucher setVoucherInactiveIfExpired(Voucher voucher);
 
-    void deleteAllVouchersByPayment(Payment payment);
+    void deleteAllVouchersByPaymentId(Long paymentId);
+
 }

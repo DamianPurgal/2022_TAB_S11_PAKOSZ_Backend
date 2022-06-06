@@ -7,6 +7,7 @@ import com.example.skiSlope.service.definitions.PaymentServiceDefinition;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -51,6 +52,17 @@ public class PaymentService implements PaymentServiceDefinition {
 
     @Override
     public void deletePayment(Long id) {
+        paymentRepository.findById(id)
+                .orElseThrow(NoPaymentFoundException::new);
         paymentRepository.deleteById(id);
+    }
+
+    @Override
+    public void setPaymentToPaidOff(Long paymentId) {
+        Payment payment = paymentRepository
+                .findById(paymentId).orElseThrow(NoPaymentFoundException::new);
+        payment.setPaymentDate(new Date(System.currentTimeMillis()));
+        payment.setPaidOff(true);
+        paymentRepository.save(payment);
     }
 }

@@ -28,5 +28,5 @@ public interface TicketServiceDefinition {
 
     Ticket updateTicket(Ticket ticket);
 
-    void deleteAllTicketsByPayment(Payment payment);
+    void deleteAllTicketsByPaymentId(Long paymentId);
 }

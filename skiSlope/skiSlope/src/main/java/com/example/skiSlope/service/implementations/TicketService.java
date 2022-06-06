@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.CardNotFoundException;
 import com.example.skiSlope.exception.TicketNotFoundException;
 import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Ticket;
@@ -71,7 +72,8 @@ public class TicketService implements TicketServiceDefinition {
     }
 
     @Override
-    public void deleteAllTicketsByPayment(Payment payment) {
-        ticketRepository.deleteAllByPayment(payment);
+    public void deleteAllTicketsByPaymentId(Long paymentId) {
+        List<Ticket> tickets = ticketRepository.findAllByPaymentId(paymentId);
+        ticketRepository.deleteAll(tickets);
     }
 }

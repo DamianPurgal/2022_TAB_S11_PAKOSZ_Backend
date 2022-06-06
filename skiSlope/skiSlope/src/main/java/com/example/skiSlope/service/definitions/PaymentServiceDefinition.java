@@ -22,4 +22,6 @@ public interface PaymentServiceDefinition {
 
     void deletePayment(Long id);
 
+    void setPaymentToPaidOff(Long paymentId);
+
 }

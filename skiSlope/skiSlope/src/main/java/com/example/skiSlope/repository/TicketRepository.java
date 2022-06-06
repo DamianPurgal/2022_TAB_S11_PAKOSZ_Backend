@@ -25,6 +25,7 @@ public interface TicketRepository extends CrudRepository<Ticket, Long>,
 
     Optional<Ticket> findByCode(UUID code);
 
-    void deleteAllByPayment(Payment payment);
+    List<Ticket> findAllByPaymentId(Long paymentId);
+//    void deleteAllByPaymentId(Long paymentId);
 
 }

@@ -21,5 +21,6 @@ public interface VoucherRepository extends CrudRepository<Voucher, Long>,
 
     Optional<Voucher> findByCode(UUID code);
 
-    void deleteAllByPayment(Payment payment);
+    List<Voucher> findAllByPaymentId(Long paymentId);
+//    void deleteAllByPayment(Payment payment);
 }

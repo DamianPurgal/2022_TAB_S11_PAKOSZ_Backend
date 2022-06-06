@@ -89,7 +89,9 @@ public class VoucherService implements VoucherServiceDefinition {
     }
 
     @Override
-    public void deleteAllVouchersByPayment(Payment payment) {
-        voucherRepository.deleteAllByPayment(payment);
+    public void deleteAllVouchersByPaymentId(Long paymentId) {
+        List<Voucher> vouchers = voucherRepository.findAllByPaymentId(paymentId);
+        voucherRepository.deleteAll(vouchers);
     }
+
 }
