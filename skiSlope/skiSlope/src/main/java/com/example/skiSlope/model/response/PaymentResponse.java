@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 @Builder
@@ -18,6 +19,7 @@ public class PaymentResponse {
     String email;
     BigDecimal totalPrice;
     boolean paidOff;
+    Date payDate;
     CardItemsResponse items;
 
 

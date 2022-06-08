@@ -23,7 +23,8 @@ public class PayPalService {
             String intent,
             String description,
             String cancelUrl,
-            String successUrl) throws PayPalRESTException {
+            String successUrl
+    ) throws PayPalRESTException {
         Amount amount = new Amount();
         amount.setCurrency("PLN");
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
