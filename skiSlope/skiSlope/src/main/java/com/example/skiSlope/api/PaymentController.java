@@ -114,6 +114,7 @@ public class PaymentController {
                 .email(payment.getUser().getEmail())
                 .totalPrice(BigDecimal.valueOf(payment.getTotalPrice()).setScale(2, RoundingMode.UP))
                 .paidOff(payment.getPaidOff())
+                .payDate(payment.getPaymentDate())
                 .items(CardItemsResponse.builder()
                         .tickets(payment.getTickets().stream().map(
                                 ticketRes -> TicketPaymentResponse.builder()
