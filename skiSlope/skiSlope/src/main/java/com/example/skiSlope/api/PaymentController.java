@@ -8,6 +8,7 @@ import com.example.skiSlope.model.response.CardItemsResponse;
 import com.example.skiSlope.model.response.PaymentResponse;
 import com.example.skiSlope.model.response.TicketPaymentResponse;
 import com.example.skiSlope.model.response.VoucherPaymentResponse;
+import com.example.skiSlope.paypal.PayPalController;
 import com.example.skiSlope.service.implementations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;
@@ -33,11 +34,13 @@ public class PaymentController {
     private SkiLiftService skiLiftService;
     private TicketOptionService ticketOptionService;
     private VoucherOptionService voucherOptionService;
+    private CardService cardService;
 
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void addPayment(@Valid @NonNull @RequestBody PaymentCreateRequest paymentCreateRequest) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        checkIfUnpaidPayments(loggedUser);
         Payment payment = paymentCreateRequest.paymentRequest();
         payment.setUser(loggedUser);
         paymentService.addPayment(payment);
@@ -65,6 +68,8 @@ public class PaymentController {
         cards.addAll(tickets);
         payment.setCardSet(cards);
         paymentService.updatePaymentData(payment, payment.getId());
+        PaymentResponse paymentResponse = getPaymentResponse(payment);
+//        new PayPalController. makePayment(paymentResponse);
     }
 
 
@@ -83,28 +88,29 @@ public class PaymentController {
                 payment -> getPaymentResponse(payment)).collect(Collectors.toList());
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public void setPaymentToPaidOff(@PathVariable("id") Long id) {
+    @GetMapping("/update/{id}")
+//    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
+    public String setPaymentToPaidOff(@PathVariable("id") Long id) {
+        List<Ticket> tickets = paymentService.getPaymentById(id).getTickets();
+        setTicketListToActive(tickets);
         paymentService.setPaymentToPaidOff(id);
+        return "success";
     }
 
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public void deletePaymentById(@PathVariable("id") Long id) {
+    @GetMapping("/delete/{id}")
+//    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
+    public String deletePaymentById(@PathVariable("id") Long id) {
         ticketService.deleteAllTicketsByPaymentId(id);
         voucherService.deleteAllVouchersByPaymentId(id);
         paymentService.deletePayment(id);
+        return "cancel";
     }
 
     @DeleteMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public void deleteAllPayments() {
-        for (Payment p : paymentService.getAllPayments()) {
-            ticketService.deleteAllTicketsByPaymentId(p.getId());
-            voucherService.deleteAllVouchersByPaymentId(p.getId());
-            paymentService.deletePayment(p.getId());
-        }
+        List<Payment> allPayments = paymentService.getAllPayments();
+        deletePaymentList(allPayments);
     }
     private PaymentResponse getPaymentResponse(Payment payment){
         return PaymentResponse.builder()
@@ -135,5 +141,31 @@ public class PaymentController {
                         ).collect(Collectors.toList()))
                         .build())
                 .build();
+    }
+    void checkIfUnpaidPayments(User user){
+        List<Payment> unpaidPayments = new ArrayList<>();
+        System.out.println(paymentService.getAllPaymentsByUserId(user.getId()));
+        for(Payment p: paymentService.getAllPaymentsByUserId(user.getId())){
+            System.out.println("hello");
+            if(!p.getPaidOff()){
+                System.out.println(p.getId());
+                unpaidPayments.add(p);
+            }
+
+        }
+        deletePaymentList(unpaidPayments);
+    }
+    private void deletePaymentList(List<Payment> paymentList){
+        for (Payment p : paymentList) {
+            ticketService.deleteAllTicketsByPaymentId(p.getId());
+            voucherService.deleteAllVouchersByPaymentId(p.getId());
+            paymentService.deletePayment(p.getId());
+        }
+    }
+    private void setTicketListToActive(List<Ticket> tickets){
+        for(Ticket t: tickets){
+            t.setActive(true);
+            ticketService.updateTicket(t);
+        }
     }
 }

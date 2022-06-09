@@ -31,7 +31,7 @@ public class Ticket extends Card {
         this.user = user;
         this.price = price;
         this.cardType = CardType.Ticket;
-        this.active = true;
+        this.active = false;
         this.ownerName = ownerName;
         if (ownerName == null){
             User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -38,7 +38,7 @@ public class VoucherRequest {
                 .payment(null)
                 .user(null)
                 .price(null)
-                .active(true)
+                .active(null)
                 .startDate(null)
                 .expireDate(null)
                 .build();
