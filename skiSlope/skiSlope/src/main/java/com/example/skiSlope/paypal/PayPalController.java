@@ -18,6 +18,7 @@ public class PayPalController {
     @Autowired
     PayPalService service;
 
+    @Autowired
     PaymentService paymentService;
 
     public static final String SUCCESS_URL = "pay/success";
@@ -51,16 +52,14 @@ public class PayPalController {
         }
         return "redirect:/";
     }
-    @PostMapping("/redPay")
-    public String makePayment() {
-//        Long id = Long.valueOf(70);
-//        System.out.println(paymentService.getAllPayments().get(0).getId());
-//        com.example.skiSlope.model.Payment payment1 = paymentService.getAllPayments().get(0);
-        String description = "Zakup biletu Srebrne Stoki Sarah Stein" +"\nNumer zamowienia: 22245 ";
+    @GetMapping("/pay/{id}")
+    public String makePayment(@PathVariable("id") Long id) {
+        com.example.skiSlope.model.Payment payment1 = paymentService.getPaymentById(id);
+        String description = "Zakup biletu Srebrne Stoki " +payment1.getUser().getFirstName()+" "+payment1.getUser().getLastName()+" Numer zamowienia: "+id;
         try {
-            Payment payment = service.createPayment(102.45, "PLN", "POST",
-                    "sale", description, FAILED_OPERATION_URL+70,
-                    SUCCESSFUL_OPERATION_URL+70);
+            Payment payment = service.createPayment(payment1.getTotalPrice(), "PLN", "POST",
+                    "sale", description, FAILED_OPERATION_URL+id,
+                    SUCCESSFUL_OPERATION_URL+id);
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
                     return "redirect:" + link.getHref();

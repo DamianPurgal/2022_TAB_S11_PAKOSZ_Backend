@@ -34,11 +34,11 @@ public class PaymentController {
     private SkiLiftService skiLiftService;
     private TicketOptionService ticketOptionService;
     private VoucherOptionService voucherOptionService;
-    private CardService cardService;
+    private ScanService scanService;
 
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public void addPayment(@Valid @NonNull @RequestBody PaymentCreateRequest paymentCreateRequest) {
+    public String addPayment(@Valid @NonNull @RequestBody PaymentCreateRequest paymentCreateRequest) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         checkIfUnpaidPayments(loggedUser);
         Payment payment = paymentCreateRequest.paymentRequest();
@@ -69,6 +69,7 @@ public class PaymentController {
         payment.setCardSet(cards);
         paymentService.updatePaymentData(payment, payment.getId());
         PaymentResponse paymentResponse = getPaymentResponse(payment);
+        return "http://localhost:8080/redPay/"+payment.getId();
 //        new PayPalController. makePayment(paymentResponse);
     }
 
