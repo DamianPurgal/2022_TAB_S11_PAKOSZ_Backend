@@ -31,7 +31,7 @@ public class PayPalService {
         amount.setTotal(String.format("%.3f", total));
 
         Transaction transaction = new Transaction();
-        transaction.setDescription("Zakup biletów Srebrne Stoki");
+        transaction.setDescription(description);
         transaction.setAmount(amount);
 
         List<Transaction> transactions = new ArrayList<>();

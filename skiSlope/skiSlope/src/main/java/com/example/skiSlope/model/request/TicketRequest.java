@@ -56,7 +56,7 @@ public class TicketRequest {
                 .payment(null)
                 .user(null)
                 .price(null)
-                .active(true)
+                .active(null)
                 .numberOfEntries(intToEnum().getValue())
                 .skiLift(null)
                 .build();

@@ -10,6 +10,7 @@ import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.model.response.TicketResponse;
 import com.example.skiSlope.service.definitions.UserService;
 import com.example.skiSlope.service.implementations.PriceService;
+import com.example.skiSlope.service.implementations.ScanService;
 import com.example.skiSlope.service.implementations.SkiLiftService;
 import com.example.skiSlope.service.implementations.TicketService;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class TicketController {
     private UserService userService;
     private PriceService priceService;
     private SkiLiftService skiLiftService;
+    private ScanService scanService;
 
 
     @PostMapping()

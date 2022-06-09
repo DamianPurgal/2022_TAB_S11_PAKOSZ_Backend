@@ -31,7 +31,7 @@ public class Voucher extends Card {
         this.payment = payment;
         this.price = price;
         this.cardType = CardType.Voucher;
-        this.active = true;
+        this.active = false;
         this.ownerName = ownerName;
         if (ownerName == null){
             User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
