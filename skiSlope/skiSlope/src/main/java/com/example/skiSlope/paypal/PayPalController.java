@@ -1,6 +1,7 @@
 package com.example.skiSlope.paypal;
 
 import com.example.skiSlope.api.PaymentController;
+import com.example.skiSlope.exception.AlreadyPaidOffPayment;
 import com.example.skiSlope.model.response.PaymentResponse;
 import com.example.skiSlope.service.implementations.PaymentService;
 import com.paypal.api.payments.Links;
@@ -55,6 +56,8 @@ public class PayPalController {
     @GetMapping("/pay/{id}")
     public String makePayment(@PathVariable("id") Long id) {
         com.example.skiSlope.model.Payment payment1 = paymentService.getPaymentById(id);
+        if(payment1.getPaidOff())
+            throw new AlreadyPaidOffPayment();
         String description = "Zakup biletu Srebrne Stoki " +payment1.getUser().getFirstName()+" "+payment1.getUser().getLastName()+" Numer zamowienia: "+id;
         try {
             Payment payment = service.createPayment(payment1.getTotalPrice(), "PLN", "POST",

@@ -69,7 +69,7 @@ public class PaymentController {
         payment.setCardSet(cards);
         paymentService.updatePaymentData(payment, payment.getId());
         PaymentResponse paymentResponse = getPaymentResponse(payment);
-        return "http://localhost:8080/redPay/"+payment.getId();
+        return "http://localhost:8080/pay/"+payment.getId();
 //        new PayPalController. makePayment(paymentResponse);
     }
 
@@ -93,8 +93,11 @@ public class PaymentController {
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public String setPaymentToPaidOff(@PathVariable("id") Long id) {
         List<Ticket> tickets = paymentService.getPaymentById(id).getTickets();
-        setTicketListToActive(tickets);
-        paymentService.setPaymentToPaidOff(id);
+        if(!paymentService.getPaymentById(id).getPaidOff()){
+            setTicketListToActive(tickets);
+            paymentService.setPaymentToPaidOff(id);
+        }
+
         return "success";
     }
 
