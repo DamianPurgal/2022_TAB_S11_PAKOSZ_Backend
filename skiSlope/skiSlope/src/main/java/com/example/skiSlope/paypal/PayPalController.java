@@ -25,8 +25,8 @@ public class PayPalController {
     public static final String SUCCESS_URL = "pay/success";
     public static final String CANCEL_URL = "pay/cancel";
 
-    public static final String SUCCESSFUL_OPERATION_URL = "http://localhost:8080/api/payment/update/";
-    public static final String FAILED_OPERATION_URL = "http://localhost:8080/api/payment/delete/";
+    public static final String SUCCESSFUL_OPERATION_URL = "https://projekt-pp-tab-2022.herokuapp.com/api/payment/update/";
+    public static final String FAILED_OPERATION_URL = "https://projekt-pp-tab-2022.herokuapp.com/api/payment/delete/";
 
 
     @GetMapping("/")
@@ -68,6 +68,7 @@ public class PayPalController {
                     return "redirect:" + link.getHref();
                 }
             }
+            System.out.println(payment.getId());
 
         } catch (PayPalRESTException e) {
 

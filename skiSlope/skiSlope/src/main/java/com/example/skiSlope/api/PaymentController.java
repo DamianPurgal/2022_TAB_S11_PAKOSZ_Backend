@@ -69,7 +69,7 @@ public class PaymentController {
         payment.setCardSet(cards);
         paymentService.updatePaymentData(payment, payment.getId());
         PaymentResponse paymentResponse = getPaymentResponse(payment);
-        return "http://localhost:8080/pay/"+payment.getId();
+        return "https://projekt-pp-tab-2022.herokuapp.com/pay/"+payment.getId();
 //        new PayPalController. makePayment(paymentResponse);
     }
 
