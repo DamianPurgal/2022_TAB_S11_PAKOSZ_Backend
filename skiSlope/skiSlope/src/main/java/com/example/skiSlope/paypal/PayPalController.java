@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 //@AllArgsConstructor
 public class PayPalController {
 
@@ -29,10 +29,10 @@ public class PayPalController {
     public static final String FAILED_OPERATION_URL = "https://projekt-pp-tab-2022.herokuapp.com/api/payment/delete/";
 
 
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
+//    @GetMapping("/")
+//    public String home() {
+//        return "home";
+//    }
 
     @PostMapping("/pay")
     public String payment(@ModelAttribute("order") Order order) {
@@ -78,23 +78,23 @@ public class PayPalController {
         return "redirect:/";
     }
 
-    @GetMapping(value = CANCEL_URL)
-    public String cancelPay() {
-        return "cancel";
-    }
-
-    @GetMapping(value = SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
-        try {
-            Payment payment = service.executePayment(paymentId, payerId);
-            System.out.println(payment.toJSON());
-            if (payment.getState().equals("approved")) {
-                return "success";
-            }
-        } catch (PayPalRESTException e) {
-            System.out.println(e.getMessage() + " " + e.getDetails());
-        }
-        return "redirect:/";
-
-    }
+//    @GetMapping(value = CANCEL_URL)
+//    public String cancelPay() {
+//        return "cancel";
+//    }
+//
+//    @GetMapping(value = SUCCESS_URL)
+//    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+//        try {
+//            Payment payment = service.executePayment(paymentId, payerId);
+//            System.out.println(payment.toJSON());
+//            if (payment.getState().equals("approved")) {
+//                return "success";
+//            }
+//        } catch (PayPalRESTException e) {
+//            System.out.println(e.getMessage() + " " + e.getDetails());
+//        }
+//        return "redirect:/";
+//
+//    }
 }
