@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/api")
 //@AllArgsConstructor
 public class PayPalController {
 
@@ -22,8 +23,8 @@ public class PayPalController {
     @Autowired
     PaymentService paymentService;
 
-    public static final String SUCCESS_URL = "pay/success";
-    public static final String CANCEL_URL = "pay/cancel";
+//    public static final String SUCCESS_URL = "pay/success";
+//    public static final String CANCEL_URL = "pay/cancel";
 
     public static final String SUCCESSFUL_OPERATION_URL = "https://projekt-pp-tab-2022.herokuapp.com/api/payment/update/";
     public static final String FAILED_OPERATION_URL = "https://projekt-pp-tab-2022.herokuapp.com/api/payment/delete/";
@@ -34,25 +35,25 @@ public class PayPalController {
 //        return "home";
 //    }
 
-    @PostMapping("/pay")
-    public String payment(@ModelAttribute("order") Order order) {
-        try {
-            Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
-                    order.getIntent(), order.getDescription(), "http://localhost:8080/" + CANCEL_URL,
-                    "http://localhost:8080/" + SUCCESS_URL);
-            for (Links link : payment.getLinks()) {
-                if (link.getRel().equals("approval_url")) {
-                    return "redirect:" + link.getHref();
-                }
-            }
-
-        } catch (PayPalRESTException e) {
-
-            e.printStackTrace();
-            e.getDetails();
-        }
-        return "redirect:/";
-    }
+//    @PostMapping("/pay")
+//    public String payment(@ModelAttribute("order") Order order) {
+//        try {
+//            Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
+//                    order.getIntent(), order.getDescription(), "http://localhost:8080/" + CANCEL_URL,
+//                    "http://localhost:8080/" + SUCCESS_URL);
+//            for (Links link : payment.getLinks()) {
+//                if (link.getRel().equals("approval_url")) {
+//                    return "redirect:" + link.getHref();
+//                }
+//            }
+//
+//        } catch (PayPalRESTException e) {
+//
+//            e.printStackTrace();
+//            e.getDetails();
+//        }
+//        return "redirect:/";
+//    }
     @GetMapping("/pay/{id}")
     public String makePayment(@PathVariable("id") Long id) {
         com.example.skiSlope.model.Payment payment1 = paymentService.getPaymentById(id);

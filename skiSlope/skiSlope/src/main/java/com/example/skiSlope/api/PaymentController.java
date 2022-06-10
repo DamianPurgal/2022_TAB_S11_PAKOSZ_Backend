@@ -140,7 +140,7 @@ public class PaymentController {
                                         .ownerName(voucher.getOwnerName())
                                         .voucherPrice(BigDecimal.valueOf(voucher.getPrice().getPrice()).setScale(2, RoundingMode.UP))
                                         .discountType(voucher.getPrice().getDiscountType().toString())
-                                        .periodTime(voucherOptionService.getVoucherOptionById(voucher.getPayment().getId()).getTimePeriod().getName())
+                                        .periodTime(voucherOptionService.getVoucherOptionById(voucher.getPrice().getId()).getTimePeriod().getName())
                                         .build()
                         ).collect(Collectors.toList()))
                         .build())
