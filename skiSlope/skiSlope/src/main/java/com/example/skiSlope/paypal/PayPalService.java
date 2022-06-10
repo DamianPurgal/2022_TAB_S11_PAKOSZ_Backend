@@ -17,7 +17,7 @@ public class PayPalService {
     private APIContext apiContext;
 
     public Payment createPayment(
-            Double total,
+            String total,
             String currency,
             String method,
             String intent,
@@ -27,8 +27,7 @@ public class PayPalService {
     ) throws PayPalRESTException {
         Amount amount = new Amount();
         amount.setCurrency("PLN");
-        total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        amount.setTotal(String.format("%.3f", total));
+        amount.setTotal(total);
 
         Transaction transaction = new Transaction();
         transaction.setDescription(description);

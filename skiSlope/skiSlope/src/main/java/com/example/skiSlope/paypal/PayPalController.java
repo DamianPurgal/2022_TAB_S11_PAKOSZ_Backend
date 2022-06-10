@@ -4,6 +4,7 @@ import com.example.skiSlope.api.PaymentController;
 import com.example.skiSlope.exception.AlreadyPaidOffPayment;
 import com.example.skiSlope.model.response.PaymentResponse;
 import com.example.skiSlope.service.implementations.PaymentService;
+import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
@@ -64,7 +65,9 @@ public class PayPalController {
             throw new AlreadyPaidOffPayment();
         String description = "Zakup biletu Srebrne Stoki " +payment1.getUser().getFirstName()+" "+payment1.getUser().getLastName()+" Numer zamowienia: "+id;
         try {
-            Payment payment = service.createPayment(BigDecimal.valueOf(payment1.getTotalPrice()).setScale(3, RoundingMode.UP).doubleValue(), "PLN", "POST",
+            Amount amount = new Amount();
+            amount.setTotal(String.format("%.3f", payment1.getTotalPrice()));
+            Payment payment = service.createPayment(amount.getTotal(), "PLN", "POST",
                     "sale", description, FAILED_OPERATION_URL+id,
                     SUCCESSFUL_OPERATION_URL+id);
             for (Links link : payment.getLinks()) {
@@ -79,6 +82,7 @@ public class PayPalController {
             e.printStackTrace();
             e.getDetails();
         }
+        System.out.println(BigDecimal.valueOf(payment1.getTotalPrice()).setScale(3, RoundingMode.UP).doubleValue());
         return "redirect:/";
     }
 

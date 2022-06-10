@@ -69,6 +69,7 @@ public class PaymentController {
         payment.setCardSet(cards);
         paymentService.updatePaymentData(payment, payment.getId());
         PaymentResponse paymentResponse = getPaymentResponse(payment);
+        System.out.println(String.format("%.2f", payment.getTotalPrice()));
         return "https://projekt-pp-tab-2022.herokuapp.com/pay/"+payment.getId();
 //        new PayPalController. makePayment(paymentResponse);
     }
