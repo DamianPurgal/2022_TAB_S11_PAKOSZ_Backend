@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Controller
 @RequestMapping("/api")
 //@AllArgsConstructor
@@ -61,7 +64,7 @@ public class PayPalController {
             throw new AlreadyPaidOffPayment();
         String description = "Zakup biletu Srebrne Stoki " +payment1.getUser().getFirstName()+" "+payment1.getUser().getLastName()+" Numer zamowienia: "+id;
         try {
-            Payment payment = service.createPayment(payment1.getTotalPrice(), "PLN", "POST",
+            Payment payment = service.createPayment(BigDecimal.valueOf(payment1.getTotalPrice()).setScale(3, RoundingMode.UP).doubleValue(), "PLN", "POST",
                     "sale", description, FAILED_OPERATION_URL+id,
                     SUCCESSFUL_OPERATION_URL+id);
             for (Links link : payment.getLinks()) {
