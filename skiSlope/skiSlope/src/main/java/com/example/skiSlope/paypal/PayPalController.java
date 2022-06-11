@@ -67,7 +67,7 @@ public class PayPalController {
         try {
             Amount amount = new Amount();
             amount.setTotal(String.format("%.3f", payment1.getTotalPrice()));
-            Payment payment = service.createPayment(amount.getTotal(), "PLN", "POST",
+            Payment payment = service.createPayment(payment1.getTotalPrice(), "PLN", "POST",
                     "sale", description, FAILED_OPERATION_URL+id,
                     SUCCESSFUL_OPERATION_URL+id);
             for (Links link : payment.getLinks()) {
