@@ -93,8 +93,10 @@ public class PaymentController {
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public String setPaymentToPaidOff(@PathVariable("id") Long id) {
         List<Ticket> tickets = paymentService.getPaymentById(id).getTickets();
+        List<Voucher> vouchers = paymentService.getPaymentById(id).getVouchers();
         if(!paymentService.getPaymentById(id).getPaidOff()){
             setTicketListToActive(tickets);
+            setVoucherListToActive(vouchers);
             paymentService.setPaymentToPaidOff(id);
         }
 
@@ -170,6 +172,12 @@ public class PaymentController {
         for(Ticket t: tickets){
             t.setActive(true);
             ticketService.updateTicket(t);
+        }
+    }
+    private void setVoucherListToActive(List<Voucher> vouchers){
+        for(Voucher v: vouchers){
+            v.setActive(true);
+            voucherService.updateVoucher(v);
         }
     }
 }
