@@ -10,7 +10,6 @@ import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.model.response.TicketResponse;
 import com.example.skiSlope.service.definitions.UserService;
 import com.example.skiSlope.service.implementations.PriceService;
-import com.example.skiSlope.service.implementations.ScanService;
 import com.example.skiSlope.service.implementations.SkiLiftService;
 import com.example.skiSlope.service.implementations.TicketService;
 import lombok.AllArgsConstructor;
@@ -34,7 +33,6 @@ public class TicketController {
     private UserService userService;
     private PriceService priceService;
     private SkiLiftService skiLiftService;
-    private ScanService scanService;
 
 
     @PostMapping()
@@ -56,8 +54,9 @@ public class TicketController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public List<TicketResponse> getAllTickets() {
         List<Ticket> ticketList = ticketService.getAllTickets();
-        return ticketList.stream().map(
-                ticketRes->TicketResponse
+        List<Ticket> paidOffTicketList = getPaidOffTicketList(ticketList);
+        return paidOffTicketList.stream().map(
+                ticketRes -> TicketResponse
                         .builder()
                         .id(ticketRes.getId())
                         .code(ticketRes.getCode())
@@ -82,13 +81,15 @@ public class TicketController {
                 .active(ticket.getActive())
                 .build();
     }
+
     @GetMapping("/myTickets")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public List<TicketResponse> getAllTicketsByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Ticket> ticketList = ticketService.getAllTicketsByUserId(loggedUser.getId());
-        return ticketList.stream().map(
-                ticketRes->TicketResponse
+        List<Ticket> paidOffTicketList = getPaidOffTicketList(ticketList);
+        return paidOffTicketList.stream().map(
+                ticketRes -> TicketResponse
                         .builder()
                         .id(ticketRes.getId())
                         .code(ticketRes.getCode())
@@ -105,16 +106,19 @@ public class TicketController {
     public TicketResponse getUserTicketById(@PathVariable("id") Long id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.getTicketById(id);
-        if(loggedUser.getId().equals(ticket.getUser().getId()))
-            return TicketResponse.builder()
-                    .id(ticket.getId())
-                    .code(ticket.getCode())
-                    .ownerName(ticket.getOwnerName())
-                    .entryAmount(ticket.getNumberOfEntries())
-                    .skiLiftName(ticket.getSkiLift().getName())
-                    .active(ticket.getActive())
-                    .build();
-        else {
+        if (loggedUser.getId().equals(ticket.getUser().getId())) {
+            if (ticketService.getTicketById(id).getPayment().getPaidOff())
+                return TicketResponse.builder()
+                        .id(ticket.getId())
+                        .code(ticket.getCode())
+                        .ownerName(ticket.getOwnerName())
+                        .entryAmount(ticket.getNumberOfEntries())
+                        .skiLiftName(ticket.getSkiLift().getName())
+                        .active(ticket.getActive())
+                        .build();
+            else
+                throw new BusinessException(HttpStatus.FORBIDDEN.value(), "Ticket isn't paid off!");
+        } else {
             throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to that ticket resource!");
         }
     }
@@ -126,13 +130,14 @@ public class TicketController {
         SkiLift skiLift = skiLiftService.getSkyLiftById(id);
         List<Ticket> ticketList = ticketService.getAllTicketsByUserId(loggedUser.getId());
         List<Ticket> ticketListBySkiLift = new ArrayList<>();
-        for(Ticket t:ticketList){
-            if(t.getSkiLift().getId().equals(skiLift.getId())){
+        for (Ticket t : ticketList) {
+            if (t.getSkiLift().getId().equals(skiLift.getId())) {
                 ticketListBySkiLift.add(t);
             }
         }
-        return ticketListBySkiLift.stream().map(
-                ticketRes->TicketResponse
+        List<Ticket> paidOffTicketList = getPaidOffTicketList(ticketListBySkiLift);
+        return paidOffTicketList.stream().map(
+                ticketRes -> TicketResponse
                         .builder()
                         .id(ticketRes.getId())
                         .code(ticketRes.getCode())
@@ -149,17 +154,17 @@ public class TicketController {
     public List<TicketResponse> getAllTicketsBySkiLiftId(@PathVariable("id") Long id) {
         SkiLift skiLift = skiLiftService.getSkyLiftById(id);
         List<Ticket> ticketList = ticketService.getAllTicketsBySkiLiftId(skiLift.getId());
-            return ticketList.stream().map(
-                    ticketRes->TicketResponse
-                            .builder()
-                            .id(ticketRes.getId())
-                            .code(ticketRes.getCode())
-                            .active(ticketRes.getActive())
-                            .entryAmount(ticketRes.getNumberOfEntries())
-                            .ownerName(ticketRes.getOwnerName())
-                            .skiLiftName(ticketRes.getSkiLift().getName())
-                            .build()
-            ).collect(Collectors.toList());
+        return ticketList.stream().map(
+                ticketRes -> TicketResponse
+                        .builder()
+                        .id(ticketRes.getId())
+                        .code(ticketRes.getCode())
+                        .active(ticketRes.getActive())
+                        .entryAmount(ticketRes.getNumberOfEntries())
+                        .ownerName(ticketRes.getOwnerName())
+                        .skiLiftName(ticketRes.getSkiLift().getName())
+                        .build()
+        ).collect(Collectors.toList());
     }
 
     @DeleteMapping("/myTickets/{id}")
@@ -167,10 +172,9 @@ public class TicketController {
     public void deleteTicketByCode(@PathVariable("id") Long id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.getTicketById(id);
-        if(loggedUser.getId().equals(ticket.getUser().getId())) {
+        if (loggedUser.getId().equals(ticket.getUser().getId())) {
             ticketService.deleteTicket(id);
-        }
-        else {
+        } else {
             throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to delete that ticket!");
         }
     }
@@ -180,12 +184,24 @@ public class TicketController {
     public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketUpdateRequest ticketUpdateRequest) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Ticket ticket = ticketService.getTicketById(id);
-        if(loggedUser.getId().equals(ticket.getUser().getId())) {
-            ticketService.updateTicketsData(ticketUpdateRequest, id);
-        }
-        else {
+        if (loggedUser.getId().equals(ticket.getUser().getId())) {
+            if (ticketService.getTicketById(id).getPayment().getPaidOff())
+                ticketService.updateTicketsData(ticketUpdateRequest, id);
+            else
+                throw new BusinessException(HttpStatus.FORBIDDEN.value(), "Ticket isn't paid off!");
+        } else {
             throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to update that ticket!");
         }
+    }
+
+    private List<Ticket> getPaidOffTicketList(List<Ticket> tickets) {
+        List<Ticket> paidOfTickets = new ArrayList<>();
+        for (Ticket t : tickets) {
+            if (t.getPayment().getPaidOff()) {
+                paidOfTickets.add(t);
+            }
+        }
+        return paidOfTickets;
     }
 
 }

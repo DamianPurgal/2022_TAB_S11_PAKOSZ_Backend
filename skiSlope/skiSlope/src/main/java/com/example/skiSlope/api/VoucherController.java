@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,11 +32,9 @@ public class VoucherController {
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void addVoucher(@Valid @NonNull @RequestBody VoucherRequest voucherRequest) {
-        System.out.println("Hello 0");
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user2 = userService.getUser(loggedUser.getUsername());
         Price price = priceService.getPriceById(voucherRequest.getPriceId());
-        System.out.println("Hello");
 
         Voucher voucher = voucherRequest.voucherRequestToUser();
         voucher.setPrice(price);
@@ -88,7 +87,7 @@ public class VoucherController {
     public List<VoucherResponse> getAllVouchersByUserId() {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List<Voucher> voucherList = voucherService.getAllVouchersByUserId(loggedUser.getId());
-
+        voucherList = getPaidOffVoucherList(voucherList);
         voucherList = voucherService.setVouchersInactiveIfExpired(voucherList);
 
         return voucherList.stream().map(
@@ -108,11 +107,10 @@ public class VoucherController {
     public VoucherResponse getUserVoucherById(@PathVariable("id") Long id) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Voucher voucher = voucherService.getVoucherById(id);
-
         voucher = voucherService.setVoucherInactiveIfExpired(voucher);
-
         if (loggedUser.getId().equals(voucher.getUser().getId())){
-            return VoucherResponse.builder()
+            if(voucherService.getVoucherById(id).getPayment().getPaidOff())
+                return VoucherResponse.builder()
                     .id(voucher.getId())
                     .code(voucher.getCode())
                     .ownerName(voucher.getOwnerName())
@@ -121,6 +119,8 @@ public class VoucherController {
                     .startDate(voucher.getStartDate())
                     .expireDate(voucher.getExpireDate())
                     .build();
+            else
+                throw new BusinessException(HttpStatus.FORBIDDEN.value(), "Voucher isn't paid off!");
             }
         else {
             throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to that voucher resource!");
@@ -146,11 +146,23 @@ public class VoucherController {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Voucher voucher = voucherService.getVoucherById(id);
         if (loggedUser.getId().equals(voucher.getUser().getId())) {
-            voucherService.updateVouchersData(voucherUpdateRequest, id);
+            if (voucherService.getVoucherById(id).getPayment().getPaidOff())
+                voucherService.updateVouchersData(voucherUpdateRequest, id);
+            else
+                throw new BusinessException(HttpStatus.FORBIDDEN.value(), "Voucher isn't paid off!");
         }
         else {
             throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to update that voucher!");
         }
+    }
+    private List<Voucher> getPaidOffVoucherList(List<Voucher> vouchers){
+        List<Voucher> paidOfVouchers = new ArrayList<>();
+        for(Voucher v: vouchers){
+            if(v.getPayment().getPaidOff()){
+                paidOfVouchers.add(v);
+            }
+        }
+        return paidOfVouchers;
     }
 
 }
