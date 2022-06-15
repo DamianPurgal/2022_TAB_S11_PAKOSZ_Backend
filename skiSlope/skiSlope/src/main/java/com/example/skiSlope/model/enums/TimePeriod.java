@@ -72,7 +72,7 @@ public enum TimePeriod {
             case "3 months":
                 return new Date(1000L * 60 * 60 * 24 * 31 * 3);
             case "year":
-                return new Date(1000L * 60 * 60 * 24 * 31 * 365);
+                return new Date(1000L * 60 * 60 * 24 * 31 * 12);
             default:
                 throw new NoAvailableEntryOptionException();
         }
