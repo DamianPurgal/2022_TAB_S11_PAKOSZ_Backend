@@ -54,12 +54,6 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
         return ticketOptionRepository.findAllByExpireDateGreaterThanEqualAndStartDateLessThanEqual(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
     }
 
-//    @Override
-//    public List<TicketOption> getAllLatestTicketOptions() throws ParseException {
-//        return ticketOptionRepository.findAllByExpireDateEquals(new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ").parse("9999-12-31T22:59:59.000-0000"));
-//    }
-
-
     @Override
     public List<TicketOption> getAllTicketOptions() {
         return ticketOptionRepository.findAll();
@@ -104,11 +98,6 @@ public class TicketOptionService implements TicketOptionServiceDefinition {
         }
         ticketOptionRepository.saveAll(ticketOptionToUpdate);
     }
-
-//    @Override
-//    public void deleteTicketOption(Long id) {
-//        ticketOptionRepository.deleteById(id);
-//    }
 
     @Override
     public void deleteTicketOptionByLatestExpireDate() throws ParseException {

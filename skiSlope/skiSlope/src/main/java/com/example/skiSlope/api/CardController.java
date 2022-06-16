@@ -44,7 +44,7 @@ public class CardController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
     public CardResponse getCardById(@PathVariable("id") Long id) {
-        Card card = cardService.getCardById(id).orElseThrow(CardNotFoundException::new);
+        Card card = cardService.getCardById(id);
         return CardResponse.builder()
                 .id(card.getId())
                 .code(card.getCode())

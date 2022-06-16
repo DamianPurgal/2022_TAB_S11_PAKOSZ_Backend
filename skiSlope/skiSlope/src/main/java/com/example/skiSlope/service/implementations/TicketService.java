@@ -1,14 +1,16 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.exception.CardNotFoundException;
 import com.example.skiSlope.exception.TicketNotFoundException;
-import com.example.skiSlope.model.Payment;
 import com.example.skiSlope.model.Ticket;
+import com.example.skiSlope.model.User;
 import com.example.skiSlope.model.request.TicketUpdateRequest;
 import com.example.skiSlope.repository.TicketRepository;
 import com.example.skiSlope.service.definitions.TicketServiceDefinition;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -49,10 +51,17 @@ public class TicketService implements TicketServiceDefinition {
     }
 
     @Override
-    public void updateTicketsData(TicketUpdateRequest ticketUpdateRequest, Long id) {
+    public void updateTicketsData(TicketUpdateRequest ticketUpdateRequest, Long id, User user) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(TicketNotFoundException::new);
-        ticket = ticketUpdateRequest.updateTicketOwnerName(ticket);
+        if (user.getId().equals(ticket.getUser().getId())) {
+            if (ticket.getPayment().getPaidOff())
+                ticket = ticketUpdateRequest.updateTicketOwnerName(ticket);
+            else
+                throw new BusinessException(HttpStatus.FORBIDDEN.value(), "Ticket isn't paid off!");
+        } else {
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to update that ticket!");
+        }
         ticketRepository.save(ticket);
     }
 

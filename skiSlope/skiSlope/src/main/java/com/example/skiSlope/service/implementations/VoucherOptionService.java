@@ -38,7 +38,8 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
 
     @Override
     public VoucherOption getVoucherOptionById(Long id) {
-        return voucherOptionRepository.findById(id).orElseThrow(PriceNotFoundException::new);
+        return voucherOptionRepository.findById(id)
+                .orElseThrow(PriceNotFoundException::new);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class VoucherOptionService implements VoucherOptionServiceDefinition {
         Date foundStartDate = voucherOptions.get(0).getStartDate();
         Date now = new Date(System.currentTimeMillis());
         if(foundStartDate.compareTo(now) <= 0){
-            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You cannot delete this item becouse it's not a date in the future!");
+            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You cannot delete this item because it's not a date in the future!");
         }
         for(VoucherOption v : voucherOptions){
             voucherOptionToDelete.add(v);

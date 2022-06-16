@@ -1,5 +1,6 @@
 package com.example.skiSlope.api;
 
+import com.example.skiSlope.exception.BusinessException;
 import com.example.skiSlope.model.*;
 import com.example.skiSlope.model.request.PaymentCreateRequest;
 import com.example.skiSlope.model.request.TicketCreatePaymentRequest;
@@ -11,6 +12,7 @@ import com.example.skiSlope.model.response.VoucherPaymentResponse;
 import com.example.skiSlope.paypal.PayPalController;
 import com.example.skiSlope.service.implementations.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,6 +40,10 @@ public class PaymentController {
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public String addPayment(@Valid @NonNull @RequestBody PaymentCreateRequest paymentCreateRequest) {
+        if(paymentCreateRequest.getVouchers().isEmpty() && paymentCreateRequest.getTickets().isEmpty()){
+            throw  new BusinessException(HttpStatus.FORBIDDEN.value(), "Your payment is empty");
+        }
+
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         checkIfUnpaidPayments(loggedUser);
         Payment payment = paymentCreateRequest.paymentRequest();

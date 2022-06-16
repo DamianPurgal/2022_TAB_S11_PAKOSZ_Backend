@@ -1,5 +1,6 @@
 package com.example.skiSlope.service.implementations;
 
+import com.example.skiSlope.exception.CardNotFoundException;
 import com.example.skiSlope.model.Card;
 import com.example.skiSlope.repository.CardRepository;
 import com.example.skiSlope.service.definitions.CardServiceDefinition;
@@ -7,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
@@ -18,19 +19,26 @@ public class CardService implements CardServiceDefinition {
     private CardRepository cardRepository;
 
     @Override
-    public Optional<Card> getCardById(Long id) {
-        return cardRepository.findById(id);
+    public Card getCardById(Long id) {
+        return cardRepository.findById(id)
+                .orElseThrow(CardNotFoundException::new);
     }
 
     @Override
     public List<Card> getAllCardsByUserId(Long userId) {
-        return cardRepository.findCardsByUserId(userId);
+        List<Card> paidOffCards = new ArrayList<>();
+        for(Card c: cardRepository.findCardsByUserId(userId)){
+            if(c.getPayment().getPaidOff()) {
+                System.out.println(c.getId());
+                paidOffCards.add(c);
+            }
+        }
+        return paidOffCards;
     }
 
     @Override
     public List<Card> getAllCards() {
         return cardRepository.findAll();
     }
-
 
 }

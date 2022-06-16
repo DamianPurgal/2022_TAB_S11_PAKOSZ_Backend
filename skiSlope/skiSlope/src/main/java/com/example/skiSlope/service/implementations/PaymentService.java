@@ -2,9 +2,11 @@ package com.example.skiSlope.service.implementations;
 
 import com.example.skiSlope.exception.NoPaymentFoundException;
 import com.example.skiSlope.model.Payment;
+import com.example.skiSlope.repository.CardRepository;
 import com.example.skiSlope.repository.PaymentRepository;
 import com.example.skiSlope.service.definitions.PaymentServiceDefinition;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -15,6 +17,8 @@ import java.util.List;
 public class PaymentService implements PaymentServiceDefinition {
 
     private PaymentRepository paymentRepository;
+//    private CardRepository cardRepository;
+
 
     @Override
     public Payment addPayment(Payment payment) {
@@ -39,7 +43,8 @@ public class PaymentService implements PaymentServiceDefinition {
 
     @Override
     public void setPaymentAsPaidOffById(Long id) {
-        Payment payment = paymentRepository.findById(id).orElseThrow(NoPaymentFoundException::new);
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(NoPaymentFoundException::new);
         payment.setPaidOff(true);
         paymentRepository.save(payment);
     }
@@ -59,8 +64,8 @@ public class PaymentService implements PaymentServiceDefinition {
 
     @Override
     public void setPaymentToPaidOff(Long paymentId) {
-        Payment payment = paymentRepository
-                .findById(paymentId).orElseThrow(NoPaymentFoundException::new);
+        Payment payment = paymentRepository.findById(paymentId)
+                .orElseThrow(NoPaymentFoundException::new);
         payment.setPaymentDate(new Date(System.currentTimeMillis()));
         payment.setPaidOff(true);
         paymentRepository.save(payment);

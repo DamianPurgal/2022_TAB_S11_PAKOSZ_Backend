@@ -183,15 +183,7 @@ public class TicketController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
     public void updateTicketByCode(@PathVariable("id") Long id, @Valid @NonNull @RequestBody TicketUpdateRequest ticketUpdateRequest) {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Ticket ticket = ticketService.getTicketById(id);
-        if (loggedUser.getId().equals(ticket.getUser().getId())) {
-            if (ticketService.getTicketById(id).getPayment().getPaidOff())
-                ticketService.updateTicketsData(ticketUpdateRequest, id);
-            else
-                throw new BusinessException(HttpStatus.FORBIDDEN.value(), "Ticket isn't paid off!");
-        } else {
-            throw new BusinessException(HttpStatus.FORBIDDEN.value(), "You don't have permission to update that ticket!");
-        }
+        ticketService.updateTicketsData(ticketUpdateRequest, id, loggedUser);
     }
 
     private List<Ticket> getPaidOffTicketList(List<Ticket> tickets) {
