@@ -43,8 +43,18 @@ public class ReportsController {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
-        JasperReport jasperReport = JasperCompileManager.compileReport("tickets.jrxml");
-        System.out.println("T");
+
+        File file = ResourceUtils.getFile("src/main/resources/tickets.jrxml");
+        if(file.exists()){
+            System.out.println("exists");
+        }
+        if(file.canRead())
+        {
+            System.out.println("canRead");
+        }
+        System.out.println(file.getAbsolutePath());
+
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
