@@ -106,7 +106,7 @@ public class PaymentController {
             paymentService.setPaymentToPaidOff(id);
         }
 
-        return "success";
+        return "https://projekt-pp-tab-2022-frontend.herokuapp.com/endpayment";
     }
 
     @GetMapping("/delete/{id}")
@@ -115,7 +115,7 @@ public class PaymentController {
         ticketService.deleteAllTicketsByPaymentId(id);
         voucherService.deleteAllVouchersByPaymentId(id);
         paymentService.deletePayment(id);
-        return "cancel";
+        return "https://projekt-pp-tab-2022-frontend.herokuapp.com/cancelpayment";
     }
 
     @DeleteMapping()
