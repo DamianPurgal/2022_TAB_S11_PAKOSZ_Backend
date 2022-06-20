@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Controller
 @RequestMapping("api/payment")
 @RestController
 public class PaymentController {
@@ -36,6 +38,8 @@ public class PaymentController {
     private SkiLiftService skiLiftService;
     private TicketOptionService ticketOptionService;
     private VoucherOptionService voucherOptionService;
+    private static final String SUCCESS_URL = "https://projekt-pp-tab-2022-frontend.herokuapp.com/endpayment";
+    private static final String CANCEL_URL = "https://projekt-pp-tab-2022-frontend.herokuapp.com/cancelpayment";
 
     @PostMapping()
     @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
@@ -106,7 +110,7 @@ public class PaymentController {
             paymentService.setPaymentToPaidOff(id);
         }
 
-        return "https://projekt-pp-tab-2022-frontend.herokuapp.com/endpayment";
+        return "redirect:"+SUCCESS_URL;
     }
 
     @GetMapping("/delete/{id}")
@@ -115,7 +119,7 @@ public class PaymentController {
         ticketService.deleteAllTicketsByPaymentId(id);
         voucherService.deleteAllVouchersByPaymentId(id);
         paymentService.deletePayment(id);
-        return "https://projekt-pp-tab-2022-frontend.herokuapp.com/cancelpayment";
+        return "redirect:"+ CANCEL_URL;
     }
 
     @DeleteMapping()
