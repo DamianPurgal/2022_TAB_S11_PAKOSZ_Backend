@@ -19,9 +19,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -101,7 +103,7 @@ public class PaymentController {
 
     @GetMapping("/update/{id}")
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGER','ROLE_CUSTOMER')")
-    public String setPaymentToPaidOff(@PathVariable("id") Long id) {
+    public void setPaymentToPaidOff(@PathVariable("id") Long id, HttpServletResponse response) {
         List<Ticket> tickets = paymentService.getPaymentById(id).getTickets();
         List<Voucher> vouchers = paymentService.getPaymentById(id).getVouchers();
         if(!paymentService.getPaymentById(id).getPaidOff()){
@@ -109,17 +111,25 @@ public class PaymentController {
             setVoucherListToActive(vouchers);
             paymentService.setPaymentToPaidOff(id);
         }
+        try{
+            response.sendRedirect(SUCCESS_URL);
+        } catch(Exception ex){
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
+        }
 
-        return "redirect:"+SUCCESS_URL;
     }
 
     @GetMapping("/delete/{id}")
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGER')")
-    public String deletePaymentById(@PathVariable("id") Long id) {
+    public void deletePaymentById(@PathVariable("id") Long id, HttpServletResponse response) {
         ticketService.deleteAllTicketsByPaymentId(id);
         voucherService.deleteAllVouchersByPaymentId(id);
         paymentService.deletePayment(id);
-        return "redirect:"+ CANCEL_URL;
+        try{
+            response.sendRedirect(CANCEL_URL);
+        } catch(Exception ex){
+            throw new BusinessException(HttpStatus.BAD_REQUEST.value(), "Something went wrong");
+        }
     }
 
     @DeleteMapping()
