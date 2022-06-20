@@ -172,10 +172,7 @@ FROM skislope.cards]]>
                 </textElement>
                 <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
             </textField>
-            <image hAlign="Center" vAlign="Middle">
-                <reportElement x="0" y="-6" width="554" height="73" uuid="44943534-917a-4fdc-98fb-2ccfffbc064c"/>
-                <imageExpression><![CDATA["logo.jpg"]]></imageExpression>
-            </image>
+
         </band>
     </pageFooter>
     <summary>
