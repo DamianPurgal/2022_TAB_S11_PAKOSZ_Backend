@@ -64,6 +64,9 @@ public class ReportsController {
         System.out.println("T2");
         parameters.put("Company", "Srebrne Stoki");
         System.out.println("T3");
+        System.out.println(parameters.toString());
+        System.out.println(jasperReport.toString());
+        System.out.println(dataSource.toString());
         JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         System.out.println("T4");
         JRPdfExporter exporter = new JRPdfExporter();
