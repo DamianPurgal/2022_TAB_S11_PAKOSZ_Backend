@@ -45,7 +45,7 @@ public class ReportsController {
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
         File file = ResourceUtils.getFile("./skiSlope/skiSlope/src/main/resources/tickets.jrxml");
 
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getCanonicalPath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
@@ -82,7 +82,7 @@ public class ReportsController {
         List<User> users= userService.getAllUsers();
         File file = ResourceUtils.getFile("./skiSlope/skiSlope/src/main/resources/customers.jrxml");
 
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getCanonicalPath());
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(users);
         Map<String, Object> parameters= new HashMap<>();
