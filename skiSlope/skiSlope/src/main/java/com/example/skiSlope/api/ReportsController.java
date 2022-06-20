@@ -66,6 +66,8 @@ public class ReportsController {
         System.out.println("T3");
         System.out.println(parameters.toString());
         System.out.println(jasperReport.getCompileData().toString());
+        System.out.println(jasperReport.getName().toString());
+        System.out.println(jasperReport.getColumnCount());
         System.out.println(dataSource.getData().toString());
         JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, dataSource);
         System.out.println("T4");
