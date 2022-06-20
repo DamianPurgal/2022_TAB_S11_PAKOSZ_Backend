@@ -43,7 +43,7 @@ public class ReportsController {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
-        JasperReport jasperReport = JasperCompileManager.compileReport("app/src/main/resources/tickets.jrxml");
+        JasperReport jasperReport = JasperCompileManager.compileReport("tickets.jrxml");
         System.out.println("T");
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
