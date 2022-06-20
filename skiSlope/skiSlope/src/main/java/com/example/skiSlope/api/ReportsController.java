@@ -44,9 +44,10 @@ public class ReportsController {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
         System.out.println("T1");
-        InputStream file= ResourceUtils.getURL("skiSlope/skiSlope/src/main/resources/tickets.jrxml").openStream();
+        ClassLoader cl = this.getClass().getClassLoader();
+        InputStream inputStream = cl.getResourceAsStream("tickets.jrxml");
         System.out.println("T2");
-        JasperReport jasperReport = JasperCompileManager.compileReport(file);
+        JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
