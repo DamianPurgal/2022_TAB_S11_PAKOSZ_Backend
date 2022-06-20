@@ -52,6 +52,7 @@ public class ReportsController {
         {
             System.out.println("canRead");
         }
+        System.out.println(file.getName());
         System.out.println(file.getAbsolutePath());
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
