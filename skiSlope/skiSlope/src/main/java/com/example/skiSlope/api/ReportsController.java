@@ -44,18 +44,9 @@ public class ReportsController {
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
         System.out.println("T1");
-        File file = ResourceUtils.getFile("./skiSlope/skiSlope/src/main/resources/tickets.jrxml");
-        if(file.exists()){
-            System.out.println("exists");
-        }
-        if(file.canRead())
-        {
-            System.out.println("canRead");
-        }
-
+        InputStream file= ResourceUtils.getURL("skiSlope/skiSlope/src/main/resources/tickets.jrxml").openStream();
         System.out.println("T2");
-        System.out.println(file.getAbsolutePath());
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+        JasperReport jasperReport = JasperCompileManager.compileReport(file);
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
