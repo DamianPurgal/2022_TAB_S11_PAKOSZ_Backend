@@ -9,10 +9,10 @@
 MmE0ZGQ7]]>
     </property>
     <property name="com.jaspersoft.studio.data.defaultdataadapter" value="SkiSlop"/>
-    <style name="Title" fontName="Arial" fontSize="26" isBold="true"/>
-    <style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
-    <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
-    <style name="Detail" fontName="Arial" fontSize="12"/>
+    <style name="Title" fontName="Noto Sans" fontSize="26" isBold="true"/>
+    <style name="SubTitle" forecolor="#666666" fontName="Noto Sans" fontSize="18"/>
+    <style name="Column header" forecolor="#666666" fontName="Noto Sans" fontSize="12" isBold="true"/>
+    <style name="Detail" fontName="Noto Sans" fontSize="12"/>
     <queryString language="SQL">
         <![CDATA[SELECT *
 FROM skislope.cards]]>
@@ -57,7 +57,7 @@ FROM skislope.cards]]>
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="21fb159b-e5b6-4afd-9622-893703d816bd"/>
                     </reportElement>
                     <textElement textAlignment="Center" verticalAlignment="Middle">
-                        <font fontName="Arial" size="18"/>
+                        <font fontName="Noto Sans" size="18"/>
                     </textElement>
                     <text><![CDATA[Owner]]></text>
                 </staticText>
@@ -85,7 +85,7 @@ FROM skislope.cards]]>
             <staticText>
                 <reportElement style="SubTitle" x="200" y="10" width="157" height="40" forecolor="#FFFFFF" uuid="8e16dabd-2e54-471b-9652-83e1d55379ec"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font fontName="Arial" size="26"/>
+                    <font fontName="Noto Sans" size="26"/>
                 </textElement>
                 <text><![CDATA[User Tickets]]></text>
             </staticText>
