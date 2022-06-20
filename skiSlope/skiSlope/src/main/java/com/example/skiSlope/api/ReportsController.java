@@ -55,6 +55,9 @@ public class ReportsController {
         System.out.println(file.getAbsolutePath());
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+
+        System.out.println("report compiled");
+
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
