@@ -57,10 +57,7 @@ public class ReportsController {
         {
             System.out.println("canRead");
         }
-        System.out.println(file.list());
-        System.out.println(file.getName());
-        System.out.println(file.getAbsolutePath());
-        System.out.println(FileUtil.readAsString(file));
+        //System.out.println(FileUtil.readAsString(file));
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
 
@@ -77,7 +74,14 @@ public class ReportsController {
         System.out.println(jasperReport.getName().toString());
         System.out.println(jasperReport.getColumnCount());
         System.out.println(dataSource.getData().toString());
-        JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        JasperPrint jasperPrint = null;
+        try{
+            jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause().getMessage());
+        }
+
         System.out.println("T4");
         JRPdfExporter exporter = new JRPdfExporter();
         System.out.println("T5");
