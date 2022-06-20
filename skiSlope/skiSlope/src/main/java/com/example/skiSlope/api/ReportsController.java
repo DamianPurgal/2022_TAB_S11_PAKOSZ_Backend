@@ -59,21 +59,36 @@ public class ReportsController {
         System.out.println("report compiled");
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
+        System.out.println("T1");
         Map<String, Object> parameters= new HashMap<>();
+        System.out.println("T2");
         parameters.put("Company", "Srebrne Stoki");
+        System.out.println("T3");
         JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        System.out.println("T4");
         JRPdfExporter exporter = new JRPdfExporter();
+        System.out.println("T5");
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
+        System.out.println("T6");
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+        System.out.println("T7");
         exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(pdfOutputStream));
+        System.out.println("T8");
         SimplePdfReportConfiguration reportConfig = new SimplePdfReportConfiguration();
+        System.out.println("T9");
         reportConfig.setSizePageToContent(true);
+        System.out.println("T10");
         reportConfig.setForceLineBreakPolicy(false);
+        System.out.println("T11");
 
         exporter.exportReport();
+        System.out.println("T12");
         byte [] res= pdfOutputStream.toByteArray();
+        System.out.println("T13");
         var headers = new HttpHeaders();
+        System.out.println("T14");
         headers.add("Content-Disposition", "inline; filename= customerReport.pdf");
+        System.out.println("T15");
         return ResponseEntity
                 .ok()
                 .headers(headers)
