@@ -5,10 +5,10 @@
     <property name="ireport.x" value="0"/>
     <property name="ireport.y" value="0"/>
 
-    <style name="Title" fontName="Noto Sans" fontSize="26" isBold="true"/>
-    <style name="SubTitle" forecolor="#666666" fontName="Noto Sans" fontSize="18"/>
-    <style name="Column header" forecolor="#666666" fontName="Noto Sans" fontSize="12" isBold="true"/>
-    <style name="Detail" fontName="Noto Sans" fontSize="12"/>
+    <style name="Title"  fontSize="26" isBold="true"/>
+    <style name="SubTitle" forecolor="#666666"  fontSize="18"/>
+    <style name="Column header" forecolor="#666666"  fontSize="12" isBold="true"/>
+    <style name="Detail" fontSize="12"/>
 
     <field name="username" class="java.lang.String">
         <property name="com.jaspersoft.studio.field.name" value="username"/>
@@ -41,7 +41,7 @@
             <staticText>
                 <reportElement style="SubTitle" x="200" y="20" width="157" height="50" forecolor="#FFFFFF" uuid="8e16dabd-2e54-471b-9652-83e1d55379ec"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font fontName="Noto Sans" size="26"/>
+                    <font size="26"/>
                 </textElement>
                 <text><![CDATA[Users]]></text>
             </staticText>
