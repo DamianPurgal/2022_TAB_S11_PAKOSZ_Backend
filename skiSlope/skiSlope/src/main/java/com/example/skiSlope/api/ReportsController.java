@@ -45,6 +45,14 @@ public class ReportsController {
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
         System.out.println("T1");
         File file = ResourceUtils.getFile("./skiSlope/skiSlope/src/main/resources/tickets.jrxml");
+        if(file.exists()){
+            System.out.println("exists");
+        }
+        if(file.canRead())
+        {
+            System.out.println("canRead");
+        }
+
         System.out.println("T2");
         System.out.println(file.getAbsolutePath());
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
