@@ -4,6 +4,7 @@ import com.example.skiSlope.model.Card;
 import com.example.skiSlope.model.User;
 import com.example.skiSlope.service.definitions.UserService;
 import com.example.skiSlope.service.implementations.CardService;
+import com.google.common.io.Files;
 import lombok.AllArgsConstructor;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -11,6 +12,8 @@ import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfReportConfiguration;
+import org.aspectj.util.FileUtil;
+import org.jfree.io.FileUtilities;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +48,8 @@ public class ReportsController {
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
 
         File file = ResourceUtils.getFile("src/main/resources/tickets.jrxml");
+
+
         if(file.exists()){
             System.out.println("exists");
         }
@@ -52,8 +57,10 @@ public class ReportsController {
         {
             System.out.println("canRead");
         }
+        System.out.println(file.list());
         System.out.println(file.getName());
         System.out.println(file.getAbsolutePath());
+        System.out.println(FileUtil.readAsString(file));
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
 
