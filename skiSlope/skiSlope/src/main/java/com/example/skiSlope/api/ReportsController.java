@@ -43,9 +43,11 @@ public class ReportsController {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
+        System.out.println("T1");
         File file = ResourceUtils.getFile("./skiSlope/skiSlope/src/main/resources/tickets.jrxml");
-
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getCanonicalPath());
+        System.out.println("T2");
+        System.out.println(file.getAbsolutePath());
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
@@ -82,7 +84,7 @@ public class ReportsController {
         List<User> users= userService.getAllUsers();
         File file = ResourceUtils.getFile("./skiSlope/skiSlope/src/main/resources/customers.jrxml");
 
-        JasperReport jasperReport = JasperCompileManager.compileReport(file.getCanonicalPath());
+        JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
 
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(users);
         Map<String, Object> parameters= new HashMap<>();
