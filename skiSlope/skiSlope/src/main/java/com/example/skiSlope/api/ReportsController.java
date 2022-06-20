@@ -23,6 +23,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @AllArgsConstructor
@@ -43,11 +44,14 @@ public class ReportsController {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
+
+
         System.out.println("T1");
         ClassLoader cl = this.getClass().getClassLoader();
         InputStream inputStream = cl.getResourceAsStream("tickets.jrxml");
-        System.out.println("T2");
+
         JasperReport jasperReport = JasperCompileManager.compileReport(inputStream);
+        System.out.println("T3");
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
