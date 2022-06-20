@@ -43,7 +43,7 @@ public class ReportsController {
 
         User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         List <Card> cards= cardService.getAllCardsByUserId(loggedUser.getId());
-        File file = ResourceUtils.getFile("src/main/resources/tickets.jrxml");
+        File file = ResourceUtils.getFile("skiSlope/skiSlope/src/main/resources/tickets.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(cards);
@@ -80,7 +80,7 @@ public class ReportsController {
 
 
         List<User> users= userService.getAllUsers();
-        File file = ResourceUtils.getFile("src/main/resources/customers.jrxml");
+        File file = ResourceUtils.getFile("skiSlope/skiSlope/src/main/resources/customers.jrxml");
 
         JasperReport jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
 
