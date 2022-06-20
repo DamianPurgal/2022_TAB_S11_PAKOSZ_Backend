@@ -146,7 +146,7 @@
             </textField>
             <image hAlign="Center" vAlign="Middle">
                 <reportElement x="1" y="-40" width="555" height="80" uuid="e4eb385d-c890-443b-84d1-6736713ff59f"/>
-                <imageExpression><![CDATA["C:/Users/julia/OneDrive/Desktop/ProjektPP/PP_Backend/2022_TAB_S11_PAKOSZ_Backend/skiSlope/skiSlope/src/main/resources/logo.jpg"]]></imageExpression>
+                <imageExpression><![CDATA["logo.jpg"]]></imageExpression>
             </image>
         </band>
     </pageFooter>
