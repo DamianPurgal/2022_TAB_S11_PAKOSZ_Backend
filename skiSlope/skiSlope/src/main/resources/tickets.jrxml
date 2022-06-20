@@ -57,7 +57,7 @@ FROM skislope.cards]]>
                         <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="21fb159b-e5b6-4afd-9622-893703d816bd"/>
                     </reportElement>
                     <textElement textAlignment="Center" verticalAlignment="Middle">
-                        <font fontName="Book Antiqua" size="18"/>
+                        <font fontName="Arial" size="18"/>
                     </textElement>
                     <text><![CDATA[Owner]]></text>
                 </staticText>
@@ -85,7 +85,7 @@ FROM skislope.cards]]>
             <staticText>
                 <reportElement style="SubTitle" x="200" y="10" width="157" height="40" forecolor="#FFFFFF" uuid="8e16dabd-2e54-471b-9652-83e1d55379ec"/>
                 <textElement textAlignment="Center" verticalAlignment="Middle">
-                    <font fontName="Book Antiqua" size="26"/>
+                    <font fontName="Arial" size="26"/>
                 </textElement>
                 <text><![CDATA[User Tickets]]></text>
             </staticText>
