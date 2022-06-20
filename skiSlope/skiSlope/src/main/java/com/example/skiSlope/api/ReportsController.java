@@ -59,7 +59,6 @@ public class ReportsController {
             System.out.println(e.getMessage());
             System.out.println(e.getCause().getMessage());
         }
-
         JRPdfExporter exporter = new JRPdfExporter();
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -91,7 +90,13 @@ public class ReportsController {
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(users);
         Map<String, Object> parameters= new HashMap<>();
         parameters.put("Company", "Srebrne Stoki");
-        JasperPrint jasperPrint= JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        JasperPrint jasperPrint = null;
+        try{
+            jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause().getMessage());
+        }
         JRPdfExporter exporter = new JRPdfExporter();
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
         exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
