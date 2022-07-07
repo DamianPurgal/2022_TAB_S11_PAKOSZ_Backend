@@ -93,4 +93,4 @@ Raporty dla klientów oraz administratorów generowane są za pomocą JasperRepo
 Przydatne aplikacje przy tworzeniu Backendu:
 * Postman
 * Github
-* Trello
+* Trello.
