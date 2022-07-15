@@ -1,31 +1,34 @@
-# SkiSlope - Stacja narciarski
- _REST API studenckiego projektu odpowiedzialnego za obsługę stacji narciarskiej._ 
+
+_REST API of the student project responsible for operating the ski station._. 
   
-# Opis projektu
-Projekt umożliwia obsługę stacji narciarskiej poprzez dostarczenie niezbędnych funkcjonalności.
-Funkcjonalności dostarczone są przez trzy aplikacje:
-* strone WWW (ReactJS),
-* aplikację mobilną (Flutter),
-* skaner kodów QR - bramka narciarska (Unity).
-Wszystkie komponenty połączone są ze sobą poprzez REST API zawarte w powyższym repozytorium.
+# Project description
+The project enables the operation of a ski station by providing the necessary functionalities.
+The functionalities are provided by three applications:
+* website (ReactJS),
+* mobile application (Flutter),
+* QR code scanner - ski gate (Unity).
+All components are connected to each other via REST API included in this repository.
 
-# Najważniejsze funkcjonalności projektu
-* Logowanie oraz rejestracja użytkownika,
-* Uwierzytelnianie za pomocą konta Google,
-* Możliwość zakupu biletu/karnetu korzystając z systemu płatności,
-* Skanowanie biletu/karnetu,
-* Generowanie raportów.
+# Key functionalities of the project
+* Login and user registration,
+* Authentication with Google account,
+* Ability to purchase a tickets using the payment system,
+* Scanning of tickets,
+* Generating reports.
 
-## Diagram przypadków użycia
-Diagram przedstawiający przypadki użycia niezbędne do działania projektu. Backend implementuje również funkcjonalności, które nie zostały przedstawione na poniższym diagramie.
+## Use case diagram
+Diagram showing the use cases necessary for the project to work. 
+The backend also implements functionality that is not shown in the diagram below.
+
 
 
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/UseCases.png">
 </p>
 
-# Schemat bazy danych (MySQL)
-Schemat bazy danych utworzonej w MySQL.
+
+# Database schema (MySQL)
+A database schema created in MySQL.
 
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/Database.png">
@@ -33,43 +36,51 @@ Schemat bazy danych utworzonej w MySQL.
 
 
 # Endpoints
-Endpointy aplikacji przedstawione na podstawie zrzutu ekranu z aplikacji Postman.
+Endpoints of the application shown based on a screenshot from the Postman application.
+
 
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/Postman.png">
 </p>
 
-Przykładowa dokumentacja API płatności:
+
+Sample payment API documentation:
 [link](https://app.swaggerhub.com/apis-docs/SkiSlope/Payments/1.0.0)
 
-# Opis implementacji najważniejszych funkcjonalności - Backend
+# Description of the implementation of the most important functionalities - Backend
 
-## Autoryzacja oraz uwierzytelnianie użytkowników lokalnych
-Autoryzacja użytkownika odbywa się poprzez JWT które użytkownik uzyskuje podczas procesu uwierzytelniania. 
-Podczas uwierzytelniania użytkownik uzyskuje również refresh token pozwalający na przedłużenie żywotności access token.
+## Authorization and authentication of local users
+User authentication is done through JWTs that the user obtains during the authentication process. 
+During authentication, the user also obtains a refresh token to extend the life of the access token.
+
 
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/JWT.png">
 </p>
 
 ## Google Authentication
-Uwierzytelnianie użytkowników Google odbywa się poprzez Spring Security. 
-Poniżej przedstawiony został przepływ procesu logowania użytkownika poprzez Google.
+
+Google user authentication is done through Spring Security. 
+The flow of the user login process through Google is shown below.
+
 
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/GoogleAuthenticationFlow.png">
 </p>
 
-## Połącznie z systemem płatności
-Płatności za bilety oraz karnety są wykonywane całkowicie za pomocą payPal.
+
+## Connection to the payment system
+Payments for tickets and passes are made entirely through payPal.
 
 <p align="center">
   <img width="25%" height="25%" src="https://user-images.githubusercontent.com/72508414/178113267-0960ff55-a10b-41a7-8966-e32d7b4fd5cd.png">
 </p>
 
-## Generowanie raportów
-Istnieją dwa rodzaje raportów. Raporty dla klientów oraz administratorów generowane są za pomocą JasperReport. 
-Przykład raportu wygenerowanego dla klienta:
+## Generating reports
+Reports are generated using JasperReport. There are two types - reports for clients and administrators. 
+An example of a report generated for a client:
+
+
 
 <p align="center">
   <img width="50%" height="50%" src="https://user-images.githubusercontent.com/72508414/178113397-552b8ec7-e283-4305-a6a4-5aa06c225cd2.png">
@@ -77,7 +88,7 @@ Przykład raportu wygenerowanego dla klienta:
 
 
 
-# Technologie używane do stworzenia Backend'u
+# Technologies used to create the Backend:
 * Java,
 * Spring Boot,
 * Spring Security,
@@ -88,7 +99,8 @@ Przykład raportu wygenerowanego dla klienta:
 * PayPal API,
 * JasperReport.
 
-# Przydatne aplikacje przy tworzeniu Backendu:
+
+# Useful applications for creating Backend:
 * Postman,
 * Github,
 * Swagger,
