@@ -1,3 +1,4 @@
+
 _REST API of the student project responsible for operating the ski station._. 
   
 # Project description
@@ -20,9 +21,11 @@ Diagram showing the use cases necessary for the project to work.
 The backend also implements functionality that is not shown in the diagram below.
 
 
+
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/UseCases.png">
 </p>
+
 
 # Database schema (MySQL)
 A database schema created in MySQL.
@@ -35,9 +38,11 @@ A database schema created in MySQL.
 # Endpoints
 Endpoints of the application shown based on a screenshot from the Postman application.
 
+
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/Postman.png">
 </p>
+
 
 Sample payment API documentation:
 [link](https://app.swaggerhub.com/apis-docs/SkiSlope/Payments/1.0.0)
@@ -48,17 +53,21 @@ Sample payment API documentation:
 User authentication is done through JWTs that the user obtains during the authentication process. 
 During authentication, the user also obtains a refresh token to extend the life of the access token.
 
+
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/JWT.png">
 </p>
 
 ## Google Authentication
+
 Google user authentication is done through Spring Security. 
 The flow of the user login process through Google is shown below.
+
 
 <p align="center">
   <img width="75%" height="75%" src="https://github.com/DamianPurgal/2022_TAB_S11_PAKOSZ_Backend/blob/main/readmeImages/GoogleAuthenticationFlow.png">
 </p>
+
 
 ## Connection to the payment system
 Payments for tickets and passes are made entirely through payPal.
@@ -70,6 +79,7 @@ Payments for tickets and passes are made entirely through payPal.
 ## Generating reports
 Reports are generated using JasperReport. There are two types - reports for clients and administrators. 
 An example of a report generated for a client:
+
 
 
 <p align="center">
@@ -89,8 +99,10 @@ An example of a report generated for a client:
 * PayPal API,
 * JasperReport.
 
+
 # Useful applications for creating Backend:
 * Postman,
 * Github,
 * Swagger,
 * Trello.
+
